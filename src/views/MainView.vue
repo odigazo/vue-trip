@@ -2,10 +2,10 @@
   <div class="main">
     <img src="../assets/image/모행여행로고.png">
     <div><button @click="login()">Login</button></div>
-    <div><button @click="signup()">Sign Up</button></div>
+    <div><button @click="signup()">Sign Up!!!  </button></div>
   </div>
 </template>
-
+gi
 <script>
 // @ is an alias to /src
 
