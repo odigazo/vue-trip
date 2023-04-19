@@ -2,9 +2,6 @@
   <div class="main">
     <img src="../assets/image/모행여행로고.png">
     <div><button @click="login()">Login</button></div>
-<<<<<<< HEAD
-    <div><button @click="signup()">Sign Up!!!  </button></div>
-=======
     <div><button @click="signup()">Sign Up</button></div>
     <div>
     <label for="prompt">Enter your prompt:</label>
@@ -12,7 +9,6 @@
     <button @click="generateText">Generate Text</button>
     <p>{{ completions }}</p>
     </div>
->>>>>>> 8728f05b549c16b87daa6547955ef025812161d5
   </div>
 </template>
 gi
