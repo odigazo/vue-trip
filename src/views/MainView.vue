@@ -63,7 +63,7 @@ export default {
       this.prompt = "";
     },
     login(){
-
+      this.$router.push({name:"login"});
     },
     signup(){
 
