@@ -66,7 +66,7 @@ export default {
       this.$router.push({name:"login"});
     },
     signup(){
-
+      this.$router.push({name:"signup"});
     }
   }
 }
