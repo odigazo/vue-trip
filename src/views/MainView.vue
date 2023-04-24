@@ -10,7 +10,7 @@
         </div>
       </div>
       <label for="prompt">Enter your prompt:</label>
-      <input type="text" id="prompt" v-model="prompt" />
+      <input type="text" id="prompt" v-model="prompt" @keyup.enter="generateText"/>
       <button @click="generateText">Send</button>
     </div>
   </div>
@@ -19,16 +19,16 @@
 <script>
 import axios from 'axios';
 
-const API_KEY = "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";
+const API_KEY = "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";
 const API_URL = "https://api.openai.com/v1/engines/text-davinci-003/completions";
 
 export default {
   name: 'MainView',
   data() {
     return {
-      prompt: "어떤 코스를 추천받고 싶으신가요?",
-      maxTokens: 500,
-      temperature: 0.5,
+      prompt: "",
+      maxTokens: 1000,
+      temperature: 0.2,
       completions: "",
       error: "",
       chat: [],
@@ -47,13 +47,14 @@ export default {
       };
 
       const body = {
-        prompt: this.lastQuestion + this.prompt,
+        prompt: '너는 여행 스케쥴러야 '+this.lastQuestion + this.prompt,
         max_tokens: this.maxTokens,
         temperature: this.temperature,
       };
 
       try {
         const response = await axios.post(API_URL, body, config);
+        console.log(response.data);
         const answer = response.data.choices[0].text;
         this.chat.push({ role: "user", message: this.prompt });
         this.chat.push({ role: "bot", message: answer });
