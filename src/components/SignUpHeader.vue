@@ -1,8 +1,8 @@
 <template>
-  <div class="loginheader">
+  <div class="signupheader">
     <img class="logo" src="../assets/image/triplogo.png"/>
-    <div class="middle">로그인 페이지</div>
-    <div class="signup"><a @click="signup()">회원가입</a></div>
+    <div class="middle">회원가입 페이지</div>
+    <div class="signup"><a @click="login()">로그인</a></div>
   </div>
 </template>
 
@@ -10,8 +10,8 @@
 
 export default({
   methods:{
-    signup(){
-      this.$router.push({name:"signup"})
+    login(){
+      this.$router.push({name:"login"})
     }
   }
 })
@@ -19,7 +19,7 @@ export default({
 
 
 <style scoped>
-  div.loginheader {
+  div.signupheader {
     display: flex;
     align-items: center;
     height: 80px;

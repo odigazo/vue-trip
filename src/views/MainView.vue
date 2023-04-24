@@ -13,13 +13,14 @@
       <input type="text" id="prompt" v-model="prompt" />
       <button @click="generateText">Send</button>
     </div>
+    <button @click="tripMain">TripMain으로 이동</button>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 
-const API_KEY = "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";
+const API_KEY = "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";
 const API_URL = "https://api.openai.com/v1/engines/text-davinci-003/completions";
 
 export default {
@@ -43,6 +44,7 @@ export default {
           "Content-Type": "application/json",
           Authorization: `Bearer ${API_KEY}`,
         },
+        withCredentials: false
       };
 
       const body = {
@@ -67,8 +69,13 @@ export default {
       this.$router.push({name:"login"});
     },
     signup(){
+      this.$router.push({name:"signup"});
+      },
+    tripMain() {
+      this.$router.push({name:"tripMain"});
 
     }
+    
   }
 }
 </script>

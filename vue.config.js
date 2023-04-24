@@ -4,7 +4,11 @@ module.exports = defineConfig({
   devServer: {
     proxy: {
       '/v1': {
-        target: 'https://api.chatgpt.com',
+        target: 'https://api.openai.com',
+        changeOrigin: true
+      },
+      '/v2': {
+        target: 'https://dapi.kakao.com',
         changeOrigin: true
       }
     }
