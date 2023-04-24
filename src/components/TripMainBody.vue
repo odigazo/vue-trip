@@ -46,7 +46,7 @@ export default {
   methods : {
     tripDetail(placeName) {
         this.$axios({
-            url: "http://localhost:8080/trip/mainPage/detail",
+            url: this._baseUrl+"mainPage/detail",
             method: "GET",
             params : {
                 placeName : placeName
@@ -75,7 +75,7 @@ export default {
   },
   created() {
     this.$axios({
-      url: "http://localhost:8080/trip/mainPage",
+      url: this._baseUrl+"mainPage",
       method: "GET",
       responseType: "json",
     }).then(
