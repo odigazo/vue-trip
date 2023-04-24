@@ -1,25 +1,25 @@
 <template>
-  <div class="loginheader">
+  <div class="mainHeader">
     <img class="logo" src="../assets/image/triplogo.png"/>
-    <div class="middle">로그인 페이지</div>
-    <div class="signup"><a @click="signup()">회원가입</a></div>
+    <div class="middle">메인 페이지</div>
+    <div class="signup"><a @click="searchPlaces()">여행지 찾기</a></div>
   </div>
 </template>
-
 <script>
-
-export default({
-  methods:{
-    signup(){
-      this.$router.push({name:"main"});
+export default {
+    methods : {
+        searchPlaces() {
+            if (this.$router.currentRoute.name == 'tripMain') {
+                return;
+            }else {
+                this.$router.push({name:"tripMain"});
+            }
+        }
     }
-  }
-})
+}
 </script>
-
-
 <style scoped>
-  div.loginheader {
+  div.mainHeader {
     display: flex;
     align-items: center;
     height: 80px;
@@ -45,5 +45,4 @@ export default({
     height: 80px;
     border-radius: 50%;
   }
-
 </style>

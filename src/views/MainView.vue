@@ -13,6 +13,7 @@
       <input type="text" id="prompt" v-model="prompt" />
       <button @click="generateText">Send</button>
     </div>
+    <button @click="tripMain">TripMain으로 이동</button>
   </div>
 </template>
 
@@ -67,8 +68,11 @@ export default {
       this.$router.push({name:"login"});
     },
     signup(){
-
+      },
+    tripMain() {
+      this.$router.push({name:"tripMain"});
     }
+    
   }
 }
 </script>

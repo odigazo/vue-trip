@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import MainView from '../views/MainView.vue'
 import LoginView from '../views/LoginView.vue'
+import TripMainView from '../views/TripMainView.vue'
+import TripDetailView from '../views/TripDetailView.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -14,6 +16,16 @@ const routes = [
     path: '/login',
     name: 'login',
     component: LoginView
+  },
+  {
+    path: '/tripMain',
+    name: 'tripMain',
+    component: TripMainView
+  },
+  {
+    path: '/tripDetail',
+    name: 'tripDetail',
+    component: TripDetailView
   }
 ]
 
