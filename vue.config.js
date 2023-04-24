@@ -6,6 +6,10 @@ module.exports = defineConfig({
       '/v1': {
         target: 'https://api.openai.com',
         changeOrigin: true
+      },
+      '/v2': {
+        target: 'https://dapi.kakao.com',
+        changeOrigin: true
       }
     }
   }

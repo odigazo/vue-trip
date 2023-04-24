@@ -9,7 +9,7 @@ CORS(app)
 class SimilarityAPI(Resource):
     def post(self):
         # data = request.get_json()
-        return {'hello': 'world'}
+        return {'hello': 'world!!!'}
 
 api.add_resource(SimilarityAPI, '/similarity')
 
