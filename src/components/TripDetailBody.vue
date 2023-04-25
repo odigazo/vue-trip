@@ -1,13 +1,13 @@
 <template>
   <div class="container">
     <div class="image-container">
-      <img :src="detail.imageUrl" alt="Image">
+      <img :src="$store.getters.getTripDetail.imageUrl" alt="Image" style="height : 500px; width : 600px;">
     </div>
     <div class="description-container">
-      <h1 style="text-align: left;">{{detail.placeName}}</h1>
-      <font>{{detail.placeAddress}}</font>
-      <font style="text-align: left;">{{detail.placeContents}}</font>
-      <a :href="detail.placeUrl">여행지 리뷰 확인하러 가기</a>
+      <h1 style="text-align: left;">{{$store.getters.getTripDetail.placeName}}</h1>
+      <font>{{$store.getters.getTripDetail.placeAddress}}</font>
+      <font style="text-align: left;">{{$store.getters.getTripDetail.placeContents}}</font>
+      <a v-if="urlCheck" :href="$store.getters.getTripDetail.placeUrl">여행지 리뷰 확인하러 가기</a>
       <div id="map" style="width:500px;height:300px;"></div>
     </div>
   </div>
@@ -16,10 +16,10 @@
 export default {
     data() {
         return {
-            detail : this.$store.state.detail
+            urlCheck : false
         }
     },
-   mounted() {
+    mounted() {
         if (window.kakao && window.kakao.maps) {
             this.initMap();
         } else {
@@ -32,20 +32,27 @@ export default {
     },
     methods: {
         initMap() {
-            var container = document.getElementById('map');
-            var options = {
-              center: new kakao.maps.LatLng(this.detail.latitude, this.detail.longitude),
-              level: 3
+            let container = document.getElementById('map');
+            let options = {
+                center: new kakao.maps.LatLng(this.$store.getters.getTripDetail.latitude, this.$store.getters.getTripDetail.longitude),
+                level: 3
             };
 
-            var map2 = new kakao.maps.Map(container, options);
+            let map = new kakao.maps.Map(container, options);
 
-            var markerPosition  = new kakao.maps.LatLng(this.detail.latitude, this.detail.longitude); 
-            var marker = new kakao.maps.Marker({
-                 position: markerPosition
+            let markerPosition  = new kakao.maps.LatLng(this.$store.getters.getTripDetail.latitude, this.$store.getters.getTripDetail.longitude); 
+            let marker = new kakao.maps.Marker({
+                    position: markerPosition
             });
-            marker.setMap(map2);
 
+            marker.setMap(map); //마커를 지도에 표시 
+
+        }
+    },
+    created(){
+        console.log(typeof(this.$store.getters.getTripDetail.placeUrl));
+        if(typeof(this.$store.getters.getTripDetail.placeUrl) != 'undefined') {
+            this.urlCheck = true;
         }
     }
 }
