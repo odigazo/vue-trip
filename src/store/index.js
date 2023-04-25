@@ -9,7 +9,9 @@ export default new Vuex.Store({
     userinfo:[],
     names:[],
     latitudes:[],
-    longitudes:[]
+    longitudes:[],
+    placeList:[],
+    tripDetail: {}
   },
   getters: {
     getUserInfo:function(state){
@@ -23,11 +25,23 @@ export default new Vuex.Store({
     },
     getLongitudes:function(state){
       return state.longitudes;
+    },
+    getPlaceList: function(state){
+      return state.placeList;
+    },
+    getTripDetail: function(state){
+      return state.tripDetail;
     }
   },
   mutations: {
     setUserInfo(state,list){
       state.userinfo=list;
+    },
+    setPlaceList(state, list){
+      state.placeList = list;
+    },
+    setTripDetail(state, detail) {
+      state.tripDetail = detail;
     },
     setNames(state,list){
       state.names=list;
@@ -38,8 +52,7 @@ export default new Vuex.Store({
     setLongitudes(state,list){
       state.longitudes=list;
     },
-    
-  },
+      },
   actions: {
   },
   modules: {

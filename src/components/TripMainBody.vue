@@ -1,7 +1,14 @@
 <template>
   <div class="tripMainBody">
+    <div style="display:flex;">
+        <h1 @click="searchCategory('전체')">#전체</h1>
+        <h1 @click="searchCategory('spring')">#봄</h1>
+        <h1 @click="searchCategory('summer')">#여름</h1>
+        <h1 @click="searchCategory('autumn')">#가을</h1>
+        <h1 @click="searchCategory('winter')">#겨울</h1>
+    </div>
     <table style="margin: 0 auto">
-      <tr v-for="(place, i) in placeList" :key="i" style="">
+      <tr v-for="(place, i) in $store.getters.getPlaceList" :key="i" style="">
         <td @click="tripDetail(place.place1.placeName)">
             <img :src="place.place1.thumnailUrl" />
             <div>
@@ -40,8 +47,8 @@
 export default {
   data() {
     return {
-      placeList: [],
-    };
+        category : ''
+    }
   },
   methods : {
     tripDetail(placeName) {
@@ -64,13 +71,18 @@ export default {
                 withCredentials: false,
                 responseType: 'json'
             }).then(function(result) {
-                console.log(result.data.documents[0].place_url);
-                placeDetail.placeUrl = result.data.documents[0].place_url;
-                this.$store.state.detail = placeDetail;
+
+                if (result.data.documents.length != 0) {
+                    placeDetail.placeUrl = result.data.documents[0].place_url;
+                }
+                this.$store.commit("setTripDetail", placeDetail);
                 this.$router.push({name:"tripDetail"});
             }.bind(this));
 
         }.bind(this));
+    },
+    searchCategory(season) {
+        this.category = season;
     }
   },
   created() {
@@ -81,18 +93,67 @@ export default {
     }).then(
       function (places) {
         let list = places.data;
-        for (let i = 0; i < list.length - 2; i += 5) {
-          let threePlace = {};
-          threePlace.place1 = list[i];
-          threePlace.place2 = list[i + 1];
-          threePlace.place3 = list[i + 2];
-          threePlace.place4 = list[i + 3];
-          threePlace.place5 = list[i + 4];
-          this.placeList.push(threePlace);
+        let placeList = [];
+        for (let i = 0; i < list.length - 4; i += 5) {
+            let fivePlace = {};
+            fivePlace.place1 = list[i];
+            fivePlace.place2 = list[i + 1];
+            fivePlace.place3 = list[i + 2];
+            fivePlace.place4 = list[i + 3];
+            fivePlace.place5 = list[i + 4];
+            placeList.push(fivePlace);
         }
+        this.$store.commit("setPlaceList", placeList);
+        this.category = '전체';
       }.bind(this)
     );
   },
+  watch : {
+    category : function () {
+        if (this.category == '전체') {
+            this.$axios({
+                url: "http://localhost:8080/trip/mainPage",
+                method: "GET",
+                responseType: "json",
+            }).then(function (places) {
+                let list = places.data;
+                let placeList = [];
+                for (let i = 0; i < list.length - 4; i += 5) {
+                    let fivePlace = {};
+                    fivePlace.place1 = list[i];
+                    fivePlace.place2 = list[i + 1];
+                    fivePlace.place3 = list[i + 2];
+                    fivePlace.place4 = list[i + 3];
+                    fivePlace.place5 = list[i + 4];
+                    placeList.push(fivePlace);
+                }
+                this.$store.commit("setPlaceList", placeList);
+            }.bind(this));
+        }else {
+            this.$axios({
+                url: "http://localhost:8080/trip/mainPage/category",
+                method: "GET",
+                params: {
+                    season : this.category
+                },
+                responseType: "json",
+            }).then(function (places) {
+                let list = places.data;
+                let placeList = [];
+                for (let i = 0; i < list.length - 4; i += 5) {
+                    let fivePlace = {};
+                    fivePlace.place1 = list[i];
+                    fivePlace.place2 = list[i + 1];
+                    fivePlace.place3 = list[i + 2];
+                    fivePlace.place4 = list[i + 3];
+                    fivePlace.place5 = list[i + 4];
+                    placeList.push(fivePlace);
+                }
+                this.$store.commit("setPlaceList", placeList);
+            }.bind(this));
+        }
+    }
+  }
 };
 </script>
 <style scoped>
@@ -109,5 +170,8 @@ export default {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1;
+}
+h1 {
+    margin-right : 20px;
 }
 </style>
