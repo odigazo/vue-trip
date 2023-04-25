@@ -5,6 +5,7 @@ import LoginView from '../views/LoginView.vue'
 import TripMainView from '../views/TripMainView.vue'
 import TripDetailView from '../views/TripDetailView.vue'
 import SignUpView from '../views/SignUpView.vue'
+import TripCourseView from '../views/TripCourseView.vue'
 
 Vue.use(VueRouter)
 
@@ -34,6 +35,11 @@ const routes = [
     path: '/signup',
     name: 'signup',
     component: SignUpView
+  },
+  {
+    path: '/tripcourse',
+    name: 'tripcourse',
+    component: TripCourseView
   }
 ]
 

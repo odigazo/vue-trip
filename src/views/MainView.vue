@@ -20,7 +20,7 @@
 <script>
 import axios from 'axios';
 
-const API_KEY = "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";
+const API_KEY = "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";
 const API_URL = "https://api.openai.com/v1/engines/text-davinci-003/completions";
 
 export default {
@@ -29,7 +29,7 @@ export default {
     return {
       prompt: "",
       maxTokens: 1000,
-      temperature: 0.2,
+      temperature: 0.5,
       completions: "",
       error: "",
       chat: [],
@@ -55,8 +55,8 @@ export default {
 
       try {
         const response = await axios.post(API_URL, body, config);
-        console.log(response.data);
         const answer = response.data.choices[0].text;
+        console.log(answer);
         this.chat.push({ role: "user", message: this.prompt });
         this.chat.push({ role: "bot", message: answer });
         this.lastQuestion = this.lastQuestion + this.prompt;
@@ -71,12 +71,10 @@ export default {
     },
     signup(){
       this.$router.push({name:"signup"});
-      },
+    },
     tripMain() {
       this.$router.push({name:"tripMain"});
-
     }
-    
   }
 }
 </script>
