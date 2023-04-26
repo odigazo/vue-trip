@@ -14,6 +14,7 @@
       <button @click="generateText">Send</button>
     </div>
     <button @click="tripMain">TripMain으로 이동</button>
+    <button @click="gotoBoard">게시판으로 이동</button>
   </div>
 </template>
 
@@ -74,6 +75,10 @@ export default {
     tripMain() {
       this.$router.push({name:"tripMain"});
 
+    },
+    gotoBoard(){
+      this.$store.commit("setIsEditing");
+      this.$router.push({name:'courseboard'});
     }
     
   }

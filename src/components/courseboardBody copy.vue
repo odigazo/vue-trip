@@ -1,5 +1,6 @@
 <template>
-  <div class="container">
+
+ <div class="container">
     <h2>좋아요</h2>
     <div class="like-section">
       <button @click="addLike()" class="like-button">좋아요</button>
@@ -8,28 +9,14 @@
     <br /><br />
     <h2>댓글 목록</h2>
     <ul class="comment-list">
-      <li
-        v-for="(comment, index) in this.$store.state.comments"
-        :key="index"
-        class="comment-item"
-      >
+      <li v-for="(comment, index) in this.$store.state.comments" :key="index" class="comment-item">
         <div class="comment-info">
           <span>{{ comment.commentNum }}:</span>
           <span>{{ comment.userNum }}:</span>
-          <span v-if="!$store.state.isEditing[index]">{{ comment.contents }}</span>
-          <input v-else type="text" v-model="newContents[index]" />
+          <span>{{ comment.contents }}</span>
         </div>
         <div class="comment-actions">
-          <button
-            v-if="!$store.state.isEditing[index]"
-            @click="startUpdate(index)"
-            class="update-button"
-          >
-            수정
-          </button>
-          <button v-else @click="updateComment(index,comment.commentNum)" class="update-button">
-            저장
-          </button>
+          <button @click="updateComment()" class="update-button">수정</button>
           <button @click="deleteComment()" class="delete-button">삭제</button>
         </div>
       </li>
@@ -37,12 +24,7 @@
 
     <h2>댓글 작성</h2>
     <div class="comment-form">
-      <input
-        type="text"
-        placeholder="댓글을 입력하세요"
-        v-model="contents"
-        class="comment-input"
-      />
+      <input type="text" placeholder="댓글을 입력하세요" v-model="contents" class="comment-input" />
       <button @click="insertComment" class="submit-button">댓글쓰기</button>
     </div>
   </div>
@@ -58,14 +40,13 @@ export default {
     return {
       userNum: 1,
       contents: "",
-      isEditing:[],
-      newContents:[],
       like: {
         userNum: 0,
       },
     };
   },
   methods: {
+    showUpdateForm() {},
     next(input) {
       document.getElementById(input).focus();
     },
@@ -102,7 +83,7 @@ export default {
       }).then(
         function (result) {
           console.log(result.data);
-          this.$store.commit("setComments", result.data);
+          this.$store.commit("setComments",result.data);
           console.log(this.$store.state.comments[0].contents);
         }.bind(this)
       );
@@ -124,36 +105,28 @@ export default {
       //     console.log(error);
       //   });
     },
-    startUpdate(index){
-      console.log(index);
-      this.$store.commit("setIsEditingTrue",index);
-      console.log(this.isEditing);
-      this.$router.go(this.$router.currentRoute);
-    },
     //댓글 수정
-    updateComment(index,commentNum) {
-      
-      this.$axios({
-        url: this._baseUrl + "comment/updateComment",
-        method: "PUT",
-        params: {
-          userNum: this.userNum,
-          contents: this.newContents[index],
-          commentNum : commentNum
-        },
-        responseType: "json",
-      })
-        .then(
-          function (result) {
-            console.log(result.data);
-            this.$store.commit("setComments", result.data);
-            this.$store.commit("setIsEditingFalse",index);
-          }.bind(this)
-        )
-        .catch(function (error) {
-          console.error(error);
-        });
+    updateComment() {
+  this.$axios({
+    url: this._baseUrl + "comment/updateComment",
+    method: "PUT",
+    params: {
+       userNum: this.userNum,
+       contents: this.contents,
     },
+    responseType: "json",
+  })
+    .then(
+      function (result) {
+        console.log(result.data);
+        // 이후에 필요한 작업을 수행하세요 (예: 댓글 목록 새로고침, 상태 업데이트 등)
+      }.bind(this)
+    )
+    .catch(function (error) {
+      console.error(error);
+      // 오류 발생 시 필요한 작업을 수행하세요 (예: 오류 메시지 표시 등)
+    });
+},  
     //댓글 삭제
     deleteComment() {
       this.$axios({
@@ -164,14 +137,13 @@ export default {
           contents: this.contents,
         },
         responseType: "json",
-      })
-        .then(() => {
-          this.commentList();
-        })
-        .catch((error) => {
-          console.error(error);
-          // 사용자에게 에러 메시지 표시 등 에러 처리 작업 수행
-        });
+      }).then(() => {
+      this.commentList();
+  })
+  .catch((error) => {
+  console.error(error);
+  // 사용자에게 에러 메시지 표시 등 에러 처리 작업 수행
+});
       // axios
       //   .put(this._baseUrl + "comment/deleteComment", {
       //     //삭제여부, 삭제날짜
@@ -190,7 +162,7 @@ export default {
       //   });
     },
     // 좋아요
-    addLike() {
+    addLike(){
       this.$axios({
         url: this._baseUrl + "like/addLike",
         method: "POST",
@@ -199,8 +171,7 @@ export default {
           courseNum: this.courseNum,
         },
         responseType: "json",
-      })
-        .then((result) => {
+      }) .then((result) => {
           console.log(result.data);
         })
         .catch((error) => {
@@ -209,18 +180,14 @@ export default {
     },
   },
   computed: {
-    filteredComments() {
-      return this.$store.state.comments.filter(
-        (comment) => comment.isDelete !== "Y"
-      );
-    },
-  },
+  filteredComments() {
+    return this.$store.state.comments.filter(comment => comment.isDelete !== 'Y');
+  }
+},
   // mounted() {
-  //   for(var i=0;i<this.$store.state.comments.length;i++){
-  //     this.isEditing[i]=false;
-  //   }
-  //   console.log(this.isEditing);
+  //   this.commentList();
   // }
+  
 };
 </script>
 
