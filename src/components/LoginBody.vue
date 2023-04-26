@@ -42,8 +42,10 @@ export default {
                 if(result.data.userInfo==null){
                     alert("로그인 실패 아이디와 비밀번호를 확인해주세요");
                 }else{
+                    this.$store.commit("RESET_STATE");
                     this.$store.commit("setUserInfo",JSON.parse(result.data.userInfo));
                     console.log("로그인 성공");
+                    localStorage.clear('vuex');
                     this.$router.push({name:"tripMain"})
                 }
             }).catch(function(){
