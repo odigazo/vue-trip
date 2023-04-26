@@ -11,7 +11,10 @@ export default new Vuex.Store({
     latitudes:[],
     longitudes:[],
     placeList:[],
-    tripDetail: {}
+    tripDetail: {},
+    comments:[],
+    isEditing:[],
+    // likeCount: 게시글번호로 좋아요 카운ㄷ트
   },
   getters: {
     getUserInfo:function(state){
@@ -31,11 +34,33 @@ export default new Vuex.Store({
     },
     getTripDetail: function(state){
       return state.tripDetail;
-    }
+    },
   },
   mutations: {
     setUserInfo(state,list){
       state.userinfo=list;
+    },
+    setComments(state,list){
+      state.comments=list;
+    },
+    setIsEditing(state){
+      for(var i=0;i<state.comments.length;i++){
+        state.isEditing[i]=false;
+      }
+    },
+    setIsEditingTrue(state,index){
+      for(var i=0;i<state.comments.length;i++){
+        if(i==index){
+          state.isEditing[i]=true;
+        }
+      }
+    },
+    setIsEditingFalse(state,index){
+      for(var i=0;i<state.comments.length;i++){
+        if(i==index){
+          state.isEditing[i]=false;
+        }
+      }
     },
     setPlaceList(state, list){
       state.placeList = list;
@@ -52,7 +77,12 @@ export default new Vuex.Store({
     setLongitudes(state,list){
       state.longitudes=list;
     },
-      },
+    // setLikes(state, ) {
+    //   //   state.likes = .likes;
+    //  }
+  },
+    
+    
   actions: {
   },
   modules: {

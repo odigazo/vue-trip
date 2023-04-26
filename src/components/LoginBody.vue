@@ -44,7 +44,7 @@ export default {
                 }else{
                     this.$store.commit("setUserInfo",JSON.parse(result.data.userInfo));
                     console.log("로그인 성공");
-                    this.$router.push({name:"tripMain"})
+                    this.$router.push({name:'tripMain'});
                 }
             }).catch(function(){
                 console.log("로그인 실패");
