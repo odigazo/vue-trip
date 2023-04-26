@@ -7,6 +7,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     userinfo:[],
+    schedule:[],
     names:[],
     latitudes:[],
     longitudes:[],
@@ -19,6 +20,9 @@ export default new Vuex.Store({
   getters: {
     getUserInfo:function(state){
       return state.userinfo;
+    },
+    getSchedule:function(state){
+      return state.schedule;
     },
     getNames:function(state){
       return state.names;
@@ -37,6 +41,12 @@ export default new Vuex.Store({
     },
   },
   mutations: {
+    RESET_STATE(state) {
+      state.schedule=null;
+      state.names=null;
+      state.latitudes=null;
+      state.longitudes=null;
+    },
     setUserInfo(state,list){
       state.userinfo=list;
     },
@@ -67,6 +77,9 @@ export default new Vuex.Store({
     },
     setTripDetail(state, detail) {
       state.tripDetail = detail;
+    },
+    setSchedule(state,list){
+      state.schedule=list;
     },
     setNames(state,list){
       state.names=list;

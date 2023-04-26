@@ -3,7 +3,7 @@
     <img src="../assets/image/모행여행로고.png">
     <div><button @click="login()">Login</button></div>
     <div><button @click="signup()">Sign Up</button></div>
-    <div>
+    <!-- <div>
       <div class="chat-window">
         <div v-for="(conversation, index) in chat" :key="index" :class="{'user': conversation.role === 'user', 'bot': conversation.role === 'bot'}">
           <span class="message">{{ conversation.message }}</span>
@@ -12,61 +12,61 @@
       <label for="prompt">Enter your prompt:</label>
       <input type="text" id="prompt" v-model="prompt" @keyup.enter="generateText"/>
       <button @click="generateText">Send</button>
-    </div>
+    </div> -->
     <button @click="tripMain">TripMain으로 이동</button>
     <button @click="gotoBoard">게시판으로 이동</button>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+// import axios from 'axios';
 
-const API_KEY = "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";
-const API_URL = "https://api.openai.com/v1/engines/text-davinci-003/completions";
+// const API_KEY = "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";
+// const API_URL = "https://api.openai.com/v1/engines/text-davinci-003/completions";
 
 export default {
   name: 'MainView',
-  data() {
-    return {
-      prompt: "",
-      maxTokens: 1000,
-      temperature: 0.5,
-      completions: "",
-      error: "",
-      chat: [],
-      lastQuestion: "",
-      lastAnswer: "",
-    };
-  },
+  // data() {
+  //   return {
+  //     prompt: "",
+  //     maxTokens: 1000,
+  //     temperature: 0.5,
+  //     completions: "",
+  //     error: "",
+  //     chat: [],
+  //     lastQuestion: "",
+  //     lastAnswer: "",
+  //   };
+  // },
   methods:{
-    async generateText() {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${API_KEY}`,
-        },
-        withCredentials: false
-      };
+    // async generateText() {
+    //   const config = {
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       Authorization: `Bearer ${API_KEY}`,
+    //     },
+    //     withCredentials: false
+    //   };
 
-      const body = {
-        prompt: '너는 여행 스케쥴러야 '+this.lastQuestion + this.prompt,
-        max_tokens: this.maxTokens,
-        temperature: this.temperature,
-      };
+    //   const body = {
+    //     prompt: '너는 여행 스케쥴러야 '+this.lastQuestion + this.prompt,
+    //     max_tokens: this.maxTokens,
+    //     temperature: this.temperature,
+    //   };
 
-      try {
-        const response = await axios.post(API_URL, body, config);
-        const answer = response.data.choices[0].text;
-        console.log(answer);
-        this.chat.push({ role: "user", message: this.prompt });
-        this.chat.push({ role: "bot", message: answer });
-        this.lastQuestion = this.lastQuestion + this.prompt;
-        this.lastAnswer = answer;
-      } catch (error) {
-        this.error = error.message;
-      }
-      this.prompt = "";
-    },
+    //   try {
+    //     const response = await axios.post(API_URL, body, config);
+    //     const answer = response.data.choices[0].text;
+    //     console.log(answer);
+    //     this.chat.push({ role: "user", message: this.prompt });
+    //     this.chat.push({ role: "bot", message: answer });
+    //     this.lastQuestion = this.lastQuestion + this.prompt;
+    //     this.lastAnswer = answer;
+    //   } catch (error) {
+    //     this.error = error.message;
+    //   }
+    //   this.prompt = "";
+    // },
     login(){
       this.$router.push({name:"login"});
     },
