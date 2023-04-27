@@ -10,7 +10,9 @@ module.exports = defineConfig({
       '/v2': {
         target: 'https://dapi.kakao.com',
         changeOrigin: true
-      },
+      }
+      
+      
     }
   }
 })

@@ -2,10 +2,12 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import MainView from '../views/MainView.vue'
 import LoginView from '../views/LoginView.vue'
+import courseboardView from '../views/courseboardView.vue'
 import TripMainView from '../views/TripMainView.vue'
 import TripDetailView from '../views/TripDetailView.vue'
 import RecommendView from '../views/RecommendView.vue'
 import SignUpView from '../views/SignUpView.vue'
+import TripCourseView from '../views/TripCourseView.vue'
 
 Vue.use(VueRouter)
 
@@ -19,6 +21,11 @@ const routes = [
     path: '/login',
     name: 'login',
     component: LoginView
+  },
+  {
+    path:'/courseboard',
+    name:'courseboard',
+    component: courseboardView
   },
   {
 
@@ -40,6 +47,11 @@ const routes = [
     path: '/signup',
     name: 'signup',
     component: SignUpView
+  },
+  {
+    path: '/tripcourse',
+    name: 'tripcourse',
+    component: TripCourseView
   }
 ]
 

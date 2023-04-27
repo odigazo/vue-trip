@@ -10,6 +10,7 @@
       <a v-if="urlCheck" :href="$store.getters.getTripDetail.placeUrl">여행지 리뷰 확인하러 가기</a>
       <div id="map" style="width:500px;height:300px;"></div>
     </div>
+    <button @click="courseRecommend">코스 추천받기</button>
   </div>
 </template>
 <script>
@@ -31,6 +32,9 @@ export default {
         }
     },
     methods: {
+        courseRecommend(){
+          this.$router.push({name:"tripcourse"});
+        },
         initMap() {
             let container = document.getElementById('map');
             let options = {
