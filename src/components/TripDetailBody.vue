@@ -26,7 +26,7 @@ export default {
             const script = document.createElement('script');
             /* global kakao */
             script.onload = () => kakao.maps.load(this.initMap);
-            script.src = 'http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=0f688919e439c6921bf946888799172e';
+            script.src = 'https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=ee8c5959853eafd5cbe842ca8ad1b34c';
             document.head.appendChild(script);
         }
     },
@@ -34,13 +34,13 @@ export default {
         initMap() {
             let container = document.getElementById('map');
             let options = {
-                center: new kakao.maps.LatLng(this.$store.getters.getTripDetail.latitude, this.$store.getters.getTripDetail.longitude),
+                center: new kakao.maps.LatLng(this.$store.getters.getTripDetail.longitude, this.$store.getters.getTripDetail.latitude),
                 level: 3
             };
 
             let map = new kakao.maps.Map(container, options);
 
-            let markerPosition  = new kakao.maps.LatLng(this.$store.getters.getTripDetail.latitude, this.$store.getters.getTripDetail.longitude); 
+            let markerPosition  = new kakao.maps.LatLng(this.$store.getters.getTripDetail.longitude, this.$store.getters.getTripDetail.latitude); 
             let marker = new kakao.maps.Marker({
                     position: markerPosition
             });
@@ -50,7 +50,6 @@ export default {
         }
     },
     created(){
-        console.log(typeof(this.$store.getters.getTripDetail.placeUrl));
         if(typeof(this.$store.getters.getTripDetail.placeUrl) != 'undefined') {
             this.urlCheck = true;
         }

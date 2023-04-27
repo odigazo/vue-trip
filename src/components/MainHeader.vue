@@ -2,6 +2,7 @@
   <div class="mainHeader">
     <img class="logo" src="../assets/image/triplogo.png" />
     <div class="middle">메인 페이지</div>
+    <div class="signup"><a @click="recommendPlace()">추천 여행지</a></div>
     <div class="signup"><a @click="searchPlaces()">여행지 찾기</a></div>
 
     <div class="search-container">
@@ -42,7 +43,6 @@ export default {
           responseType: "json",
         }).then(
           function (result) {
-            console.log("실행");
             if (result.data.length != 0) {
               let placeList = [];
               for (let i = 0; i < result.data.length - 4; i += 5) {
@@ -62,6 +62,42 @@ export default {
         return;
       }
     },
+    recommendPlace() {
+      // let userInfo = this.$store.getters.getUserInfo;
+      if (this.$router.currentRoute.name == "recommend") {
+        return;
+      } else {
+        this.$axios({
+          url : 'http://dapi.kakao.com/v2/local/search/address.json',
+          method : 'GET',
+          headers : {
+            'Authorization' : 'KakaoAK 28129ad995eebba2852f3ad70480cfaa',
+            'content-type' : 'application/json'
+          },
+          params : {
+            query : '서울특별시 관악구 복은2길 45' //사용자의 주소
+          },
+          withCredentials: false,
+          responseType : 'json'
+        }).then(function(result) {
+          let latitude = result.data.documents[0].road_address.x;
+          let longitude = result.data.documents[0].road_address.y;
+          this.$axios({
+            url: 'http://localhost:8080/trip/mainPage/recommend',
+            method: 'POST',
+            data: {
+              'latitude' : latitude,
+              'longitude' : longitude
+            },
+            responseType: 'json'
+          }).then(function(result) {
+            this.$store.commit('setRecommendList', result.data);
+            this.$router.push('recommend');
+          }.bind(this));
+        }.bind(this));
+      }
+
+    }
   },
   watch: {
     keyword: function () {
@@ -76,7 +112,7 @@ export default {
           function (places) {
             let list = places.data;
             let placeList = [];
-            for (let i = 0; i < list.length - 2; i += 5) {
+            for (let i = 0; i < list.length - 4; i += 5) {
               let fivePlace = {};
               fivePlace.place1 = list[i];
               fivePlace.place2 = list[i + 1];
@@ -86,7 +122,6 @@ export default {
               placeList.push(fivePlace);
             }
             this.$store.commit("setPlaceList", placeList);
-            this.category = "전체";
           }.bind(this)
         );
       }

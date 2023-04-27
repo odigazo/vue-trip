@@ -8,7 +8,8 @@ export default new Vuex.Store({
   state: {
     userinfo:[],
     placeList:[],
-    tripDetail: {}
+    tripDetail: {},
+    recommendList: []
   },
   getters: {
     getUserInfo:function(state){
@@ -19,6 +20,9 @@ export default new Vuex.Store({
     },
     getTripDetail: function(state){
       return state.tripDetail;
+    },
+    getRecommendList: function(state){
+      return state.recommendList;
     }
   },
   mutations: {
@@ -30,6 +34,9 @@ export default new Vuex.Store({
     },
     setTripDetail(state, detail) {
       state.tripDetail = detail;
+    },
+    setRecommendList(state, list) {
+      state.recommendList = list;
     }
   },
   actions: {
