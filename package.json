@@ -13,6 +13,7 @@
     "openai": "^3.2.1",
     "vue": "^2.6.14",
     "vue-router": "^3.5.1",
+    "vue-tiny-slider": "^0.1.39",
     "vuex": "^3.6.2",
     "vuex-persistedstate": "^4.1.0"
   },

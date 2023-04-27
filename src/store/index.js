@@ -13,8 +13,9 @@ export default new Vuex.Store({
     longitudes:[],
     placeList:[],
     tripDetail: {},
+    recommendList: [],
     comments:[],
-    isEditing:[],
+    isEditing:[]
     // likeCount: 게시글번호로 좋아요 카운ㄷ트
   },
   getters: {
@@ -39,6 +40,9 @@ export default new Vuex.Store({
     getTripDetail: function(state){
       return state.tripDetail;
     },
+    getRecommendList: function(state){
+      return state.recommendList;
+    }
   },
   mutations: {
     RESET_STATE(state) {
@@ -78,6 +82,9 @@ export default new Vuex.Store({
     setTripDetail(state, detail) {
       state.tripDetail = detail;
     },
+    setRecommendList(state, list) {
+      state.recommendList = list;
+    },
     setSchedule(state,list){
       state.schedule=list;
     },
@@ -89,7 +96,7 @@ export default new Vuex.Store({
     },
     setLongitudes(state,list){
       state.longitudes=list;
-    },
+    }
     // setLikes(state, ) {
     //   //   state.likes = .likes;
     //  }

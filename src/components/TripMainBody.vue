@@ -152,7 +152,8 @@ export default {
                 this.$store.commit("setPlaceList", placeList);
             }.bind(this));
         }
-    }
+    },
+    
   }
 };
 </script>
