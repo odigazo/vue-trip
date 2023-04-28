@@ -80,8 +80,9 @@ export default {
           withCredentials: false,
           responseType : 'json'
         }).then(function(result) {
-          let latitude = result.data.documents[0].road_address.x;
-          let longitude = result.data.documents[0].road_address.y;
+          let longitude = result.data.documents[0].road_address.x;
+          let latitude = result.data.documents[0].road_address.y;
+
           this.$axios({
             url: 'http://localhost:8080/trip/mainPage/recommend',
             method: 'POST',
