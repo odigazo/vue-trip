@@ -17,7 +17,7 @@ export default new Vuex.Store({
     comments:[],
     isEditing:[],
     isLoading:false,
-    isMapReady:false,,
+    isMapReady:false,
     courseList:[], //코스목록 
 
   },
