@@ -100,5 +100,4 @@ export default {
   background-color: #45a049;
 }
 
-/* 필요한 추가 스타일을 적용 */
 </style>
