@@ -15,8 +15,9 @@ export default new Vuex.Store({
     tripDetail: {},
     recommendList: [],
     comments:[],
-    isEditing:[]
-    // likeCount: 게시글번호로 좋아요 카운ㄷ트
+    isEditing:[],
+    courseList:[], //코스목록 
+
   },
   getters: {
     getUserInfo:function(state){
@@ -42,6 +43,9 @@ export default new Vuex.Store({
     },
     getRecommendList: function(state){
       return state.recommendList;
+    },
+    getCourseList: function(state){
+      return state.courseList;
     }
   },
   mutations: {
@@ -56,6 +60,9 @@ export default new Vuex.Store({
     },
     setComments(state,list){
       state.comments=list;
+    },
+    setCourseList(state, courseList) {
+      state.courseList = courseList;
     },
     setIsEditing(state){
       for(var i=0;i<state.comments.length;i++){
