@@ -26,7 +26,7 @@
 <script>
 import axios from "axios";
 
-const API_KEY = "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";
+const API_KEY = "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";
 const API_URL =
   "https://api.openai.com/v1/engines/text-davinci-003/completions";
 export default {
