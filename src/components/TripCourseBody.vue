@@ -57,7 +57,7 @@
 
 <script>
 import axios from "axios";
-const API_KEY = "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";
+const API_KEY = "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";
 const API_URL =
   "https://api.openai.com/v1/engines/text-davinci-003/completions";
 
@@ -66,7 +66,7 @@ export default {
   data() {
     return {
       prompt:
-        "40계단 테마거리를 포함한 부산의 자연풍경을 구경할 수 있는 여행의 2박 3일 코스를 날짜, 시간 : 장소의 형태로 장소에 대한 설명은 생략해서 알려줘요.",
+        "의 반경 50km 안에서 여행하는 여행코스를 날짜, 시간 : 장소의 형태로 장소에 대한 설명은 생략해서 알려줘요.",
       maxTokens: 2000,
       temperature: 0.2,
       error: "",
@@ -181,7 +181,7 @@ export default {
       };
 
       const body = {
-        prompt: "너는 여행 스케쥴러야 " + detail + this.prompt,
+        prompt: "너는 여행 스케쥴러야 " + detail +  this.$store.getters.getTripDetail.placeName +"를 포함한 "+ this.$store.getters.getTripDetail.placeAddress.split(" ")[0] + this.prompt,
         max_tokens: this.maxTokens,
         temperature: this.temperature,
       };
