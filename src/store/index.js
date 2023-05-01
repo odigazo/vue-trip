@@ -17,8 +17,9 @@ export default new Vuex.Store({
     comments:[],
     isEditing:[],
     isLoading:false,
-    isMapReady:false,
-    // likeCount: 게시글번호로 좋아요 카운ㄷ트
+    isMapReady:false,,
+    courseList:[], //코스목록 
+
   },
   getters: {
     getUserInfo:function(state){
@@ -51,6 +52,9 @@ export default new Vuex.Store({
     ,
     getIsMapReady: function(state){
       return state.isMapReady;
+    },
+    getCourseList: function(state){
+      return state.courseList;
     }
   },
   mutations: {
@@ -71,6 +75,9 @@ export default new Vuex.Store({
     },
     setIsMapReady(state,status){
       state.isMapReady=status;
+    },
+    setCourseList(state, courseList) {
+      state.courseList = courseList;
     },
     setIsEditing(state){
       for(var i=0;i<state.comments.length;i++){
