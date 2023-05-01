@@ -85,11 +85,35 @@ export default {
   },
   methods: {
     newCourse() {
-      this.generateText(this.startDate + '부터 ' + this.endDate + '까지 ' + this.selectedPurpose + '목적으로 ')
+      this.generateText(
+        this.startDate +
+          "부터 " +
+          this.endDate +
+          "까지 " +
+          this.selectedPurpose +
+          "목적으로 "
+      );
       this.$modal.hide("myModal");
     },
-    selectCourse(){
-
+    selectCourse() {
+      axios
+        .post(this._baseUrl + "courseBoard/insertCourse", {
+            userNum : this.$store.getters.getUserInfo.userNum,
+            // placeName : this.$store.getters.getTripDetail.placeName,
+            courseTitle : this.$store.getters.getTripDetail.placeName + this.selectedPurpose,
+            courseContents : this.$store.getters.getSchedule
+        })
+        .then((result) => {
+          if(result.data==1){
+            console.log('코스 담기 성공');
+          }
+          // console.log(result.data);
+          // this.$store.commit("setSchedule", result.data);
+          // this.$store.commit("setIsLoading", false);
+        })
+        .catch(function () {
+          console.log("fail");
+        });
     },
     kakaomap() {
       if (window.kakao && window.kakao.maps) {
@@ -146,8 +170,8 @@ export default {
     },
 
     async generateText(detail) {
-      this.$store.commit("setIsLoading",true);
-      this.$store.commit("setIsMapReady",false);
+      this.$store.commit("setIsLoading", true);
+      this.$store.commit("setIsMapReady", false);
       const config = {
         headers: {
           "Content-Type": "application/json",
@@ -175,7 +199,7 @@ export default {
           .then((result) => {
             console.log(result);
             this.$store.commit("setSchedule", result.data);
-            this.$store.commit("setIsLoading",false);
+            this.$store.commit("setIsLoading", false);
           })
           .catch(function () {
             console.log("fail");
@@ -204,7 +228,7 @@ export default {
             this.$store.commit("setLatitudes", result.data.latitudes);
             this.$store.commit("setLongitudes", result.data.longitudes);
             if (this.$store.getters.getNames != null) {
-              this.$store.commit("setIsMapReady",true);
+              this.$store.commit("setIsMapReady", true);
             }
           })
           .catch(function () {
@@ -216,7 +240,6 @@ export default {
       this.prompt = "";
     },
   },
-  
 };
 </script>
 <style scoped>
