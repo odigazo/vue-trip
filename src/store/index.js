@@ -15,7 +15,9 @@ export default new Vuex.Store({
     tripDetail: {},
     recommendList: [],
     comments:[],
-    isEditing:[]
+    isEditing:[],
+    isLoading:false,
+    isMapReady:false,
     // likeCount: 게시글번호로 좋아요 카운ㄷ트
   },
   getters: {
@@ -42,6 +44,13 @@ export default new Vuex.Store({
     },
     getRecommendList: function(state){
       return state.recommendList;
+    },
+    getIsLoading: function(state){
+      return state.isLoading;
+    }
+    ,
+    getIsMapReady: function(state){
+      return state.isMapReady;
     }
   },
   mutations: {
@@ -56,6 +65,12 @@ export default new Vuex.Store({
     },
     setComments(state,list){
       state.comments=list;
+    },
+    setIsLoading(state,status){
+      state.isLoading=status;
+    },
+    setIsMapReady(state,status){
+      state.isMapReady=status;
     },
     setIsEditing(state){
       for(var i=0;i<state.comments.length;i++){

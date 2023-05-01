@@ -1,16 +1,42 @@
 <template>
   <div class="tripcoursebody">
     <div>
-      <label for="prompt">Enter your prompt:</label>
-      <input
-        type="text"
-        id="prompt"
-        v-model="prompt"
-        @keyup.enter="generateText"
-      />
-      <button @click="generateText">Send</button>
+      <modal name="myModal">
+        <div>
+          <h3>{{ $store.getters.getUserInfo.userNickname }}님의 여행 스타일</h3>
+          <p>원하시는 여행에 대한 상세 정보를 입력해주세요</p>
+          <div>
+            <span>출발일</span>
+            <div>
+              <input type="date" v-model.lazy="startDate" />
+            </div>
+          </div>
+          <div>
+            <span>복귀일</span>
+            <div>
+              <input type="date" v-model.lazy="endDate" />
+            </div>
+          </div>
+          <div>
+            <span>여행목적</span>
+            <div>
+              <select v-model="selectedPurpose">
+                <option v-for="purpose in purposes" :key="purpose">
+                  {{ purpose }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <button @click="newCourse">코스 보러가기</button>
+          <button @click="$modal.hide('myModal')">닫기</button>
+        </div>
+      </modal>
+      <div>
+        <button @click="$modal.show('myModal')">재추천 받기</button>
+        <button @click="selectCourse">코스 담기</button>
+      </div>
     </div>
-    <div v-if="isLoading">
+    <div v-if="$store.getters.getIsLoading">
       <img src="../assets/image/Searching.gif" />
       <div>최적의 코스를 찾는 중입니다...</div>
     </div>
@@ -22,26 +48,19 @@
       </ul>
     </div>
     <!-- <div>{{ chat }}</div> -->
-    <button v-if="mapReady" @click="kakaomap">지도 보기</button>
+    <button v-if="$store.getters.getIsMapReady" @click="kakaomap">
+      지도 보기
+    </button>
     <div class="map" id="map" style="height: 500px"></div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-
-const API_KEY = "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";
+const API_KEY = "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";
 const API_URL =
   "https://api.openai.com/v1/engines/text-davinci-003/completions";
-// const SPRITE_MARKER_URL = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markers_sprites2.png';
-// var defaultImage = new kakao.maps.MarkerImage(
-//         SPRITE_MARKER_URL, // 스프라이트 마커 이미지 URL
-//         new kakao.maps.Size(33, 36), // 마커의 크기
-//     );
-// var overImage = new kakao.maps.MarkerImage(
-//         SPRITE_MARKER_URL, // 스프라이트 마커 이미지 URL
-//         new kakao.maps.Size(40, 42), // 마커의 크기
-//     );
+
 export default {
   name: "TripCourseView",
   data() {
@@ -53,11 +72,25 @@ export default {
       error: "",
       lastQuestion: "",
       lastAnswer: "",
-      mapReady: false,
-      isLoading: false,
+      startDate: "",
+      endDate: "",
+      purposes: [
+        "자연 속 여행",
+        "역사와 문화 여행",
+        "가족 여행",
+        "축제와 이벤트 여행",
+      ],
+      selectedPurpose: "",
     };
   },
   methods: {
+    newCourse() {
+      this.generateText(this.startDate + '부터 ' + this.endDate + '까지 ' + this.selectedPurpose + '목적으로 ')
+      this.$modal.hide("myModal");
+    },
+    selectCourse(){
+
+    },
     kakaomap() {
       if (window.kakao && window.kakao.maps) {
         console.log("초기화");
@@ -96,7 +129,6 @@ export default {
         console.log(marker);
         var infowindow = new kakao.maps.InfoWindow({
           content: this.$store.state.names[i], // 인포윈도우에 표시할 내용
-          
         });
         (function (marker, infowindow) {
           // 마커에 mouseover 이벤트를 등록하고 마우스 오버 시 인포윈도우를 표시합니다
@@ -113,8 +145,9 @@ export default {
       }
     },
 
-    async generateText() {
-      this.isLoading = true;
+    async generateText(detail) {
+      this.$store.commit("setIsLoading",true);
+      this.$store.commit("setIsMapReady",false);
       const config = {
         headers: {
           "Content-Type": "application/json",
@@ -124,7 +157,7 @@ export default {
       };
 
       const body = {
-        prompt: "너는 여행 스케쥴러야 " + this.lastQuestion + this.prompt,
+        prompt: "너는 여행 스케쥴러야 " + detail + this.prompt,
         max_tokens: this.maxTokens,
         temperature: this.temperature,
       };
@@ -142,14 +175,14 @@ export default {
           .then((result) => {
             console.log(result);
             this.$store.commit("setSchedule", result.data);
-            this.isLoading = false;
+            this.$store.commit("setIsLoading",false);
           })
           .catch(function () {
             console.log("fail");
           });
         // this.chat = answer;
-        this.lastQuestion = this.lastQuestion + this.prompt;
-        this.lastAnswer = answer;
+        // this.lastQuestion = this.lastQuestion + this.prompt;
+        // this.lastAnswer = answer;
         var newbody = {
           prompt:
             answer +
@@ -171,7 +204,7 @@ export default {
             this.$store.commit("setLatitudes", result.data.latitudes);
             this.$store.commit("setLongitudes", result.data.longitudes);
             if (this.$store.getters.getNames != null) {
-              this.mapReady = true;
+              this.$store.commit("setIsMapReady",true);
             }
           })
           .catch(function () {
@@ -183,13 +216,7 @@ export default {
       this.prompt = "";
     },
   },
-  mounted() {
-    if (this.$store.getters.getNames != null) {
-      this.mapReady = true;
-    } else {
-      this.mapReady = false;
-    }
-  },
+  
 };
 </script>
 <style scoped>
