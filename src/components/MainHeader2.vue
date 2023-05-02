@@ -30,7 +30,9 @@ export default {
       // this.$router.push({name:})
     },
     courseBoard() {},
-    myPage() {},
+    myPage() {
+      this.$router.push({name:"mypage"});
+    },
   },
 };
 </script>
