@@ -16,9 +16,10 @@
     </div>
     <div class="right">
       <div>{{ $store.getters.getUserInfo.userNickname }}</div>
+      <div class="signup2"><a @click="logout()">로그아웃</a></div>
       <div class="signup2"><a @click="myPage()">마이페이지</a></div>
       <div>
-        미방문한 코스가<a class="signup" @click="courseBoard()">0</a>개
+        미방문한 코스가<a class="signup" @click="myPage(MyPageCourseBody)">0</a>개
         있습니다.
       </div>
     </div>
@@ -32,8 +33,16 @@ export default {
     };
   },
   methods: {
-    myPage() {
-      this.$router.push({name:"mypage"});
+    myPage(component) {
+      if (window.location.pathname !== "/mypage") {
+        this.$router.push({ name: "mypage", params: { component: component } });
+      }else{
+        console.log('페이지 동일');
+      }
+    },
+    logout() {
+      this.$store.commit("RESET_STATE");
+      this.$router.push({ name: "main" });
     },
     searchPlaces() {
       if (this.$router.currentRoute.name == "tripMain") {

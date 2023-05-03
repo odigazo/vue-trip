@@ -8,10 +8,12 @@
     </div>
     <div class="right">
       <div>{{ $store.getters.getUserInfo.userNickname }}</div>
+      <div class="signup2"><a @click="logout()">로그아웃</a></div>
       <div class="signup2"><a @click="myPage()">마이페이지</a></div>
       <div>
-        미방문한 코스가<a class="signup" @click="courseBoard()">0</a>개
-        있습니다.
+        미방문한 코스가<a class="signup" @click="myPage('MyPageCourseBody')"
+          >0</a
+        >개 있습니다.
       </div>
     </div>
   </div>
@@ -27,11 +29,57 @@ export default {
       }
     },
     recommendPlaces() {
-      // this.$router.push({name:})
+      if (this.$router.currentRoute.name == "recommend") {
+        return;
+      } else {
+        this.$axios({
+          url: "http://dapi.kakao.com/v2/local/search/address.json",
+          method: "GET",
+          headers: {
+            Authorization: "KakaoAK 28129ad995eebba2852f3ad70480cfaa",
+            "content-type": "application/json",
+          },
+          params: {
+            query: this.$store.getters.getUserInfo.userAddr, //사용자의 주소
+          },
+          withCredentials: false,
+          responseType: "json",
+        }).then(
+          function (result) {
+            let longitude = result.data.documents[0].road_address.x;
+            let latitude = result.data.documents[0].road_address.y;
+
+            this.$axios({
+              url: "http://localhost:8080/trip/mainPage/recommend",
+              method: "POST",
+              data: {
+                latitude: latitude,
+                longitude: longitude,
+              },
+              responseType: "json",
+            }).then(
+              function (result) {
+                this.$store.commit("setRecommendList", result.data);
+                this.$router.push("recommend");
+              }.bind(this)
+            );
+          }.bind(this)
+        );
+      }
     },
     courseBoard() {},
-    myPage() {
-      this.$router.push({name:"mypage"});
+    myPage(component) {
+      console.log(window.location.pathname);
+      if (window.location.pathname !== "/mypage") {
+        this.$router.push({ name: "mypage", params: { component: component } });
+      }else{
+        console.log('페이지 동일');
+      }
+      
+    },
+    logout() {
+      this.$store.commit("RESET_STATE");
+      this.$router.push({ name: "main" });
     },
   },
 };

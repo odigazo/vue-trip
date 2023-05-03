@@ -1,14 +1,14 @@
 <template>
   <div class="myPageUpdateInfo">
-    <h3>마이페이지</h3>
-    <hr />
+    <!-- <h3>마이페이지</h3>
+    <hr /> -->
     <div class="container">
-      <div class="left">
-        <p>회원정보수정</p>
+      <!-- <div class="left">
+        <h4>회원정보수정</h4>
         <p>내가 담은 코스</p>
         <p>내가 쓴 댓글</p>
       </div>
-      <div class="line"></div>
+      <div class="line"></div> -->
       <div class="infoupdate">
         <div>
           <span>E-mail : {{ $store.getters.getUserInfo.userEmail }}</span>
