@@ -14,6 +14,8 @@ export default new Vuex.Store({
     placeList:[],
     tripDetail: {},
     recommendList: [],
+    recommendLikeList: [],
+    recentCourseList : [],
     comments:[],
     isEditing:[],
     isLoading:false,
@@ -46,10 +48,15 @@ export default new Vuex.Store({
     getRecommendList: function(state){
       return state.recommendList;
     },
+    getRecommendLikeList: function(state){
+      return state.recommendLikeList;
+    },
+    getRecentCourseList(state) {
+      return state.recentCourseList;
+    },
     getIsLoading: function(state){
       return state.isLoading;
-    }
-    ,
+    },
     getIsMapReady: function(state){
       return state.isMapReady;
     },
@@ -107,6 +114,12 @@ export default new Vuex.Store({
     },
     setRecommendList(state, list) {
       state.recommendList = list;
+    },
+    setRecommendLikeList(state, list) {
+      state.recommendLikeList = list;
+    },
+    setRecentCourseList(state, list) {
+      state.recentCourseList = list;
     },
     setSchedule(state,list){
       state.schedule=list;

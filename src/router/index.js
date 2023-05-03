@@ -7,6 +7,7 @@ import courseboardListView from '../views/courseboardListView.vue'
 import TripMainView from '../views/TripMainView.vue'
 import TripDetailView from '../views/TripDetailView.vue'
 import RecommendView from '../views/RecommendView.vue'
+import RecommendInputView from '../views/RecommendInputView.vue'
 import SignUpView from '../views/SignUpView.vue'
 import TripCourseView from '../views/TripCourseView.vue'
 import MyPageView from '../views/MyPageView.vue'
@@ -50,6 +51,11 @@ const routes = [
     path: '/recommend',
     name: 'recommend',
     component: RecommendView
+  },
+  {
+    path: '/recommendInput',
+    name: 'recommendInput',
+    component: RecommendInputView
   },
   {
     path: '/signup',
