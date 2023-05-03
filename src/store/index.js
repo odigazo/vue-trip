@@ -59,6 +59,7 @@ export default new Vuex.Store({
   },
   mutations: {
     RESET_STATE(state) {
+      state.userinfo=null;
       state.schedule=null;
       state.names=null;
       state.latitudes=null;

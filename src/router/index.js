@@ -9,6 +9,7 @@ import TripDetailView from '../views/TripDetailView.vue'
 import RecommendView from '../views/RecommendView.vue'
 import SignUpView from '../views/SignUpView.vue'
 import TripCourseView from '../views/TripCourseView.vue'
+import MyPageView from '../views/MyPageView.vue'
 
 Vue.use(VueRouter)
 
@@ -59,6 +60,11 @@ const routes = [
     path: '/tripcourse',
     name: 'tripcourse',
     component: TripCourseView
+  },
+  {
+    path: '/mypage',
+    name: 'mypage',
+    component: MyPageView
   }
 ]
 
