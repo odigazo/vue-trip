@@ -83,7 +83,7 @@ export default {
         return;
       }
     },
-    recommendPlace() {
+    recommendPlaces() {
       let userInfo = this.$store.getters.getUserInfo;
       if (this.$router.currentRoute.name == "recommend") {
         return;
@@ -134,7 +134,6 @@ export default {
           method: 'GET',
           responseType: 'json'
         }).then(function(result) {
-          console.log(result.data);
           this.$store.commit('setRecentCourseList', result.data);
         }.bind(this));
       }

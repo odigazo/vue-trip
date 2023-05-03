@@ -62,8 +62,8 @@ export default {
       let container = document.getElementById("map");
       let options = {
         center: new kakao.maps.LatLng(
-          this.$store.getters.getTripDetail.longitude,
-          this.$store.getters.getTripDetail.latitude
+          this.$store.getters.getTripDetail.latitude,
+          this.$store.getters.getTripDetail.longitude
         ),
         level: 3,
       };
@@ -71,8 +71,8 @@ export default {
       let map = new kakao.maps.Map(container, options);
 
       let markerPosition = new kakao.maps.LatLng(
-        this.$store.getters.getTripDetail.longitude,
-        this.$store.getters.getTripDetail.latitude
+        this.$store.getters.getTripDetail.latitude,
+        this.$store.getters.getTripDetail.longitude
       );
       let marker = new kakao.maps.Marker({
         position: markerPosition,
