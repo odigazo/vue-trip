@@ -63,7 +63,7 @@ export default {
       }
     },
     recommendPlace() {
-      // let userInfo = this.$store.getters.getUserInfo;
+      let userInfo = this.$store.getters.getUserInfo;
       if (this.$router.currentRoute.name == "recommend") {
         return;
       } else {
@@ -75,7 +75,7 @@ export default {
             'content-type' : 'application/json'
           },
           params : {
-            query : '서울특별시 관악구 복은2길 45' //사용자의 주소
+            query : '인천광역시 미추홀구 경원대로 887번길 24-25' //사용자의 주소
           },
           withCredentials: false,
           responseType : 'json'
@@ -84,7 +84,7 @@ export default {
           let latitude = result.data.documents[0].road_address.y;
 
           this.$axios({
-            url: 'http://localhost:8080/trip/mainPage/recommend',
+            url: 'http://localhost:8080/trip/mainPage/recommendDistance',
             method: 'POST',
             data: {
               'latitude' : latitude,
@@ -95,6 +95,26 @@ export default {
             this.$store.commit('setRecommendList', result.data);
             this.$router.push('recommend');
           }.bind(this));
+        }.bind(this));
+
+        this.$axios({
+          url: 'http://localhost:8080/trip/mainPage/recommendLike',
+          method: 'GET',
+          params: {
+            userInfo : userInfo.userNum
+          },
+          responseType: 'json'
+        }).then(function(result) {
+          this.$store.commit('setRecommendLikeList', result.data);
+        }.bind(this));
+
+        this.$axios({
+          url: 'http://localhost:8080/trip/mainPage/recentCourse',
+          method: 'GET',
+          responseType: 'json'
+        }).then(function(result) {
+          console.log(result.data);
+          this.$store.commit('setRecentCourseList', result.data);
         }.bind(this));
       }
 

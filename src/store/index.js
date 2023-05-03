@@ -14,6 +14,8 @@ export default new Vuex.Store({
     placeList:[],
     tripDetail: {},
     recommendList: [],
+    recommendLikeList: [],
+    recentCourseList : [],
     comments:[],
     isEditing:[]
     // likeCount: 게시글번호로 좋아요 카운ㄷ트
@@ -42,6 +44,12 @@ export default new Vuex.Store({
     },
     getRecommendList: function(state){
       return state.recommendList;
+    },
+    getRecommendLikeList: function(state){
+      return state.recommendLikeList;
+    },
+    getRecentCourseList(state) {
+      return state.recentCourseList;
     }
   },
   mutations: {
@@ -84,6 +92,12 @@ export default new Vuex.Store({
     },
     setRecommendList(state, list) {
       state.recommendList = list;
+    },
+    setRecommendLikeList(state, list) {
+      state.recommendLikeList = list;
+    },
+    setRecentCourseList(state, list) {
+      state.recentCourseList = list;
     },
     setSchedule(state,list){
       state.schedule=list;
