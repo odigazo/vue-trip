@@ -1,10 +1,17 @@
 <template>
-  <div class="container">
-    <h2>좋아요</h2>
-    <div class="like-section">
-      <button @click="addLike()" class="like-button">좋아요</button>
-      <span>{{ like.userNum }}</span>
-    </div>
+  <div>
+    <h2>{{ this.$store.getters.getCourseList[$route.params.index].courseTitle }}</h2>
+    <!-- <p>번호: {{ this.$store.getters.getCourseList[$route.params.index].courseNum }}</p> -->
+    <p>코스: {{ this.$store.getters.getCourseList[$route.params.index].courseContents }}</p>
+    
+    <button @click="$router.go(-1)">뒤로가기</button>
+    
+        <div class="like-section">
+  <button @click="addLike" class="like-button">좋아요</button>
+  <span>{{ this.$store.getters.getCourseList[$route.params.index].courseLike }}</span>
+      </div>
+     
+
     <br /><br />
     <h2>댓글 목록</h2>
     <ul class="comment-list">
@@ -45,7 +52,7 @@
       />
       <button @click="insertComment" class="submit-button">댓글쓰기</button>
     </div>
-  </div>
+    </div>
 </template> 
 
 
@@ -57,35 +64,43 @@ export default {
     return {
       commentNum: '',
       userNum: 1,
+      courseNum: this.$store.getters.getCourseList[this.$route.params.index].courseNum,
       contents: '',
       isEditing:[],
       newContents:[],
       like: {
-        userNum: 0,
+        userNum: this.userNum,
+      courseNum: this.courseNum,
       },
     };
+  },
+  created() {
+    this.commentList();
   },
   methods: {
     next(input) {
       document.getElementById(input).focus();
     },
+    // 코스 조회하는 메서드 추가
+
     //댓글리스트
     commentList() {
       axios
-        .get(this._baseUrl + "comment/commentList", {
+        .get(this._baseUrl + `comment/commentList/${this.courseNum}`, {
           params: {
-            userNum: this.userNum,
-            contents: this.contents,
+            courseNum: this.courseNum,
+            userNum: this.userNum
           },
         })
         .then((result) => {
           console.log(result.data);
-          if (result.data.comments == null) {
-            alert("댓글을 입력하세요");
+          if (result.data == null) {
+            // alert("댓글을 입력하세요");
+            this.$store.commit("setComments", result.data);
           } else {
-            this.$store.commit("setComments", JSON.parse(result.data));
+            this.$store.commit("setComments", result.data);
             // this.$router.push({name:'main'}); 페이지 이동
-            console.log("댓 남기기 성공성공");
+            console.log("댓글리스트 성공성공");
           }
         });
     },
@@ -96,6 +111,7 @@ export default {
         method: "POST",
         params: {
           userNum: this.userNum,
+          courseNum: this.courseNum,
           contents: this.contents,
         },
         responseType: "json",
@@ -106,23 +122,6 @@ export default {
           console.log(this.$store.state.comments[0].contents);
         }.bind(this)
       );
-      // axios
-      //   .post(this._baseUrl + "comment/insertComment", {
-      //     userNum: this.userNum,
-      //     contents: this.contents,
-      //   })
-      //   .then((result) => {
-      //     console.log(result.data);
-      //     if (result.data.comments == null) {
-      //       alert("댓글을 입력하세요");
-      //     } else {
-      //       this.$store.commit("setComments", result.data);
-      //       console.log("댓 남기기 성공성공");
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //   });
     },
     startUpdate(index){
       console.log(index);
@@ -172,22 +171,6 @@ export default {
         .catch((error) => {
           console.error(error);
         });
-      // axios
-      //   .put(this._baseUrl + "comment/deleteComment", {
-      //     //삭제여부, 삭제날짜
-      //   })
-      //   .then((result) => {
-      //     console.log(result.data);
-      //     if (result.data.comments == null) {
-      //       alert("댓글 수정에 실패하였습니다.");
-      //     } else {
-      //       this.$store.commit("setComments", result.data);
-      //       console.log("댓글 삭제 성공");
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //   });
     },
     // 좋아요
     addLike() {
@@ -200,20 +183,16 @@ export default {
         },
         responseType: "json",
       })
-        .then((result) => {
-          console.log(result.data);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+          .then((result) => {
+      console.log(result.data);
+      this.$store.commit("setCourseList", result.data);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
     },
   }
-  // mounted() {
-  //   for(var i=0;i<this.$store.state.comments.length;i++){
-  //     this.isEditing[i]=false;
-  //   }
-  //   console.log(this.isEditing);
-  // }
+
 };
 </script>
 
