@@ -21,7 +21,8 @@ export default new Vuex.Store({
     isLoading:false,
     isMapReady:false,
     courseList:[], //코스목록 
-
+    courses: {},
+    courseNum:{},
   },
   getters: {
     getUserInfo:function(state){
@@ -62,7 +63,16 @@ export default new Vuex.Store({
     },
     getCourseList: function(state){
       return state.courseList;
-    }
+    },
+    getCourses: function(state){
+      return state.courses;
+    },
+    getCourseNum: function(state){
+      return state.courseNum;
+    },
+    getCourseLikeByIndex: (state) => (index) => {
+      return state.courseList[index].courseLike;
+    },
   },
   mutations: {
     RESET_STATE(state) {
@@ -75,8 +85,8 @@ export default new Vuex.Store({
     setUserInfo(state,list){
       state.userinfo=list;
     },
-    setComments(state,list){
-      state.comments=list;
+    setComments(state, comments){
+      state.comments=comments;
     },
     setIsLoading(state,status){
       state.isLoading=status;
@@ -132,10 +142,16 @@ export default new Vuex.Store({
     },
     setLongitudes(state,list){
       state.longitudes=list;
+    },
+    setCourses(state, courses) {
+      state.courses = courses;
+    },
+    updateCourseLike(state, { index, newLikeCount }) {
+      state.courseList[index].courseLike = newLikeCount;
+    },
+    setCourseNum(state, courseNum){
+      state.courseNum= courseNum;
     }
-    // setLikes(state, ) {
-    //   //   state.likes = .likes;
-    //  }
   },
     
     

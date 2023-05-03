@@ -20,7 +20,7 @@
 </template>
 
 <script>
-// import axios from 'axios';
+import axios from 'axios';
 
 // const API_KEY = "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";
 // const API_URL = "https://api.openai.com/v1/engines/text-davinci-003/completions";
@@ -83,7 +83,21 @@ export default {
       this.$router.push({name:'courseboard'});
     },
     gotocsBoard(){
-            this.$router.push({name:'courseboardList'});
+      axios
+        .get(this._baseUrl + "courseBoard/courseList", {
+          params: {
+          },
+        })
+        .then(result=> {
+          console.log(result.data);
+          this.$store.commit("setCourseList",result.data);
+          // this.$store.commit("setCourseList", result.data);
+          this.$router.push({name:'courseboardList'});
+        })
+        .catch(function (error) {
+          console.error("에러 ", error);
+        });
+      
     }
 
   }
