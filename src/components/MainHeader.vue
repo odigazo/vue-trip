@@ -1,17 +1,27 @@
 <template>
   <div class="mainHeader">
     <img class="logo" src="../assets/image/triplogo.png" />
-    <div class="middle">메인 페이지</div>
-    <div class="signup"><a @click="recommendPlace()">추천 여행지</a></div>
-    <div class="signup"><a @click="searchPlaces()">여행지 찾기</a></div>
-
-    <div class="search-container">
+    <div class="center">
+      <div class="signup"><a @click="searchPlaces()">여행지 찾기</a></div>
+      <div class="signup"><a @click="recommendPlaces()">여행지 추천</a></div>
+      <div class="signup"><a @click="courseBoard()">코스바구니</a></div>
+      <div class="search-container">
       <input
         id="search"
         type="text"
         placeholder="주소를 입력해주세요"
         v-model="keyword"
       />
+      </div>
+    </div>
+    <div class="right">
+      <div>{{ $store.getters.getUserInfo.userNickname }}</div>
+      <div class="signup2"><a @click="logout()">로그아웃</a></div>
+      <div class="signup2"><a @click="myPage()">마이페이지</a></div>
+      <div>
+        미방문한 코스가<a class="signup" @click="myPage(MyPageCourseBody)">0</a>개
+        있습니다.
+      </div>
     </div>
   </div>
 </template>
@@ -23,6 +33,17 @@ export default {
     };
   },
   methods: {
+    myPage(component) {
+      if (window.location.pathname !== "/mypage") {
+        this.$router.push({ name: "mypage", params: { component: component } });
+      }else{
+        console.log('페이지 동일');
+      }
+    },
+    logout() {
+      this.$store.commit("RESET_STATE");
+      this.$router.push({ name: "main" });
+    },
     searchPlaces() {
       if (this.$router.currentRoute.name == "tripMain") {
         return;
@@ -157,7 +178,19 @@ div.mainHeader {
   height: 80px;
   background-color: rgb(0, 166, 255);
 }
-
+.center {
+  flex: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: bold;
+}
+div.right {
+  flex: 1;
+  text-align: right;
+  font-size: 10px; /* 글자 크기 */
+}
 div.middle {
   flex: 1;
   text-align: center;
@@ -170,38 +203,23 @@ div.signup {
   color: blue;
   text-decoration: underline;
   cursor: pointer;
+  margin-right: 20px;
 }
-
+div.signup2 {
+  text-align: right;
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+}
+a.signup {
+  text-align: right;
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+}
 .logo {
   width: 80px;
   height: 80px;
   border-radius: 50%;
-}
-
-.autocomplete-item {
-  padding: 10px;
-  font-size: 14px;
-  color: #333;
-  cursor: pointer;
-}
-
-.childDiv:hover {
-  background-color: #f5f5f5;
-}
-
-.autocomplete-item {
-  position: absolute;
-  width: 100%;
-  max-height: 200px;
-  overflow-y: auto;
-  background-color: #ffffff;
-  border: 1px solid #cccccc;
-  z-index: 999;
-}
-
-.autocomplete-item > div {
-  display: flex;
-  align-items: center;
-  padding: 10px;
 }
 </style>

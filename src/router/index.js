@@ -3,12 +3,14 @@ import VueRouter from 'vue-router'
 import MainView from '../views/MainView.vue'
 import LoginView from '../views/LoginView.vue'
 import courseboardView from '../views/courseboardView.vue'
+import courseboardListView from '../views/courseboardListView.vue'
 import TripMainView from '../views/TripMainView.vue'
 import TripDetailView from '../views/TripDetailView.vue'
 import RecommendView from '../views/RecommendView.vue'
 import RecommendInputView from '../views/RecommendInputView.vue'
 import SignUpView from '../views/SignUpView.vue'
 import TripCourseView from '../views/TripCourseView.vue'
+import MyPageView from '../views/MyPageView.vue'
 
 Vue.use(VueRouter)
 
@@ -27,6 +29,12 @@ const routes = [
     path:'/courseboard',
     name:'courseboard',
     component: courseboardView
+  },
+  //코스바구니 리스트(임시)
+  {
+    path:'/courseboardList',
+    name:'courseboardList',
+    component: courseboardListView
   },
   {
 
@@ -58,6 +66,11 @@ const routes = [
     path: '/tripcourse',
     name: 'tripcourse',
     component: TripCourseView
+  },
+  {
+    path: '/mypage',
+    name: 'mypage',
+    component: MyPageView
   }
 ]
 

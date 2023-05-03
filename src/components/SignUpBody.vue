@@ -29,8 +29,8 @@
             </div>
         </div>
         <div>
-            <input type="text" v-model="postcode" placeholder="우편번호">
-            <input type="button" @click="execDaumPostcode()" value="우편번호 찾기"><br>
+            <!-- <input type="text" v-model="postcode" placeholder="우편번호"> -->
+            <input type="button" @click="execDaumPostcode()" value="도로명 주소 찾기"><br>
             <input type="text" v-model="address" placeholder="도로명주소"><br>
         </div>
         <div>
@@ -112,7 +112,7 @@ export default {
         
                 // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
                 // 우편번호를 입력한다.
-                this.postcode = data.zonecode;
+                // this.postcode = data.zonecode;
                 },
             }).open();
         },

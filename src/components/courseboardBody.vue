@@ -30,7 +30,7 @@
           <button v-else @click="updateComment(index,comment.commentNum)" class="update-button">
             저장
           </button>
-          <button @click="deleteComment()" class="delete-button">삭제</button>
+          <button @click="deleteComment(comment)" class="delete-button">삭제</button>
         </div>
       </li>
     </ul>
@@ -52,12 +52,12 @@
 
 <script>
 import axios from "axios";
-
 export default {
   data() {
     return {
+      commentNum: '',
       userNum: 1,
-      contents: "",
+      contents: '',
       isEditing:[],
       newContents:[],
       like: {
@@ -155,22 +155,22 @@ export default {
         });
     },
     //댓글 삭제
-    deleteComment() {
+    deleteComment(comment) {
       this.$axios({
         url: this._baseUrl + "comment/deleteComment",
         method: "PUT",
-        params: {
-          userNum: this.userNum,
-          contents: this.contents,
+      params: {
+          commentNum: comment.commentNum,
+          contents: comment.contents,
         },
         responseType: "json",
       })
-        .then(() => {
-          this.commentList();
+        .then((res) => {
+          console.log(res);
+          this.$store.commit("setComments", res.data);
         })
         .catch((error) => {
           console.error(error);
-          // 사용자에게 에러 메시지 표시 등 에러 처리 작업 수행
         });
       // axios
       //   .put(this._baseUrl + "comment/deleteComment", {
@@ -207,14 +207,7 @@ export default {
           console.error(error);
         });
     },
-  },
-  computed: {
-    filteredComments() {
-      return this.$store.state.comments.filter(
-        (comment) => comment.isDelete !== "Y"
-      );
-    },
-  },
+  }
   // mounted() {
   //   for(var i=0;i<this.$store.state.comments.length;i++){
   //     this.isEditing[i]=false;
