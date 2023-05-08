@@ -1,17 +1,21 @@
 <template>
   <div class="myPageUpdateInfo">
-    <!-- <h3>마이페이지</h3>
-    <hr /> -->
     <div class="container">
-      <!-- <div class="left">
-        <h4>회원정보수정</h4>
-        <p>내가 담은 코스</p>
-        <p>내가 쓴 댓글</p>
-      </div>
-      <div class="line"></div> -->
-      <div class="infoupdate">
+      <div class="infoupdate text-center">
         <div>
-          <span>E-mail : {{ $store.getters.getUserInfo.userEmail }}</span>
+          <v-row>
+            <v-col cols="2" class="d-flex align-self-center">
+              <span class="email-label">E-mail : </span>
+            </v-col>
+            <v-col cols="6" class="d-flex align-self-center">
+              <v-text-field
+                :label="$store.getters.getUserInfo.userEmail"
+                hide-details="auto"
+                class="my-text-field"
+                disabled
+              ></v-text-field>
+            </v-col>
+          </v-row>
         </div>
         <br />
         <div>
@@ -42,7 +46,7 @@
         </div>
         <br />
         <div>
-          <span>나이 : {{ $store.getters.getUserInfo.userAge }}</span>
+          <span>나이 : </span>
           <span>
             <input id="age" type="number" v-model.lazy="age" />
           </span>
@@ -144,23 +148,23 @@ export default {
       }
     },
     signout() {
-        axios
-          .delete(this._baseUrl + "signup/signout", {
-            data : {email: this.$store.getters.getUserInfo.userEmail,}
-          })
-          .then((result) => {
-            console.log(result.data);
-            if (result.data==1) {
-              alert("회원탈퇴 성공");
-              this.$store.commit("RESET_STATE");
-              this.$router.push({name:"main"});
-            } else {
-              console.log("회원탈퇴 실패");
-            }
-          })
-          .catch(function () {
+      axios
+        .delete(this._baseUrl + "signup/signout", {
+          data: { email: this.$store.getters.getUserInfo.userEmail },
+        })
+        .then((result) => {
+          console.log(result.data);
+          if (result.data == 1) {
+            alert("회원탈퇴 성공");
+            this.$store.commit("RESET_STATE");
+            this.$router.push({ name: "main" });
+          } else {
             console.log("회원탈퇴 실패");
-          });
+          }
+        })
+        .catch(function () {
+          console.log("회원탈퇴 실패");
+        });
     },
   },
 };
@@ -185,5 +189,13 @@ export default {
   left: 20%;
   margin-left: 3px;
   top: 23%;
+}
+.my-text-field {
+  width: 200px;
+  max-width: 400px;
+  height: 80px;
+}
+.email-label {
+  font-size: 16px;
 }
 </style>
