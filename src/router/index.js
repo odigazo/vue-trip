@@ -26,7 +26,7 @@ const routes = [
     component: LoginView
   },
   {
-    path:'/courseboard',
+    path:'/courseboar',
     name:'courseboard',
     component: courseboardView
   },

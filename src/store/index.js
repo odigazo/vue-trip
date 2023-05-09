@@ -23,6 +23,8 @@ export default new Vuex.Store({
     courseList:[], //코스목록 
     courses: {},
     courseNum:{},
+    bestCourseList: [],
+    courseIndex:null
   },
   getters: {
     getUserInfo:function(state){
@@ -73,6 +75,10 @@ export default new Vuex.Store({
     getCourseLikeByIndex: (state) => (index) => {
       return state.courseList[index].courseLike;
     },
+    getCourseIndex: function(state){
+      return state.courseIndex;
+    },
+    getBestCourseList: (state) => state.bestCourseList,
   },
   mutations: {
     RESET_STATE(state) {
@@ -104,6 +110,7 @@ export default new Vuex.Store({
     },
     setIsEditingTrue(state,index){
       for(var i=0;i<state.comments.length;i++){
+        console.log("왜 안찍혀",state.isEditing[i]);
         if(i==index){
           state.isEditing[i]=true;
         }
@@ -111,6 +118,7 @@ export default new Vuex.Store({
     },
     setIsEditingFalse(state,index){
       for(var i=0;i<state.comments.length;i++){
+        console.log("왜 안찍혀",state.isEditing[i]);
         if(i==index){
           state.isEditing[i]=false;
         }
@@ -151,7 +159,13 @@ export default new Vuex.Store({
     },
     setCourseNum(state, courseNum){
       state.courseNum= courseNum;
-    }
+    },
+    setBestCourseList(state, bestCourseList) {
+      state.bestCourseList = bestCourseList; 
+    },
+    setCourseIndex(state, index) {
+      state.courseIndex = index; 
+    },
   },
     
     
