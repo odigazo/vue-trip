@@ -1,41 +1,41 @@
 <template>
   <div class="tripMainBody">
-    <div style="display:flex;">
-        <h1 @click="searchCategory('전체')">#전체</h1>
-        <h1 @click="searchCategory('spring')">#봄</h1>
-        <h1 @click="searchCategory('summer')">#여름</h1>
-        <h1 @click="searchCategory('autumn')">#가을</h1>
-        <h1 @click="searchCategory('winter')">#겨울</h1>
+    <div class="category-container">
+        <h1 class="category" @click="searchCategory('전체')">#전체</h1>
+        <h1 class="category" @click="searchCategory('spring')">#봄</h1>
+        <h1 class="category" @click="searchCategory('summer')">#여름</h1>
+        <h1 class="category" @click="searchCategory('autumn')">#가을</h1>
+        <h1 class="category" @click="searchCategory('winter')">#겨울</h1>
     </div>
-    <table style="margin: 0 auto">
-      <tr v-for="(place, i) in $store.getters.getPlaceList" :key="i" style="">
-        <td @click="tripDetail(place.place1.placeName)">
-            <img :src="place.place1.thumnailUrl" />
-            <div>
+    <table class="places-table">
+      <tr v-for="(place, i) in $store.getters.getPlaceList" :key="i">
+        <td class="place-card" @click="tripDetail(place.place1.placeName)">
+            <img class="thumbnail" :src="place.place1.thumnailUrl" />
+            <div class="place-name">
                 <font>{{place.place1.placeName}}</font>
             </div>
         </td>
-        <td @click="tripDetail(place.place2.placeName)">
-            <img :src="place.place2.thumnailUrl" />
-            <div>
+        <td class="place-card" @click="tripDetail(place.place2.placeName)">
+            <img class="thumbnail" :src="place.place2.thumnailUrl" />
+            <div class="place-name">
                 <font>{{place.place2.placeName}}</font>
             </div>
         </td>
-        <td @click="tripDetail(place.place3.placeName)">
-            <img :src="place.place3.thumnailUrl" />
-            <div>
+        <td class="place-card" @click="tripDetail(place.place3.placeName)">
+            <img class="thumbnail" :src="place.place3.thumnailUrl" />
+            <div class="place-name">
                 <font>{{place.place3.placeName}}</font>
             </div>
         </td>
-        <td @click="tripDetail(place.place4.placeName)">
-            <img :src="place.place4.thumnailUrl" />
-            <div>
+        <td class="place-card" @click="tripDetail(place.place4.placeName)">
+            <img class="thumbnail" :src="place.place4.thumnailUrl" />
+            <div class="place-name">
                 <font>{{place.place4.placeName}}</font>
             </div>
         </td>
-        <td @click="tripDetail(place.place5.placeName)">
-            <img :src="place.place5.thumnailUrl" />
-            <div>
+        <td class="place-card" @click="tripDetail(place.place5.placeName)">
+            <img class="thumbnail" :src="place.place5.thumnailUrl" />
+            <div class="place-name">
                 <font>{{place.place5.placeName}}</font>
             </div>
         </td>
@@ -43,6 +43,7 @@
     </table>
   </div>
 </template>
+
 <script>
 export default {
   data() {
@@ -158,21 +159,53 @@ export default {
 };
 </script>
 <style scoped>
-.tripMainBody td {
+.tripMainBody {
+  padding: 20px;
+}
+.category-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.category {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 5px 15px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+.category:hover {
+  color: rgb(0, 166, 255);
+}
+.places-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.place-card {
+  width: 20%;
+  padding: 10px;
+  text-align: center;
+  vertical-align: top;
+  cursor: pointer;
   position: relative;
 }
-
-.tripMainBody td:hover::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1;
+.thumbnail {
+  width: 80%;
+  height: auto;
+  border-radius: 5px;
+  margin: 0 auto;
 }
-h1 {
-    margin-right : 20px;
+.place-name {
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 10px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  padding: 5px 10px;
+  border-radius: 5px;
 }
 </style>

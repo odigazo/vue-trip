@@ -1,19 +1,15 @@
 <template>
     <div class="loginbody">
-        <div>로그인</div>
-        <div>
-            <span>E-mail</span>
-            <div>
-                <input id="email" type="email" @keyup.enter="next('password')" v-model.lazy="email">
-            </div>
+        <div class="login-title">로그인</div>
+        <div class="input-group">
+            <label for="email">E-mail</label>
+            <input id="email" type="email" @keyup.enter="next('password')" v-model.lazy="email" class="input-field">
         </div>
-        <div>
-            <span>Password</span>
-            <div>
-                <input id="password" type="password" @keyup.enter="login()" v-model.lazy="password">
-            </div>
+        <div class="input-group">
+            <label for="password">Password</label>
+            <input id="password" type="password" @keyup.enter="login()" v-model.lazy="password" class="input-field">
         </div>
-        <button @click="login()">로그인</button>
+        <button class="login-btn" @click="login()">로그인</button>
     </div>
 </template>
 
@@ -55,3 +51,61 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.loginbody {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    padding: 2rem;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+label {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.input-field {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: #2d7ff9;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.login-btn:hover {
+    background-color: #1a66d9;
+}
+</style>

@@ -176,6 +176,7 @@ div.mainHeader {
   align-items: center;
   height: 80px;
   background-color: rgb(0, 166, 255);
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 .center {
   flex: 4;
@@ -188,37 +189,49 @@ div.mainHeader {
 div.right {
   flex: 1;
   text-align: right;
-  font-size: 10px; /* 글자 크기 */
+  font-size: 14px;
 }
 div.middle {
   flex: 1;
   text-align: center;
-  font-size: 24px; /* 글자 크기 */
-  font-weight: bold; /* 글자 굵기 */
+  font-size: 24px;
+  font-weight: bold;
 }
 
-div.signup {
+div.signup, div.signup2, a.signup {
   text-align: right;
-  color: blue;
-  text-decoration: underline;
+  color: rgb(255, 255, 255);
+  text-decoration: none;
   cursor: pointer;
   margin-right: 20px;
+  transition: color 0.3s;
 }
-div.signup2 {
-  text-align: right;
-  color: blue;
-  text-decoration: underline;
-  cursor: pointer;
+div.signup:hover, div.signup2:hover, a.signup:hover {
+  color: rgb(200, 200, 200);
 }
-a.signup {
-  text-align: right;
-  color: blue;
-  text-decoration: underline;
-  cursor: pointer;
-}
+
 .logo {
   width: 80px;
   height: 80px;
   border-radius: 50%;
+  margin-left: 20px;
+}
+
+.search-container {
+  position: relative;
+  margin-left: 20px;
+}
+
+input#search {
+  font-size: 16px;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+input#search:focus {
+  border-color: rgb(0, 166, 255);
 }
 </style>
