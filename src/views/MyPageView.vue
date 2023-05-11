@@ -1,20 +1,54 @@
 <template>
   <div class="tripcourse">
     <MainHeader2></MainHeader2>
-    <!-- <MyPageUpdateInfoBody></MyPageUpdateInfoBody> -->
-    <!-- <nav>
-      <button @click="loadComponent('MyPageUpdateInfoBody')">
-        MyPageUpdateInfoBody
-      </button>
-      <button @click="loadComponent('MyPageCourseBody')">
-        MyPageCourseBody
-      </button>
-      <button @click="loadComponent('MyPageCommentsBody')">
-        MyPageCommentsBody
-      </button>
-      
-    </nav> -->
     <h3>마이페이지</h3>
+    <hr />
+    <v-container>
+    <v-row justify="center">
+      <v-col cols="3">
+            <v-list>
+              <v-list-item v-for="(link, index) in links" :key="index" link>
+                <v-list-item-content>
+                  <v-list-item-title :class="{ 'bold-link': activeLink === index + 1 }" @click="loadComponent(link.component, index + 1)">
+                    {{ link.text }}
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+      </v-col>
+      <v-divider vertical></v-divider>
+      <v-col cols="9">
+        <component :is="currentComponent"></component>
+      </v-col>
+    </v-row>
+  </v-container>
+
+    <!-- <v-navigation-drawer
+        permanent
+        width=2000
+        height
+      >
+      <v-row>
+        <v-col cols="3">
+          <v-card class="mb-3">
+            <v-list>
+              <v-list-item v-for="(link, index) in links" :key="index" link>
+                <v-list-item-content>
+                  <v-list-item-title :class="{ 'bold-link': activeLink === index + 1 }" @click="loadComponent(link.component, index + 1)">
+                    {{ link.text }}
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </v-card>
+        </v-col>
+        <v-col cols="9">
+          <component :is="currentComponent"></component>
+        </v-col>
+      </v-row>
+    </v-navigation-drawer> -->
+
+    <!-- <h3>마이페이지</h3>
     <hr />
     <div class="container">
       <div class="left">
@@ -36,7 +70,7 @@
       </div>
       <div class="line"></div>
     </div>
-    <component v-bind:is="currentComponent"></component>
+    <component v-bind:is="currentComponent"></component> -->
   </div>
 </template>
 
@@ -55,8 +89,24 @@ export default {
   },
   data() {
     return {
-      currentComponent: this.$route.params.component,
-      activeLink: null
+      // currentComponent: this.$route.params.component,
+      // activeLink: null
+      activeLink: 1,
+      links: [
+        {
+          text: "회원정보수정",
+          component: "MyPageUpdateInfoBody"
+        },
+        {
+          text: "내가 담은 코스",
+          component: "MyPageCourseBody"
+        },
+        {
+          text: "내가 쓴 댓글",
+          component: "MyPageCommentsBody"
+        }
+      ],
+      currentComponent: null
     };
   },
   methods: {
@@ -67,6 +117,10 @@ export default {
         this.currentComponent = component.default || component;
       });
     },
+    // loadComponent(componentName, linkIndex) {
+    //   this.activeLink = linkIndex;
+    //   this.currentComponent = componentName;
+    // }
   },
 };
 </script>

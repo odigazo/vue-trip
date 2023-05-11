@@ -1,62 +1,93 @@
 <template>
   <div class="myPageUpdateInfo">
-    <!-- <h3>마이페이지</h3>
-    <hr /> -->
     <div class="container">
-      <!-- <div class="left">
-        <h4>회원정보수정</h4>
-        <p>내가 담은 코스</p>
-        <p>내가 쓴 댓글</p>
-      </div>
-      <div class="line"></div> -->
-      <div class="infoupdate">
+      <div class="infoupdate text-center">
         <div>
-          <span>E-mail : {{ $store.getters.getUserInfo.userEmail }}</span>
+          <v-row>
+            <v-col cols="2" class="d-flex align-self-center">
+              <span class="email-label">E-mail : </span>
+            </v-col>
+            <v-col cols="6" class="d-flex align-self-center">
+              <v-text-field
+                :label="$store.getters.getUserInfo.userEmail"
+                hide-details="auto"
+                class="my-text-field"
+                disabled
+              ></v-text-field>
+            </v-col>
+          </v-row>
         </div>
         <br />
         <div>
-          <span>닉네임</span>
-          <span>
-            <input
-              id="nickname"
-              type="text"
-              :placeholder="$store.getters.getUserInfo.userNickname"
-              @keyup.enter="checkNickName()"
-              v-model.lazy="nickname"
-            />
-            <button @click="checkNickName()">중복확인</button>
-            <div>{{ nicknamenotice }}</div>
-          </span>
+          <div>
+            <v-row>
+              <v-col cols="2" class="d-flex align-self-center">
+                <span class="email-label">닉네임 : </span>
+              </v-col>
+              <v-col cols="6" class="d-flex align-self-center">
+                <v-text-field
+                  :label="$store.getters.getUserInfo.userNickname"
+                  hide-details="auto"
+                  class="my-text-field"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="3" class="d-flex align-self-center">
+                <v-btn @click="checkNickName()">중복확인</v-btn>
+              </v-col>
+            </v-row>
+          </div>
+          <div>{{ nicknamenotice }}</div>
         </div>
         <br />
         <div>
-          <input
-            type="text"
-            v-model="address"
-            :placeholder="$store.getters.getUserInfo.userAddr"
-          /><input
-            type="button"
-            @click="execDaumPostcode()"
-            value="도로명 주소 찾기"
-          /><br />
+          <div>
+            <v-row>
+              <v-col cols="2" class="d-flex align-self-center">
+                <span class="email-label">주소 : </span>
+              </v-col>
+              <v-col cols="6" class="d-flex align-self-center">
+                <v-text-field
+                  :label="$store.getters.getUserInfo.userAddr"
+                  hide-details="auto"
+                  class="my-text-field"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="3" class="d-flex align-self-center">
+                <v-btn @click="execDaumPostcode()">도로명주소 찾기</v-btn>
+              </v-col>
+            </v-row>
+          </div>
         </div>
         <br />
         <div>
-          <span>나이 : {{ $store.getters.getUserInfo.userAge }}</span>
-          <span>
-            <input id="age" type="number" v-model.lazy="age" />
-          </span>
+          <div>
+            <v-row>
+              <v-col cols="2" class="d-flex align-self-center">
+                <span class="email-label">나이 : </span>
+              </v-col>
+              <v-col cols="6" class="d-flex align-self-center">
+                <v-text-field
+                  :label="$store.getters.getUserInfo.userAge.toString()"
+                  hide-details="auto"
+                  class="my-text-field"
+                  type="number"
+                ></v-text-field>
+              </v-col>
+             
+            </v-row>
+          </div>
+          
         </div>
         <br />
         <modal name="signoutModal">
           <div>
             <p>정말 회원탈퇴 하시겠습니까?</p>
-            <button @click="signout">예</button>
-            <button @click="$modal.hide('signoutModal')">아니오</button>
+            <v-btn @click="signout">예</v-btn>
+            <v-btn @click="$modal.hide('signoutModal')">아니오</v-btn>
           </div>
         </modal>
-        <button @click="update">수정하기</button>
-        <button @click="$modal.show('signoutModal')">회원탈퇴하기</button>
+        <v-btn @click="update">수정하기</v-btn>
+        <v-btn @click="$modal.show('signoutModal')">회원탈퇴하기</v-btn>
       </div>
     </div>
   </div>
@@ -144,23 +175,23 @@ export default {
       }
     },
     signout() {
-        axios
-          .delete(this._baseUrl + "signup/signout", {
-            data : {email: this.$store.getters.getUserInfo.userEmail,}
-          })
-          .then((result) => {
-            console.log(result.data);
-            if (result.data==1) {
-              alert("회원탈퇴 성공");
-              this.$store.commit("RESET_STATE");
-              this.$router.push({name:"main"});
-            } else {
-              console.log("회원탈퇴 실패");
-            }
-          })
-          .catch(function () {
+      axios
+        .delete(this._baseUrl + "signup/signout", {
+          data: { email: this.$store.getters.getUserInfo.userEmail },
+        })
+        .then((result) => {
+          console.log(result.data);
+          if (result.data == 1) {
+            alert("회원탈퇴 성공");
+            this.$store.commit("RESET_STATE");
+            this.$router.push({ name: "main" });
+          } else {
             console.log("회원탈퇴 실패");
-          });
+          }
+        })
+        .catch(function () {
+          console.log("회원탈퇴 실패");
+        });
     },
   },
 };
@@ -185,5 +216,13 @@ export default {
   left: 20%;
   margin-left: 3px;
   top: 23%;
+}
+.my-text-field {
+  width: 200px;
+  max-width: 400px;
+  height: 80px;
+}
+.email-label {
+  font-size: 16px;
 }
 </style>
