@@ -26,7 +26,8 @@
 <script>
 import axios from "axios";
 
-const API_KEY = process.env.API_KEY;
+const API_KEY = process.env.VUE_APP_API_KEY;
+// const API_KEY = "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";
 const API_URL =
   "https://api.openai.com/v1/engines/text-davinci-003/completions";
 export default {
@@ -55,6 +56,7 @@ export default {
   },
   methods: {
     courseRecommend() {
+      console.log(API_KEY);
       this.generateText();
       this.$router.push({ name: "tripcourse" });
     },
