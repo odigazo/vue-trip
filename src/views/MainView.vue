@@ -1,6 +1,6 @@
 <template>
   <div class="main text-center">
-    <img src="../assets/image/tiplogo.png">
+    <img src="../assets/image/triplogo.png">
     <div><v-btn small color="primary" dark @click="login()">Login</v-btn></div>
     <div><v-btn small color="primary" dark @click="signup()">Sign Up</v-btn></div>
     <!-- <div>
