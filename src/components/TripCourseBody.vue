@@ -1,21 +1,27 @@
 <template>
   <div class="tripcoursebody text-center">
     <div>
-      <modal name="myModal">
+      <!-- <modal name="myModal">
         <div>
           <h3>{{ $store.getters.getUserInfo.userNickname }}님의 여행 스타일</h3>
           <p>원하시는 여행에 대한 상세 정보를 입력해주세요</p>
           <div>
-            <span>출발일</span>
-            <div>
-              <input type="date" v-model.lazy="startDate" />
-            </div>
+            <v-text-field
+              label="출발일"
+              v-model.lazy="startDate"
+              hide-details="auto"
+              class="my-text-field"
+              type="date"
+            ></v-text-field>
           </div>
           <div>
-            <span>복귀일</span>
-            <div>
-              <input type="date" v-model.lazy="endDate" />
-            </div>
+            <v-text-field
+              label="복귀일"
+              v-model.lazy="endDate"
+              hide-details="auto"
+              class="my-text-field"
+              type="date"
+            ></v-text-field>
           </div>
           <div>
             <span>여행목적</span>
@@ -27,13 +33,83 @@
               </select>
             </div>
           </div>
-          <v-btn class="ma-2" outlined color="indigo" @click="newCourse">코스 보러가기</v-btn>
-          <v-btn class="ma-2" outlined color="red" @click="$modal.hide('myModal')">닫기</v-btn>
+          <v-btn class="ma-2" outlined color="indigo" @click="newCourse"
+            >코스 보러가기</v-btn
+          >
+          <v-btn
+            class="ma-2"
+            outlined
+            color="red"
+            @click="$modal.hide('myModal')"
+            >닫기</v-btn
+          >
         </div>
-      </modal>
+      </modal> -->
       <div>
-        <v-btn class="ma-2" outlined color="indigo" @click="$modal.show('myModal')">재추천 받기</v-btn>
-        <v-btn class="ma-2" outlined color="indigo" @click="selectCourse">코스 담기</v-btn>
+        <br />
+        <v-row justify="center">
+          <v-dialog v-model="dialog" persistent max-width="400px">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                class="ma-2"
+                outlined
+                color="indigo"
+                v-bind="attrs"
+                v-on="on"
+              >
+                재추천받기
+              </v-btn>
+            </template>
+            <v-card>
+              <v-card-title>
+                <span class="text-h5">상세 여행 정보</span>
+              </v-card-title>
+              <v-card-text>
+                <v-container>
+                  <v-row>
+                    <v-col cols="12">
+                      <v-text-field
+                        label="출발일"
+                        v-model.lazy="startDate"
+                        hide-details="auto"
+                        type="date"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12">
+                      <v-text-field
+                        label="복귀일"
+                        v-model.lazy="endDate"
+                        hide-details="auto"
+                        type="date"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12">
+                      <v-select
+                        :items="purposes"
+                        label="여행목적"
+                        required
+                        v-model="selectedPurpose"
+                      ></v-select>
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="dialog = false">
+                  닫기
+                </v-btn>
+                <v-btn color="blue darken-1" text @click="dialog = false">
+                  저장
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+          <v-btn class="ma-2" outlined color="indigo" @click="selectCourse"
+            >코스 담기</v-btn
+          >
+        </v-row>
+        <br />
       </div>
     </div>
     <div v-if="$store.getters.getIsLoading">
@@ -48,7 +124,13 @@
       </ul>
     </div>
     <!-- <div>{{ chat }}</div> -->
-    <v-btn class="ma-2" outlined color="indigo" v-if="$store.getters.getIsMapReady" @click="kakaomap">
+    <v-btn
+      class="ma-2"
+      outlined
+      color="indigo"
+      v-if="$store.getters.getIsMapReady"
+      @click="kakaomap"
+    >
       지도 보기
     </v-btn>
     <div class="map" id="map" style="height: 500px"></div>
@@ -81,6 +163,7 @@ export default {
         "축제와 이벤트 여행",
       ],
       selectedPurpose: "",
+      dialog: false,
     };
   },
   methods: {
@@ -98,14 +181,17 @@ export default {
     selectCourse() {
       axios
         .post(this._baseUrl + "courseBoard/insertCourse", {
-            userNum : this.$store.getters.getUserInfo.userNum,
-            // placeName : this.$store.getters.getTripDetail.placeName,
-            courseTitle : this.$store.getters.getTripDetail.placeName + this.selectedPurpose,
-            courseContents : this.$store.getters.getSchedule
+          userNum: this.$store.getters.getUserInfo.userNum,
+          // placeName : this.$store.getters.getTripDetail.placeName,
+          courseTitle:
+            this.$store.getters.getTripDetail.placeName +
+            " " +
+            this.selectedPurpose,
+          courseContents: this.$store.getters.getSchedule,
         })
         .then((result) => {
-          if(result.data==1){
-            console.log('코스 담기 성공');
+          if (result.data == 1) {
+            console.log("코스 담기 성공");
           }
           // console.log(result.data);
           // this.$store.commit("setSchedule", result.data);
@@ -181,7 +267,13 @@ export default {
       };
 
       const body = {
-        prompt: "너는 여행 스케쥴러야 " + detail +  this.$store.getters.getTripDetail.placeName +"를 포함한 "+ this.$store.getters.getTripDetail.placeAddress.split(" ")[0] + this.prompt,
+        prompt:
+          "너는 여행 스케쥴러야 " +
+          detail +
+          this.$store.getters.getTripDetail.placeName +
+          "를 포함한 " +
+          this.$store.getters.getTripDetail.placeAddress.split(" ")[0] +
+          this.prompt,
         max_tokens: this.maxTokens,
         temperature: this.temperature,
       };

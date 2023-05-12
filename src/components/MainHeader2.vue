@@ -48,7 +48,23 @@ export default {
     },
     myPage(component) {
       if (window.location.pathname !== "/mypage") {
-        this.$router.push({ name: "mypage", params: { component: component } });
+        axios
+        .get(this._baseUrl + "courseBoard/myList", {
+          params: {
+            userNum : this.$store.getters.getUserInfo.userNum
+          },
+        })
+        .then(result=> {
+          console.log(result.data);
+          this.$store.commit("setMyList",JSON.parse(result.data.boardlist));
+          this.$store.commit("setMyComments",JSON.parse(result.data.commentlist));
+          // this.$store.commit("setCourseList", result.data);
+          this.$router.push({ name: "mypage", params: { component: component } });
+        })
+        .catch(function (error) {
+          console.error("에러 ", error);
+        });
+        
       }else{
         console.log('페이지 동일');
       }

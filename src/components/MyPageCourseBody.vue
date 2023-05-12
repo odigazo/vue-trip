@@ -1,18 +1,19 @@
 <template>
   <div class="myPageCourse">
-    <!-- <h3>마이페이지</h3>
-    <hr /> -->
-    <div class="container">
-      <!-- <div class="left">
-        <p>회원정보수정</p>
-        <h4>내가 담은 코스</h4>
-        <p>내가 쓴 댓글</p>
-      </div>
-      <div class="line"></div> -->
-      <div class="myCourse">
-
-      </div>
-    </div>
+    <v-data-table
+      :headers="headers"
+      :items="$store.getters.getMyList"
+      class="elevation-1"
+    >
+      <template v-slot:[`item.courseTitle`]="{ item }">
+      <v-btn
+      text
+      color="primary"
+    >
+      {{ item.courseTitle }}
+    </v-btn>
+    </template>
+    </v-data-table>
   </div>
 </template>
 
@@ -21,7 +22,19 @@
 
 export default {
   data() {
-    return {};
+    return {
+        headers: [
+          {
+            text: '추천날짜',
+            align: 'start',
+            sortable: false,
+            value: 'createDate',
+          },
+          { text: '제목', value: 'courseTitle' },
+          { text: '방문여부', value: 'travelStatus' },
+          
+        ],
+    };
   },
   methods: {},
 };

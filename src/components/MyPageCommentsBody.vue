@@ -1,18 +1,16 @@
 <template>
   <div class="myPageComments">
-    <!-- <h3>마이페이지</h3>
-    <hr /> -->
-    <div class="container">
-      <!-- <div class="left">
-        <p>회원정보수정</p>
-        <p>내가 담은 코스</p>
-        <h4>내가 쓴 댓글</h4>
-      </div>
-      <div class="line"></div> -->
-      <div class="myComments">
-
-      </div>
-    </div>
+    <v-data-table
+      :headers="headers"
+      :items="$store.getters.getComments"
+      class="elevation-1"
+    >
+      <!-- <template v-slot:[`item.glutenfree`]="{ item }">
+        <v-simple-checkbox
+          v-model="item.glutenfree"
+        ></v-simple-checkbox>
+      </template> -->
+    </v-data-table>
   </div>
 </template>
 
@@ -21,7 +19,19 @@
 
 export default {
   data() {
-    return {};
+    return {
+      headers: [
+          {
+            text: '코스번호',
+            align: 'start',
+            sortable: false,
+            value: 'courseNum',
+          },
+          { text: '내용', value: 'contents' },
+          { text: '작성날짜', value: 'contentsDate' },
+          
+        ],
+    };
   },
   methods: {},
 };

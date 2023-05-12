@@ -17,10 +17,12 @@ export default new Vuex.Store({
     recommendLikeList: [],
     recentCourseList : [],
     comments:[],
+    mycomments:[],
     isEditing:[],
     isLoading:false,
     isMapReady:false,
-    courseList:[], //코스목록 
+    courseList:[], //전체코스목록
+    myList:[], //개인코스목록 
     courses: {},
     courseNum:{},
     bestCourseList: [],
@@ -66,6 +68,12 @@ export default new Vuex.Store({
     getCourseList: function(state){
       return state.courseList;
     },
+    getMyList: function(state){
+      return state.myList;
+    },
+    getMyComments: function(state){
+      return state.mycomments;
+    },
     getCourses: function(state){
       return state.courses;
     },
@@ -94,6 +102,9 @@ export default new Vuex.Store({
     setComments(state, comments){
       state.comments=comments;
     },
+    setMyComments(state, mycomments){
+      state.mycomments=mycomments;
+    },
     setIsLoading(state,status){
       state.isLoading=status;
     },
@@ -102,6 +113,9 @@ export default new Vuex.Store({
     },
     setCourseList(state, courseList) {
       state.courseList = courseList;
+    },
+    setMyList(state, courseList) {
+      state.myList = courseList;
     },
     setIsEditing(state){
       for(var i=0;i<state.comments.length;i++){
