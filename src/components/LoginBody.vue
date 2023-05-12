@@ -12,6 +12,7 @@
           ></v-text-field>
         </v-col>
       </v-row>
+
     </div>
     <div>
       <v-row justify="center">
@@ -77,8 +78,11 @@ export default {
 .loginbody {
   text-align: center;
 }
+
+
 .my-text-field {
   width: 250px;
   max-width: 400px;
+
 }
 </style>
