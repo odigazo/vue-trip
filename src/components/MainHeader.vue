@@ -26,6 +26,7 @@
   </div>
 </template>
 <script>
+import axios from 'axios';
 export default {
   data() {
     return {
@@ -33,6 +34,22 @@ export default {
     };
   },
   methods: {
+    courseBoard(){
+      axios
+        .get(this._baseUrl + "courseBoard/courseList", {
+          params: {
+          },
+        })
+        .then(result=> {
+          console.log(result.data);
+          this.$store.commit("setCourseList",result.data);
+          // this.$store.commit("setCourseList", result.data);
+          this.$router.push({name:'courseboardList'});
+        })
+        .catch(function (error) {
+          console.error("에러 ", error);
+        });
+    },
     myPage(component) {
       if (window.location.pathname !== "/mypage") {
         this.$router.push({ name: "mypage", params: { component: component } });

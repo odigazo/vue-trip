@@ -1,8 +1,8 @@
 <template>
-  <div class="main">
+  <div class="main text-center">
     <img src="../assets/image/triplogo.png">
-    <div><button @click="login()">Login</button></div>
-    <div><button @click="signup()">Sign Up</button></div>
+    <div><v-btn small color="primary" dark @click="login()">Login</v-btn></div>
+    <div><v-btn small color="primary" dark @click="signup()">Sign Up</v-btn></div>
     <!-- <div>
       <div class="chat-window">
         <div v-for="(conversation, index) in chat" :key="index" :class="{'user': conversation.role === 'user', 'bot': conversation.role === 'bot'}">
@@ -13,9 +13,9 @@
       <input type="text" id="prompt" v-model="prompt" @keyup.enter="generateText"/>
       <button @click="generateText">Send</button>
     </div> -->
-    <button @click="tripMain">TripMain으로 이동</button>
-    <button @click="gotoBoard">댓글로 이동</button>
-    <button @click="gotocsBoard">courseboardList</button>
+    <v-btn small color="primary" dark @click="tripMain">TripMain으로 이동</v-btn>
+    <v-btn small color="primary" dark @click="gotoBoard">댓글로 이동</v-btn>
+    <v-btn small color="primary" dark @click="gotocsBoard">courseboardList</v-btn>
   </div>
 </template>
 
@@ -105,26 +105,5 @@ export default {
 }
 </script>
 <style>
-.chat-window {
-  display: flex;
-  flex-direction: column;
-  height: 300px;
-  overflow-y: scroll;
-}
 
-.chat-window .user {
-  align-self: flex-end;
-  background-color: #ccc;
-  margin: 5px;
-  padding: 5px;
-  border-radius: 5px;
-}
-
-.chat-window .bot {
-  align-self: flex-start;
-  background-color: #eee;
-  margin: 5px;
-  padding: 5px;
-  border-radius: 5px;
-}
 </style>
