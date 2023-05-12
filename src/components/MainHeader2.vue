@@ -1,6 +1,6 @@
 <template>
   <div class="mainHeader">
-    <img class="logo" src="../assets/image/triplogo.png" />
+    <a @click="searchPlaces()"><img class="logo" src="../assets/image/triplogo.png" /></a>
     <div class="center">
       <div class="signup"><a @click="searchPlaces()">여행지 찾기</a></div>
       <div class="signup"><a @click="recommendPlaces()">여행지 추천</a></div>

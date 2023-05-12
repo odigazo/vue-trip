@@ -56,7 +56,6 @@ export default {
   },
   methods: {
     courseRecommend() {
-      console.log(API_KEY);
       this.generateText();
       this.$router.push({ name: "tripcourse" });
     },
@@ -103,6 +102,7 @@ export default {
         const response = await axios.post(API_URL, body, config);
         const answer = response.data.choices[0].text;
         console.log(answer);
+        console.log(body.prompt);
         axios
           .get(this._baseUrl + "course/schedule", {
             params: {

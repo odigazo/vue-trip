@@ -1,5 +1,5 @@
 <template>
-  <div class="tripcoursebody">
+  <div class="tripcoursebody text-center">
     <div>
       <modal name="myModal">
         <div>
@@ -27,13 +27,13 @@
               </select>
             </div>
           </div>
-          <button @click="newCourse">코스 보러가기</button>
-          <button @click="$modal.hide('myModal')">닫기</button>
+          <v-btn class="ma-2" outlined color="indigo" @click="newCourse">코스 보러가기</v-btn>
+          <v-btn class="ma-2" outlined color="red" @click="$modal.hide('myModal')">닫기</v-btn>
         </div>
       </modal>
       <div>
-        <button @click="$modal.show('myModal')">재추천 받기</button>
-        <button @click="selectCourse">코스 담기</button>
+        <v-btn class="ma-2" outlined color="indigo" @click="$modal.show('myModal')">재추천 받기</v-btn>
+        <v-btn class="ma-2" outlined color="indigo" @click="selectCourse">코스 담기</v-btn>
       </div>
     </div>
     <div v-if="$store.getters.getIsLoading">
@@ -48,9 +48,9 @@
       </ul>
     </div>
     <!-- <div>{{ chat }}</div> -->
-    <button v-if="$store.getters.getIsMapReady" @click="kakaomap">
+    <v-btn class="ma-2" outlined color="indigo" v-if="$store.getters.getIsMapReady" @click="kakaomap">
       지도 보기
-    </button>
+    </v-btn>
     <div class="map" id="map" style="height: 500px"></div>
   </div>
 </template>
