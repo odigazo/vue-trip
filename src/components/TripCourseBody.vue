@@ -1,50 +1,6 @@
 <template>
   <div class="tripcoursebody text-center">
     <div>
-      <!-- <modal name="myModal">
-        <div>
-          <h3>{{ $store.getters.getUserInfo.userNickname }}님의 여행 스타일</h3>
-          <p>원하시는 여행에 대한 상세 정보를 입력해주세요</p>
-          <div>
-            <v-text-field
-              label="출발일"
-              v-model.lazy="startDate"
-              hide-details="auto"
-              class="my-text-field"
-              type="date"
-            ></v-text-field>
-          </div>
-          <div>
-            <v-text-field
-              label="복귀일"
-              v-model.lazy="endDate"
-              hide-details="auto"
-              class="my-text-field"
-              type="date"
-            ></v-text-field>
-          </div>
-          <div>
-            <span>여행목적</span>
-            <div>
-              <select v-model="selectedPurpose">
-                <option v-for="purpose in purposes" :key="purpose">
-                  {{ purpose }}
-                </option>
-              </select>
-            </div>
-          </div>
-          <v-btn class="ma-2" outlined color="indigo" @click="newCourse"
-            >코스 보러가기</v-btn
-          >
-          <v-btn
-            class="ma-2"
-            outlined
-            color="red"
-            @click="$modal.hide('myModal')"
-            >닫기</v-btn
-          >
-        </div>
-      </modal> -->
       <div>
         <br />
         <v-row justify="center">
@@ -99,7 +55,7 @@
                 <v-btn color="blue darken-1" text @click="dialog = false">
                   닫기
                 </v-btn>
-                <v-btn color="blue darken-1" text @click="dialog = false">
+                <v-btn color="blue darken-1" text @click="newCourse()">
                   저장
                 </v-btn>
               </v-card-actions>
@@ -117,22 +73,43 @@
       <div>최적의 코스를 찾는 중입니다...</div>
     </div>
     <div v-else>
-      <ul>
-        <li v-for="(answer, i) in $store.getters.getSchedule" :key="i">
-          {{ answer }}
-        </li>
-      </ul>
+      <v-timeline>
+        <v-timeline-item
+          v-for="(values, key) in $store.getters.getCourseMap"
+          :key="key"
+          color="blue"
+          small
+        >
+          <template v-slot:opposite>
+            <span
+              :class="`headline font-weight-bold blue--text`"
+              v-text="key"
+            ></span>
+          </template>
+          <div class="py-4">
+            <div>
+              <ul class="items">
+                <li v-for="(answer, i) in values" :key="i">
+                  {{ answer }}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </v-timeline-item>
+      </v-timeline>
+      <br/>
+      <div>
+        <div v-if="$store.getters.getIsMapReady">
+          <v-btn class="ma-2" outlined color="indigo" @click="kakaomap">
+            지도 보기
+          </v-btn>
+        </div>
+        <div v-else>
+          <img src="../assets/image/worldmap.gif" />
+        </div>
+      </div>
     </div>
-    <!-- <div>{{ chat }}</div> -->
-    <v-btn
-      class="ma-2"
-      outlined
-      color="indigo"
-      v-if="$store.getters.getIsMapReady"
-      @click="kakaomap"
-    >
-      지도 보기
-    </v-btn>
+
     <div class="map" id="map" style="height: 500px"></div>
   </div>
 </template>
@@ -148,7 +125,7 @@ export default {
   data() {
     return {
       prompt:
-        "의 반경 50km 안에서 여행하는 여행코스를 날짜, 시간 : 장소의 형태로 장소에 대한 설명은 생략해서 알려줘요.",
+        " 2시간 단위로 여행하는 여행코스를 날짜, 시간 : 장소의 형태로 장소에 대한 설명은 생략해서 알려줘요. ex) 날짜 - 09:00~11:00 : 관광지명",
       maxTokens: 2000,
       temperature: 0.2,
       error: "",
@@ -168,15 +145,16 @@ export default {
   },
   methods: {
     newCourse() {
+      this.dialog = false;
       this.generateText(
         this.startDate +
           "부터 " +
           this.endDate +
           "까지 " +
           this.selectedPurpose +
-          "목적으로 "
+          "목적으로 여행을 가고싶어. "
       );
-      this.$modal.hide("myModal");
+      
     },
     selectCourse() {
       axios
@@ -270,9 +248,11 @@ export default {
         prompt:
           "너는 여행 스케쥴러야 " +
           detail +
+          this.$store.getters.getAddrStr +
+          " 의 관광지들 중에서 최대 10개만 고르고 그 관광지들과" +
           this.$store.getters.getTripDetail.placeName +
-          "를 포함한 " +
-          this.$store.getters.getTripDetail.placeAddress.split(" ")[0] +
+          "를 포함하여 " +
+          // this.$store.getters.getTripDetail.placeAddress.split(" ")[0] +
           this.prompt,
         max_tokens: this.maxTokens,
         temperature: this.temperature,
@@ -290,11 +270,12 @@ export default {
           })
           .then((result) => {
             console.log(result);
-            this.$store.commit("setSchedule", result.data);
+            this.$store.commit("setSchedule", result.data.list);
+            this.$store.commit("setCourseMap", result.data.tripmap);
             this.$store.commit("setIsLoading", false);
           })
           .catch(function () {
-            console.log("fail");
+            console.log("fail 스케쥴 저장");
           });
         // this.chat = answer;
         // this.lastQuestion = this.lastQuestion + this.prompt;
@@ -302,7 +283,7 @@ export default {
         var newbody = {
           prompt:
             answer +
-            "이 코스에서 관광지명만 추출해서 관광지명 : 해당 관광지의 각기 다른 정확한 위도,경도 형태로 출력해줘요. ex) 부산 자연과학박물관 : 35.170931,129.170771",
+            "이 코스에서 관광지명만 추출해서 번호 : 관광지명 형태로 출력해줘요. ex) 1 : 부산 자연과학박물관",
           max_tokens: this.maxTokens,
           temperature: this.temperature,
         };
@@ -334,8 +315,14 @@ export default {
   },
 };
 </script>
+
 <style scoped>
 div.map {
   align-content: center;
+}
+
+.items>li {
+  list-style: none;
+  text-align: center;
 }
 </style>

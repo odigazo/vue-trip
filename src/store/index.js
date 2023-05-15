@@ -12,6 +12,8 @@ export default new Vuex.Store({
     latitudes:[],
     longitudes:[],
     placeList:[],
+    addrStr:'',
+    courseMap:null,
     tripDetail: {},
     recommendList: [],
     recommendLikeList: [],
@@ -46,6 +48,12 @@ export default new Vuex.Store({
     },
     getPlaceList: function(state){
       return state.placeList;
+    },
+    getAddrStr : function(state){
+      return state.addrStr;
+    },
+    getCourseMap : function(state){
+      return state.courseMap;
     },
     getTripDetail: function(state){
       return state.tripDetail;
@@ -140,6 +148,12 @@ export default new Vuex.Store({
     },
     setPlaceList(state, list){
       state.placeList = list;
+    },
+    setAddrStr(state,addr){
+      state.addrStr = addr;
+    },
+    setCourseMap(state,map){
+      state.courseMap=map;
     },
     setTripDetail(state, detail) {
       state.tripDetail = detail;

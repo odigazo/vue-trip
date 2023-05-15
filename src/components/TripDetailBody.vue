@@ -20,7 +20,7 @@
       >
       <div id="map" style="width: 500px; height: 300px"></div>
     </div>
-    <button @click="courseRecommend">코스 추천받기</button>
+    <v-btn @click="courseRecommend">코스 추천받기</v-btn>
   </div>
 </template>
 <script>
@@ -34,7 +34,8 @@ export default {
   data() {
     return {
       urlCheck: false,
-      prompt:"의 반경 50km 안에서 자연풍경을 구경할 수 있는 여행의 2박 3일 코스를 날짜, 시간 : 장소의 형태로 장소에 대한 설명은 생략해서 알려줘요.",
+      prompt:
+        " 2시간 단위로 자연풍경을 구경할 수 있는 여행의 2박 3일 코스를 일차, 시간 : 장소의 형태로 장소에 대한 설명은 생략해서 알려줘요. ex) 1일차 - 09:00~11:00 : 관광지",
       maxTokens: 2000,
       temperature: 0.2,
       error: "",
@@ -56,8 +57,21 @@ export default {
   },
   methods: {
     courseRecommend() {
-      this.generateText();
-      this.$router.push({ name: "tripcourse" });
+      axios
+        .get(this._baseUrl + "course/getfacts", {
+          params: {
+            addr: this.$store.getters.getTripDetail.placeAddress.split(" ")[0],
+          },
+        })
+        .then((result) => {
+          console.log(result.data);
+          this.$store.commit("setAddrStr", result.data);
+          this.generateText();
+          this.$router.push({ name: "tripcourse" });
+        })
+        .catch(function () {
+          console.log("fail");
+        });
     },
     initMap() {
       let container = document.getElementById("map");
@@ -93,7 +107,14 @@ export default {
       };
 
       const body = {
-        prompt: "너는 여행 스케쥴러야 " + this.$store.getters.getTripDetail.placeName +"를 포함한 "+ this.$store.getters.getTripDetail.placeAddress.split(" ")[0] + this.prompt,
+        prompt:
+          "너는 여행 스케쥴러야 " +
+          this.$store.getters.getAddrStr +
+          " 의 관광지들 중에서 최대 10개만 고르고 그 관광지들과" + 
+          this.$store.getters.getTripDetail.placeName +
+          "를 포함하여 " +
+          // this.$store.getters.getTripDetail.placeAddress.split(" ")[0] +
+          this.prompt,
         max_tokens: this.maxTokens,
         temperature: this.temperature,
       };
@@ -111,11 +132,12 @@ export default {
           })
           .then((result) => {
             console.log(result);
-            this.$store.commit("setSchedule", result.data);
+            this.$store.commit("setSchedule", result.data.list);
+            this.$store.commit("setCourseMap", result.data.tripmap);
             this.$store.commit("setIsLoading", false);
           })
           .catch(function () {
-            console.log("fail");
+            console.log("fail 스케쥴 저장");
           });
         // this.chat = answer;
         this.lastQuestion = this.lastQuestion + this.prompt;
@@ -123,7 +145,8 @@ export default {
         var newbody = {
           prompt:
             answer +
-            "이 코스에서 관광지명만 추출해서 관광지명 : 해당 관광지의 각기 다른 정확한 위도,경도 형태로 출력해줘요. ex) 부산 자연과학박물관 : 35.170931,129.170771",
+            "이 코스에서 관광지명만 추출해서 번호 : 관광지명 형태로 출력해줘요. ex) 1 : 부산 자연과학박물관",
+            // "이 코스에서 관광지명만 추출해서 관광지명 : 해당 관광지의 각기 다른 정확한 위도,경도 형태로 출력해줘요. ex) 부산 자연과학박물관 : 35.170931,129.170771",
           max_tokens: this.maxTokens,
           temperature: this.temperature,
         };
