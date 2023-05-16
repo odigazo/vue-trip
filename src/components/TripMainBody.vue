@@ -1,5 +1,14 @@
-<template>
+<template >
   <div class="tripMainBody">
+    <div class="background-image" 
+        :style="`background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 1)), url(${imagePath});`"></div>
+      <div class="search-container">
+        <v-text-field 
+        outlined label="주소명" 
+        variant="solo"
+        v-model="keyword"
+        ></v-text-field>
+      </div>
     <div class="category-container">
         <h1 class="category" @click="searchCategory('전체')">#전체</h1>
         <h1 class="category" @click="searchCategory('spring')">#봄</h1>
@@ -7,40 +16,35 @@
         <h1 class="category" @click="searchCategory('autumn')">#가을</h1>
         <h1 class="category" @click="searchCategory('winter')">#겨울</h1>
     </div>
-    <table class="places-table">
-      <tr v-for="(place, i) in $store.getters.getPlaceList" :key="i">
-        <td class="place-card" @click="tripDetail(place.place1.placeName)">
-            <img class="thumbnail" :src="place.place1.thumnailUrl" />
-            <div class="place-name">
-                <font>{{place.place1.placeName}}</font>
-            </div>
-        </td>
-        <td class="place-card" @click="tripDetail(place.place2.placeName)">
-            <img class="thumbnail" :src="place.place2.thumnailUrl" />
-            <div class="place-name">
-                <font>{{place.place2.placeName}}</font>
-            </div>
-        </td>
-        <td class="place-card" @click="tripDetail(place.place3.placeName)">
-            <img class="thumbnail" :src="place.place3.thumnailUrl" />
-            <div class="place-name">
-                <font>{{place.place3.placeName}}</font>
-            </div>
-        </td>
-        <td class="place-card" @click="tripDetail(place.place4.placeName)">
-            <img class="thumbnail" :src="place.place4.thumnailUrl" />
-            <div class="place-name">
-                <font>{{place.place4.placeName}}</font>
-            </div>
-        </td>
-        <td class="place-card" @click="tripDetail(place.place5.placeName)">
-            <img class="thumbnail" :src="place.place5.thumnailUrl" />
-            <div class="place-name">
-                <font>{{place.place5.placeName}}</font>
-            </div>
-        </td>
-      </tr>
-    </table>
+    <v-container class="pa-4 text-center">
+    <v-row
+      class="fill-height"
+      align="center"
+      justify="center"
+    >
+      <template v-for="(place, i) in $store.getters.getPlaceList">
+        <v-col
+          :key="i"
+          cols="12"
+          md="3"
+        >
+          <v-hover v-slot="{ hover }">
+            <v-card :elevation="hover ? 12 : 2" :class="{ 'on-hover': hover }" @click="tripDetail(place.placeName)">
+              <v-img :src="place.thumnailUrl">
+                <v-card-title class="text-h6 white--text">
+                  <v-row class="fill-height flex-column" justify="space-between">
+                    <p class="mt-4 subheading text-left place-name" :style="{ visibility: hover ? 'hidden' : 'visible' }">
+                      {{ place.placeName }}
+                    </p>
+                  </v-row>
+                </v-card-title>
+              </v-img>
+            </v-card>
+          </v-hover>
+        </v-col>
+      </template>
+    </v-row>
+  </v-container>
   </div>
 </template>
 
@@ -48,9 +52,12 @@
 export default {
   data() {
     return {
-        category : ''
+        category : '',
+        imagePath : '',
+        keyword: ''
     }
   },
+
   methods : {
     tripDetail(placeName) {
         this.$axios({
@@ -84,7 +91,29 @@ export default {
     },
     searchCategory(season) {
         this.category = season;
-    }
+    },
+    autoComplete() {
+      if (this.keyword.charCodeAt(0) >= 44032) {
+        //아스키 코드가 '가'보다 큰 경우
+        this.$axios({
+          url: "http://localhost:8080/trip/mainPage/keyword",
+          method: "GET",
+          params: {
+            keyword: this.keyword,
+          },
+          responseType: "json",
+        }).then(
+          function (result) {
+            if (result.data.length != 0) {
+              let placeList = result.data;
+              this.$store.commit("setPlaceList", placeList);
+            }
+          }.bind(this)
+        );
+      } else {
+        return;
+      }
+    },
   },
   created() {
     this.$axios({
@@ -93,19 +122,10 @@ export default {
       responseType: "json",
     }).then(
       function (places) {
-        let list = places.data;
-        let placeList = [];
-        for (let i = 0; i < list.length - 4; i += 5) {
-            let fivePlace = {};
-            fivePlace.place1 = list[i];
-            fivePlace.place2 = list[i + 1];
-            fivePlace.place3 = list[i + 2];
-            fivePlace.place4 = list[i + 3];
-            fivePlace.place5 = list[i + 4];
-            placeList.push(fivePlace);
-        }
+        let placeList = places.data;
         this.$store.commit("setPlaceList", placeList);
         this.category = '전체';
+        this.imagePath = '../전체.jpg';
       }.bind(this)
     );
   },
@@ -117,20 +137,25 @@ export default {
                 method: "GET",
                 responseType: "json",
             }).then(function (places) {
-                let list = places.data;
-                let placeList = [];
-                for (let i = 0; i < list.length - 4; i += 5) {
-                    let fivePlace = {};
-                    fivePlace.place1 = list[i];
-                    fivePlace.place2 = list[i + 1];
-                    fivePlace.place3 = list[i + 2];
-                    fivePlace.place4 = list[i + 3];
-                    fivePlace.place5 = list[i + 4];
-                    placeList.push(fivePlace);
-                }
+                let placeList = places.data;
                 this.$store.commit("setPlaceList", placeList);
+                this.imagePath = '../전체.png';
             }.bind(this));
         }else {
+            switch (this.category) {
+                case 'spring':
+                    this.imagePath = '../봄.jpg';
+                    break;
+                case 'summer':
+                    this.imagePath = '../여름.jpg';
+                    break;
+                case 'autumn':
+                    this.imagePath = '../가을.jpg';
+                    break;
+                case 'winter':
+                    this.imagePath = '../겨울.jpg';
+                    break;
+            }
             this.$axios({
                 url: "http://localhost:8080/trip/mainPage/category",
                 method: "GET",
@@ -139,30 +164,54 @@ export default {
                 },
                 responseType: "json",
             }).then(function (places) {
-                let list = places.data;
-                let placeList = [];
-                for (let i = 0; i < list.length - 4; i += 5) {
-                    let fivePlace = {};
-                    fivePlace.place1 = list[i];
-                    fivePlace.place2 = list[i + 1];
-                    fivePlace.place3 = list[i + 2];
-                    fivePlace.place4 = list[i + 3];
-                    fivePlace.place5 = list[i + 4];
-                    placeList.push(fivePlace);
-                }
+                let placeList = places.data;
                 this.$store.commit("setPlaceList", placeList);
             }.bind(this));
         }
     },
-    
+    keyword: function () {
+      if (this.keyword != "") {
+        this.autoComplete();
+      } else {
+        this.$axios({
+          url: "http://localhost:8080/trip/mainPage",
+          method: "GET",
+          responseType: "json",
+        }).then(
+          function (places) {
+            let placeList = places.data;
+            this.$store.commit("setPlaceList", placeList);
+          }.bind(this)
+        );
+      }
+    }
+
   }
 };
 </script>
 <style scoped>
 .tripMainBody {
-  padding: 20px;
+  position: relative;
 }
+.search-container {
+  position: relative;
+  width : 400px;
+  padding: 10px;
+}
+.search-container > * {
+  background-color: white;
+  height : 55px;
+}
+.background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1200px;
+}
+
 .category-container {
+  position: relative;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -178,34 +227,30 @@ export default {
 .category:hover {
   color: rgb(0, 166, 255);
 }
-.places-table {
-  width: 100%;
-  border-collapse: collapse;
+
+.v-card {
+  transition: opacity 0.5s ease-in-out;
+  opacity: 1; /* 초기에 선명하게 설정 */
+  width: 60%;
+  height: 60%;
 }
-.place-card {
-  width: 20%;
-  padding: 10px;
-  text-align: center;
-  vertical-align: top;
-  cursor: pointer;
-  position: relative;
-}
-.thumbnail {
+
+.v-card.on-hover {
   width: 80%;
-  height: auto;
-  border-radius: 5px;
-  margin: 0 auto;
+  height: 80%;
 }
+
 .place-name {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: bold;
-  margin-top: 10px;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(100, 100, 100, 0.6);
   color: white;
   position: absolute;
-  bottom: 10px;
-  left: 10px;
-  padding: 5px 10px;
+  bottom: -16px;
+  left: 0;
+  display: flex;
   border-radius: 5px;
+  letter-spacing: -1px;
+  line-height: 2;
 }
 </style>

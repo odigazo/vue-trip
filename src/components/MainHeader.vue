@@ -68,7 +68,6 @@ export default {
         this.$router.push({ name: "tripMain" });
       }
     },
-
     autoComplete() {
       if (this.keyword.charCodeAt(0) >= 44032) {
         //아스키 코드가 '가'보다 큰 경우
@@ -82,16 +81,7 @@ export default {
         }).then(
           function (result) {
             if (result.data.length != 0) {
-              let placeList = [];
-              for (let i = 0; i < result.data.length - 4; i += 5) {
-                let fivePlace = {};
-                fivePlace.place1 = result.data[i];
-                fivePlace.place2 = result.data[i + 1];
-                fivePlace.place3 = result.data[i + 2];
-                fivePlace.place4 = result.data[i + 3];
-                fivePlace.place5 = result.data[i + 4];
-                placeList.push(fivePlace);
-              }
+              let placeList = result.data;
               this.$store.commit("setPlaceList", placeList);
             }
           }.bind(this)
@@ -100,8 +90,10 @@ export default {
         return;
       }
     },
+    //옮김
     recommendPlaces() {
       let userInfo = this.$store.getters.getUserInfo;
+      console.log(userInfo);
       if (this.$router.currentRoute.name == "recommend") {
         return;
       } else {
@@ -113,7 +105,7 @@ export default {
             'content-type' : 'application/json'
           },
           params : {
-            query : '인천광역시 미추홀구 경원대로 887번길 24-25' //사용자의 주소
+            query : userInfo.userAddr //사용자의 주소
           },
           withCredentials: false,
           responseType : 'json'
