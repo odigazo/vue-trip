@@ -1,35 +1,57 @@
 <template>
-  <div>
-    <h2>코스 목록</h2>
-    <ul class="course-list">
-      <li
-        v-for="(course, index) in $store.getters.getCourseList"
-        :key="index"
-        class="course-item"
-      >
-        <button @click="goBoard(index, course.courseNum)" class="course-btn">
-          {{ course.courseTitle }}
-        </button>
-        <span>{{ course.courseLike }}</span>
-      </li>
-    </ul>
- 
+  <v-container fluid>
+    <v-row>
+      <v-col cols="3">
+        <v-card class="elevation-2 mb-5 best-course-card" outlined tile>
+          <v-card-title class="text-center title font-weight-bold" style="background-color: #f8f9fa;">베스트 코스 목록</v-card-title>
+          <v-list>
+            <v-list-item
+  v-for="(bestCourse, index) in topTenCourses"
+  :key="index"
+  @click="goLikeBoard(index, bestCourse.courseNum)"
+  class="py-2"
+  two-line
+  link
+>
+              <v-list-item-content>
+                <v-list-item-title class="subtitle-1 font-weight-bold">{{ bestCourse.courseTitle }}</v-list-item-title>
+                <v-list-item-subtitle class="caption">{{ bestCourse.courseLike }} Likes</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-card>
+      </v-col>
 
-    <h2>베스트 코스 목록</h2>
-    <ul class="best-course-list">
-      <li
-        v-for="(bestCourse, index) in sortedCourseList"
-        :key="index"
-        class="best-course-item"
-      >
-        <button @click="goLikeBoard(index, bestCourse.courseNum)" class="best-course-btn">
-          {{ bestCourse.courseTitle }}
-        </button>
-        <span>{{ bestCourse.courseLike }}</span>
-      </li>
-    </ul>
-  </div>
+      <v-col cols="9">
+        <v-row justify="center">
+          <v-col cols="12" md="8">
+            <v-card class="elevation-2 mb-5" outlined>
+              <v-card-title class="text-center title font-weight-bold" style="background-color: #f8f9fa;">코스 목록</v-card-title>
+              <v-card-text>
+                <v-list>
+                  <v-list-item
+                    v-for="(course, index) in $store.getters.getCourseList"
+                    :key="index"
+                    @click="goBoard(index, course.courseNum)"
+                    class="py-2"
+                    two-line
+                  >
+                    <v-list-item-content>
+                      <v-list-item-title class="subtitle-1" style="color: #00000099; font-weight:800">{{ course.courseTitle }}</v-list-item-title>
+                      <v-list-item-subtitle class="caption" style="font-weight:800">{{ course.courseLike }} Likes</v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+              </v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
+
+
 
 <script>
 import axios from "axios";
@@ -46,11 +68,11 @@ export default {
       // index:
     }
   },
-  // computed: {
-  //   courses() {
-  //     return this.$store.state.courseList;
-  //   },
-  // },
+  computed: {
+  topTenCourses() {
+    return this.sortedCourseList.slice(0, 10);
+  }
+},
   mounted() {
     const courses = this.$store.getters.getCourseList;
    const sortedCourses = courses.slice().sort((a, b) => b.courseLike - a.courseLike);
@@ -75,8 +97,25 @@ export default {
     next(input) {
       document.getElementById(input).focus();
     },
+    schedule(){
+    axios
+          .get(this._baseUrl + "course/schedule", {
+            params: {
+              answer: this.$store.getters.getCourseList[this.$store.getters.getCourseIndex].courseContents
+            },
+          })
+          .then((result) => {
+            console.log(result);
+            this.$store.commit("setSchedule", result.data);
+            // this.$store.commit("setIsLoading", false);
+          })
+          .catch(function () {
+            console.log("fail");
+          });
+        },
     goBoard(index, courseNum) {
       console.log(this.$store.getters.getCourseList[index]);
+      this.schedule();
       this.$store.commit("setCourseNum", courseNum);
       this.$store.commit("setCourseIndex", index);
       // this.$router.push({ name: "courseboard", params: { index: index } });
@@ -131,39 +170,4 @@ export default {
 </script>
 
 <style scoped>
-.course-list,
-.best-course-list {
-  list-style: none;
-  padding: 0;
-}
-
-.course-item,
-.best-course-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f8f8f8;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.course-btn,
-.best-course-btn {
-  background-color: #4caf50;
-  color: white;
-  padding: 5px 10px;
-  font-size: 14px;
-  border: none;
-  cursor: pointer;
-  border-radius: 3px;
-  text-transform: uppercase;
-}
-
-.course-btn:hover,
-.best-course-btn:hover {
-  background-color: #45a049;
-}
 </style>

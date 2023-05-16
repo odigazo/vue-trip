@@ -1,55 +1,53 @@
 <template>
-  <div class="container">
-    <h2 class="course-title">{{ this.$store.getters.getCourseList[$store.getters.getCourseIndex].courseTitle }}</h2>
-    <p class="course-contents">{{ this.$store.getters.getCourseList[$store.getters.getCourseIndex].courseContents }}</p>
-    <button @click="$router.go(-1)" class="back-button">뒤로가기</button>
-    <div class="like-section">
-      <button @click="addLike" class="like-button">♥</button>
-      <span class="like-count">{{ this.$store.getters.getCourseList[$store.getters.getCourseIndex].courseLike }}</span>
-    </div>
-    <hr class="separator" />
+  <v-container>
+    <v-card class="mt-5" outlined>
+      <v-card-title class="headline">{{ this.$store.getters.getCourseList[$store.getters.getCourseIndex].courseTitle }}</v-card-title>
+      <v-card-text v-bind:style="{ 'word-wrap': 'break-word' }">
+        <ul>
+          <li v-for="(answer, i) in $store.getters.getSchedule" :key="i">
+            {{ answer }}
+          </li>
+        </ul>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn text @click="$router.go(-1)">뒤로가기</v-btn>
+        <v-spacer></v-spacer>
+        <v-btn icon @click="addLike">
+          <v-icon color="red">mdi-heart</v-icon>
+        </v-btn>
+        <span class="mr-4">{{ this.$store.getters.getCourseList[$store.getters.getCourseIndex].courseLike }}</span>
+      </v-card-actions>
+    </v-card>
 
-<h2 class="comments-title">댓글 목록</h2>
-<ul class="comment-list">
-  <li
-    v-for="(comment, index) in this.$store.state.comments"
-    :key="index"
-    class="comment-item"
-  >
-    <div class="comment-info">
-      <span class="comment-num">{{ comment.commentNum }}:</span>
-      <span class="user-num">{{ comment.userNum }}:</span>
-      <span v-if="!$store.state.isEditing[index]" class="comment-contents">{{ comment.contents }}</span>
-      <input v-else type="text" v-model="newContents[index]" class="edit-input" />
-    </div>
-    <div class="comment-actions">
-      <button
-        v-if="!$store.state.isEditing[index]"
-        @click="startUpdate(index)"
-        class="update-button"
+    <v-divider class="mt-5 mb-5"></v-divider>
+
+    <h2 class="subtitle-1">댓글 목록</h2>
+    <v-list two-line>
+      <v-list-item
+        v-for="(comment, index) in this.$store.state.comments"
+        :key="index"
       >
-        수정
-      </button>
-      <button v-else @click="updateComment(index,comment.commentNum)" class="update-button">
-        저장
-      </button>
-      <button @click="deleteComment(comment)" class="delete-button">삭제</button>
-    </div>
-  </li>
-</ul>
+        <v-list-item-content>
+          <v-list-item-title>{{ comment.userNum }}</v-list-item-title>
+          <v-list-item-subtitle v-if="!$store.state.isEditing[index]">{{ comment.contents }}</v-list-item-subtitle>
+          <v-text-field v-else v-model="newContents[index]" label="Edit comment"></v-text-field>
+        </v-list-item-content>
+        <v-list-item-action>
+          <v-btn text v-if="!$store.state.isEditing[index]" @click="startUpdate(index)">수정</v-btn>
+          <v-btn text v-else @click="updateComment(index, comment.commentNum)">저장</v-btn>
+          <v-btn text color="red" @click="deleteComment(comment)">삭제</v-btn>
+        </v-list-item-action>
+      </v-list-item>
+    </v-list>
 
-<h2 class="write-comment-title">댓글 작성</h2>
-<div class="comment-form">
-  <input
-    type="text"
-    placeholder="댓글을 입력하세요"
-    v-model="contents"
-    class="comment-input"
-  />
-  <button @click="insertComment" class="submit-button">댓글쓰기</button>
-</div>
-</div>
+    <h2 class="subtitle-1 mt-5">댓글 작성</h2>
+    <v-form @submit.prevent="insertComment">
+      <v-text-field v-model="contents" label="댓글을 입력하세요" clearable></v-text-field>
+      <v-btn type="submit" color="primary">댓글쓰기</v-btn>
+    </v-form>
+  </v-container>
 </template>
+
 
 
 <script>
@@ -76,8 +74,8 @@ export default {
     next(input) {
       document.getElementById(input).focus();
     },
-    // 코스 조회하는 메서드 추가
-
+    // 코스 글 순서 줄바꿈 해주는 메서드
+    
     //댓글리스트
     commentList() {
       axios
@@ -203,108 +201,4 @@ export default {
 </script>
 
 <style scoped>
-.separator {
-  border: 0;
-  border-top: 2px solid #ccc;
-  margin-bottom: 20px;
-}
-
-.comments-title,
-.write-comment-title {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 15px;
-  color: #3c3c3c;
-}
-
-.comment-list {
-  list-style: none;
-  padding: 0;
-  margin-bottom: 20px;
-}
-
-.comment-item {
-  background-color: #f5f5f5;
-  padding: 20px;
-  margin-bottom: 20px;
-  border-radius: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.comment-info {
-  display: flex;
-  align-items: center;
-}
-
-.like-button {
-  border: none;
-  font-size: 32px;
-  width: 80px;
-  height: 40px;
-  border-radius: 5px;
-  border: solid 1px black;
-  color: red;
-}
-
-.comment-num,
-.user-num,
-.comment-contents {
-  font-size: 18px;
-  margin-right: 10px;
-  color: #2c2c2c;
-}
-
-.edit-input {
-  font-size: 18px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  padding: 6px 10px;
-}
-
-.comment-actions {
-  display: flex;
-  gap: 10px;
-}
-
-.update-button,
-.delete-button {
-  background-color: #4caf50;
-  border: none;
-  color: white;
-  padding: 8px 16px;
-  cursor: pointer;
-  border-radius: 6px;
-  font-size: 16px;
-}
-
-.delete-button {
-  background-color: #f44336;
-}
-
-.comment-form {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.comment-input {
-  flex-grow: 1;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 16px;
-}
-
-.submit-button {
-  background-color: #4caf50;
-  border: none;
-  color: white;
-  padding: 10px 20px;
-  cursor: pointer;
-  border-radius: 6px;
-  font-size: 16px;
-}
 </style>
