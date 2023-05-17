@@ -35,12 +35,12 @@ export default {
     return {
       urlCheck: false,
       prompt:
-        " 2시간 단위로 자연풍경을 구경할 수 있는 여행의 2박 3일 코스를 일차, 시간 : 장소의 형태로 장소에 대한 설명은 생략해서 알려줘요. ex) 1일차 - 09:00~11:00 : 관광지",
+        " 자연풍경구경 목적의 2박 3일 여행 코스를 하루에 최소 3군데 이상 방문하도록 여행일차 - 시간 : 장소의 형태로 장소에 대한 설명은 생략해서 알려줘요. ex) 1일차 - 09:00~11:00 : 관광지",
       maxTokens: 2000,
       temperature: 0.2,
       error: "",
-      lastQuestion: "",
-      lastAnswer: "",
+      // lastQuestion: "",
+      // answer: "",
     };
   },
   mounted() {
@@ -110,10 +110,9 @@ export default {
         prompt:
           "너는 여행 스케쥴러야 " +
           this.$store.getters.getAddrStr +
-          " 의 관광지들 중에서 최대 10개만 고르고 그 관광지들과" + 
+          " 의 관광지들 중에서" +
           this.$store.getters.getTripDetail.placeName +
           "를 포함하여 " +
-          // this.$store.getters.getTripDetail.placeAddress.split(" ")[0] +
           this.prompt,
         max_tokens: this.maxTokens,
         temperature: this.temperature,
@@ -122,58 +121,46 @@ export default {
       try {
         const response = await axios.post(API_URL, body, config);
         const answer = response.data.choices[0].text;
+        this.$store.commit("setAnswer", answer);
         console.log(answer);
         console.log(body.prompt);
-        axios
-          .get(this._baseUrl + "course/schedule", {
-            params: {
-              answer: response.data.choices[0].text,
-            },
-          })
-          .then((result) => {
-            console.log(result);
-            this.$store.commit("setSchedule", result.data.list);
-            this.$store.commit("setCourseMap", result.data.tripmap);
-            this.$store.commit("setIsLoading", false);
-          })
-          .catch(function () {
-            console.log("fail 스케쥴 저장");
-          });
-        // this.chat = answer;
-        this.lastQuestion = this.lastQuestion + this.prompt;
-        this.lastAnswer = answer;
-        var newbody = {
-          prompt:
-            answer +
-            "이 코스에서 관광지명만 추출해서 번호 : 관광지명 형태로 출력해줘요. ex) 1 : 부산 자연과학박물관",
-            // "이 코스에서 관광지명만 추출해서 관광지명 : 해당 관광지의 각기 다른 정확한 위도,경도 형태로 출력해줘요. ex) 부산 자연과학박물관 : 35.170931,129.170771",
-          max_tokens: this.maxTokens,
-          temperature: this.temperature,
-        };
-        const response2 = await axios.post(API_URL, newbody, config);
-        console.log(response2.data.choices[0]);
-        axios
-          .get(this._baseUrl + "course/map", {
-            params: {
-              answer: response2.data.choices[0].text,
-            },
-          })
-          .then((result) => {
-            console.log(result);
-            this.$store.commit("setNames", result.data.names);
-            this.$store.commit("setLatitudes", result.data.latitudes);
-            this.$store.commit("setLongitudes", result.data.longitudes);
-            if (this.$store.getters.getNames != null) {
-              this.$store.commit("setIsMapReady", true);
-            }
-          })
-          .catch(function () {
-            console.log("fail");
-          });
+        
       } catch (error) {
         this.error = error.message;
       }
-      this.prompt = "";
+      axios
+        .get(this._baseUrl + "course/schedule", {
+          params: {
+            answer: this.$store.getters.getAnswer,
+          },
+        })
+        .then((result) => {
+          console.log(result);
+          this.$store.commit("setSchedule", result.data.list);
+          this.$store.commit("setCourseMap", result.data.tripmap);
+          this.$store.commit("setIsLoading", false);
+          axios
+            .get(this._baseUrl + "course/map", {
+              params: {
+                answer: this.$store.getters.getAnswer,
+              },
+            })
+            .then((result2) => {
+              console.log(result2);
+              this.$store.commit("setNames", result2.data.names);
+              this.$store.commit("setLatitudes", result2.data.latitudes);
+              this.$store.commit("setLongitudes", result2.data.longitudes);
+              if (this.$store.getters.getNames != null) {
+                this.$store.commit("setIsMapReady", true);
+              }
+            })
+            .catch(function () {
+              console.log("fail");
+            });
+        })
+        .catch(function () {
+          console.log("fail 스케쥴 저장");
+        });
     },
   },
   created() {

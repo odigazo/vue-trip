@@ -28,7 +28,9 @@ export default new Vuex.Store({
     courses: {},
     courseNum:{},
     bestCourseList: [],
-    courseIndex:null
+    courseIndex:null,
+    count:'',
+    answer:'',
   },
   getters: {
     getUserInfo:function(state){
@@ -93,6 +95,12 @@ export default new Vuex.Store({
     },
     getCourseIndex: function(state){
       return state.courseIndex;
+    },
+    getCount : function(state){
+      return state.count;
+    },
+    getAnswer : function(state){
+      return state.answer;
     },
     getBestCourseList: (state) => state.bestCourseList,
   },
@@ -194,6 +202,13 @@ export default new Vuex.Store({
     setCourseIndex(state, index) {
       state.courseIndex = index; 
     },
+    setCount(state,count){
+      state.count = count;
+    },
+    setAnswer(state,answer){
+      state.answer = answer;
+    }
+    
   },
     
     

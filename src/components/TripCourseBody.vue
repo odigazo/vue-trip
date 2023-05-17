@@ -1,5 +1,6 @@
 <template>
   <div class="tripcoursebody text-center">
+    <hr />
     <div>
       <div>
         <br />
@@ -80,24 +81,50 @@
           color="blue"
           small
         >
-          <template v-slot:opposite>
+          <!-- <template v-slot:opposite>
             <span
               :class="`headline font-weight-bold blue--text`"
               v-text="key"
             ></span>
-          </template>
-          <div class="py-4">
-            <div>
+          </template> -->
+          <v-card>
+            <v-card-title class="blue lighten-2">
+              <h2
+                class="text-h4 white--text font-weight-light"
+                v-text="key"
+              ></h2>
+            </v-card-title>
+            <v-card-text>
               <ul class="items">
                 <li v-for="(answer, i) in values" :key="i">
                   {{ answer }}
                 </li>
               </ul>
-            </div>
-          </div>
+              <v-stepper>
+                <v-stepper-header>
+                  <template v-for="(answer, i) in values">
+                    <v-stepper-step
+                      :key="i"
+                      :step="(i + 1).toString()"
+                      complete
+                      complete-icon=""
+                      class="step-text"
+                    >
+                      {{ answer }}
+                    </v-stepper-step>
+
+                    <v-divider
+                      v-if="i !== values.length - 1"
+                      :key="'divider-' + i"
+                    ></v-divider>
+                  </template>
+                </v-stepper-header>
+              </v-stepper>
+            </v-card-text>
+          </v-card>
         </v-timeline-item>
       </v-timeline>
-      <br/>
+      <br />
       <div>
         <div v-if="$store.getters.getIsMapReady">
           <v-btn class="ma-2" outlined color="indigo" @click="kakaomap">
@@ -125,7 +152,7 @@ export default {
   data() {
     return {
       prompt:
-        " 2시간 단위로 여행하는 여행코스를 날짜, 시간 : 장소의 형태로 장소에 대한 설명은 생략해서 알려줘요. ex) 날짜 - 09:00~11:00 : 관광지명",
+        " 여행코스를 하루에 최소 3군데 이상 방문하고 싶어 날짜 - 시간 : 장소의 형태로 장소에 대한 설명은 생략해서 알려줘요. ex) 날짜 - 09:00~11:00 : 관광지명",
       maxTokens: 2000,
       temperature: 0.2,
       error: "",
@@ -154,7 +181,6 @@ export default {
           this.selectedPurpose +
           "목적으로 여행을 가고싶어. "
       );
-      
     },
     selectCourse() {
       axios
@@ -249,9 +275,9 @@ export default {
           "너는 여행 스케쥴러야 " +
           detail +
           this.$store.getters.getAddrStr +
-          " 의 관광지들 중에서 최대 10개만 고르고 그 관광지들과" +
+          " 의 관광지들 중에서" +
           this.$store.getters.getTripDetail.placeName +
-          "를 포함하여 " +
+          "를 포함하는 " +
           // this.$store.getters.getTripDetail.placeAddress.split(" ")[0] +
           this.prompt,
         max_tokens: this.maxTokens,
@@ -262,55 +288,42 @@ export default {
         const response = await axios.post(API_URL, body, config);
         const answer = response.data.choices[0].text;
         console.log(answer);
-        axios
-          .get(this._baseUrl + "course/schedule", {
-            params: {
-              answer: response.data.choices[0].text,
-            },
-          })
-          .then((result) => {
-            console.log(result);
-            this.$store.commit("setSchedule", result.data.list);
-            this.$store.commit("setCourseMap", result.data.tripmap);
-            this.$store.commit("setIsLoading", false);
-          })
-          .catch(function () {
-            console.log("fail 스케쥴 저장");
-          });
-        // this.chat = answer;
-        // this.lastQuestion = this.lastQuestion + this.prompt;
-        // this.lastAnswer = answer;
-        var newbody = {
-          prompt:
-            answer +
-            "이 코스에서 관광지명만 추출해서 번호 : 관광지명 형태로 출력해줘요. ex) 1 : 부산 자연과학박물관",
-          max_tokens: this.maxTokens,
-          temperature: this.temperature,
-        };
-        const response2 = await axios.post(API_URL, newbody, config);
-        console.log(response2.data.choices[0]);
-        axios
-          .get(this._baseUrl + "course/map", {
-            params: {
-              answer: response2.data.choices[0].text,
-            },
-          })
-          .then((result) => {
-            console.log(result);
-            this.$store.commit("setNames", result.data.names);
-            this.$store.commit("setLatitudes", result.data.latitudes);
-            this.$store.commit("setLongitudes", result.data.longitudes);
-            if (this.$store.getters.getNames != null) {
-              this.$store.commit("setIsMapReady", true);
-            }
-          })
-          .catch(function () {
-            console.log("fail");
-          });
       } catch (error) {
         this.error = error.message;
       }
-      this.prompt = "";
+      axios
+        .get(this._baseUrl + "course/schedule", {
+          params: {
+            answer: this.$store.getters.getAnswer,
+          },
+        })
+        .then((result) => {
+          console.log(result);
+          this.$store.commit("setSchedule", result.data.list);
+          this.$store.commit("setCourseMap", result.data.tripmap);
+          this.$store.commit("setIsLoading", false);
+          axios
+            .get(this._baseUrl + "course/map", {
+              params: {
+                answer: this.$store.getters.getAnswer,
+              },
+            })
+            .then((result2) => {
+              console.log(result2);
+              this.$store.commit("setNames", result2.data.names);
+              this.$store.commit("setLatitudes", result2.data.latitudes);
+              this.$store.commit("setLongitudes", result2.data.longitudes);
+              if (this.$store.getters.getNames != null) {
+                this.$store.commit("setIsMapReady", true);
+              }
+            })
+            .catch(function () {
+              console.log("fail");
+            });
+        })
+        .catch(function () {
+          console.log("fail 스케쥴 저장");
+        });
     },
   },
 };
@@ -321,8 +334,14 @@ div.map {
   align-content: center;
 }
 
-.items>li {
+.items > li {
   list-style: none;
   text-align: center;
+  font-size: 20px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+.step-text {
+  font-weight: bold;
 }
 </style>

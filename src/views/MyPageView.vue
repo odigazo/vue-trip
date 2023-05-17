@@ -22,61 +22,12 @@
       </v-col>
     </v-row>
   </v-container>
-
-    <!-- <v-navigation-drawer
-        permanent
-        width=2000
-        height
-      >
-      <v-row>
-        <v-col cols="3">
-          <v-card class="mb-3">
-            <v-list>
-              <v-list-item v-for="(link, index) in links" :key="index" link>
-                <v-list-item-content>
-                  <v-list-item-title :class="{ 'bold-link': activeLink === index + 1 }" @click="loadComponent(link.component, index + 1)">
-                    {{ link.text }}
-                  </v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list>
-          </v-card>
-        </v-col>
-        <v-col cols="9">
-          <component :is="currentComponent"></component>
-        </v-col>
-      </v-row>
-    </v-navigation-drawer> -->
-
-    <!-- <h3>마이페이지</h3>
-    <hr />
-    <div class="container">
-      <div class="left">
-        <p>
-          <a :class="{ 'bold-link': activeLink === 1 }" @click="loadComponent('MyPageUpdateInfoBody', 1)"
-            >회원정보수정</a
-          >
-        </p>
-        <p>
-          <a :class="{ 'bold-link': activeLink === 2 }" @click="loadComponent('MyPageCourseBody', 2)"
-            >내가 담은 코스</a
-          >
-        </p>
-        <p>
-          <a :class="{ 'bold-link': activeLink === 3 }" @click="loadComponent('MyPageCommentsBody', 3)"
-            >내가 쓴 댓글</a
-          >
-        </p>
-      </div>
-      <div class="line"></div>
-    </div>
-    <component v-bind:is="currentComponent"></component> -->
   </div>
 </template>
 
 <script>
 import MainHeader2 from "@/components/MainHeader2.vue";
-// import MyPageUpdateInfoBody from "@/components/MyPageUpdateInfoBody.vue";
+import MyPageUpdateInfoBody from "@/components/MyPageUpdateInfoBody.vue";
 // import MyPageCommentsBody from "@/components/MyPageCommentsBody.vue";
 // import MyPageCourseBody from "@/components/MyPageCourseBody.vue";
 export default {
@@ -106,7 +57,7 @@ export default {
           component: "MyPageCommentsBody"
         }
       ],
-      currentComponent: null
+      currentComponent: MyPageUpdateInfoBody
     };
   },
   methods: {
@@ -122,6 +73,9 @@ export default {
     //   this.currentComponent = componentName;
     // }
   },
+  // created(){
+  //   this.loadComponent(this.$route.params.component,this.$route.params.index);
+  // }
 };
 </script>
 <style>
