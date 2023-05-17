@@ -27,8 +27,62 @@ export default {
         this.$router.push({ name: "tripMain" });
       }
     },
-    recommendPlaces() {
-      // this.$router.push({name:})
+ recommendPlaces() {
+      let userInfo = this.$store.getters.getUserInfo;
+      console.log(userInfo);
+      if (this.$router.currentRoute.name == "recommend") {
+        return;
+      } else {
+        this.$axios({
+          url : 'http://dapi.kakao.com/v2/local/search/address.json',
+          method : 'GET',
+          headers : {
+            'Authorization' : 'KakaoAK 28129ad995eebba2852f3ad70480cfaa',
+            'content-type' : 'application/json'
+          },
+          params : {
+            query : userInfo.userAddr //사용자의 주소
+          },
+          withCredentials: false,
+          responseType : 'json'
+        }).then(function(result) {
+          let longitude = result.data.documents[0].road_address.x;
+          let latitude = result.data.documents[0].road_address.y;
+
+          this.$axios({
+            url: 'http://localhost:8080/trip/mainPage/recommendDistance',
+            method: 'POST',
+            data: {
+              'latitude' : latitude,
+              'longitude' : longitude
+            },
+            responseType: 'json'
+          }).then(function(result) {
+            this.$store.commit('setRecommendList', result.data);
+            this.$router.push('recommend');
+          }.bind(this));
+        }.bind(this));
+
+        this.$axios({
+          url: 'http://localhost:8080/trip/mainPage/recommendLike',
+          method: 'GET',
+          params: {
+            userInfo : userInfo.userNum
+          },
+          responseType: 'json'
+        }).then(function(result) {
+          this.$store.commit('setRecommendLikeList', result.data);
+        }.bind(this));
+
+        this.$axios({
+          url: 'http://localhost:8080/trip/mainPage/recentCourse',
+          method: 'GET',
+          responseType: 'json'
+        }).then(function(result) {
+          this.$store.commit('setRecentCourseList', result.data);
+        }.bind(this));
+      }
+
     },
     courseBoard() {
       axios
@@ -54,6 +108,34 @@ export default {
       }
     },
   },
+  watch: {
+    keyword: function () {
+      if (this.keyword != "") {
+        this.autoComplete();
+      } else {
+        this.$axios({
+          url: "http://localhost:8080/trip/mainPage",
+          method: "GET",
+          responseType: "json",
+        }).then(
+          function (places) {
+            let list = places.data;
+            let placeList = [];
+            for (let i = 0; i < list.length - 4; i += 5) {
+              let fivePlace = {};
+              fivePlace.place1 = list[i];
+              fivePlace.place2 = list[i + 1];
+              fivePlace.place3 = list[i + 2];
+              fivePlace.place4 = list[i + 3];
+              fivePlace.place5 = list[i + 4];
+              placeList.push(fivePlace);
+            }
+            this.$store.commit("setPlaceList", placeList);
+          }.bind(this)
+        );
+      }
+    },
+  }
 };
 </script>
 <style scoped>
