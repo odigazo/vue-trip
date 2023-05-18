@@ -16,20 +16,25 @@ export default new Vuex.Store({
     currentPage: 1,
     pageGroup : 0,
     createCount : 5,
-
+    addrStr:'',
+    courseMap:null,
     tripDetail: {},
     recommendList: [],
     recommendLikeList: [],
     recentCourseList : [],
     comments:[],
+    mycomments:[],
     isEditing:[],
     isLoading:false,
     isMapReady:false,
-    courseList:[], //코스목록 
+    courseList:[], //전체코스목록
+    myList:[], //개인코스목록 
     courses: {},
     courseNum:{},
     bestCourseList: [],
-    courseIndex:null
+    courseIndex:null,
+    count:'',
+    answer:'',
   },
   getters: {
     getUserInfo:function(state){
@@ -60,7 +65,12 @@ export default new Vuex.Store({
       return state.createCount;
     },
 
-
+    getAddrStr : function(state){
+      return state.addrStr;
+    },
+    getCourseMap : function(state){
+      return state.courseMap;
+    },
     getTripDetail: function(state){
       return state.tripDetail;
     },
@@ -82,6 +92,12 @@ export default new Vuex.Store({
     getCourseList: function(state){
       return state.courseList;
     },
+    getMyList: function(state){
+      return state.myList;
+    },
+    getMyComments: function(state){
+      return state.mycomments;
+    },
     getCourses: function(state){
       return state.courses;
     },
@@ -93,6 +109,12 @@ export default new Vuex.Store({
     },
     getCourseIndex: function(state){
       return state.courseIndex;
+    },
+    getCount : function(state){
+      return state.count;
+    },
+    getAnswer : function(state){
+      return state.answer;
     },
     getBestCourseList: (state) => state.bestCourseList,
   },
@@ -110,6 +132,9 @@ export default new Vuex.Store({
     setComments(state, comments){
       state.comments=comments;
     },
+    setMyComments(state, mycomments){
+      state.mycomments=mycomments;
+    },
     setIsLoading(state,status){
       state.isLoading=status;
     },
@@ -118,6 +143,9 @@ export default new Vuex.Store({
     },
     setCourseList(state, courseList) {
       state.courseList = courseList;
+    },
+    setMyList(state, courseList) {
+      state.myList = courseList;
     },
     setIsEditing(state){
       for(var i=0;i<state.comments.length;i++){
@@ -157,7 +185,12 @@ export default new Vuex.Store({
       state.createCount = count;
     },
 
-
+    setAddrStr(state,addr){
+      state.addrStr = addr;
+    },
+    setCourseMap(state,map){
+      state.courseMap=map;
+    },
     setTripDetail(state, detail) {
       state.tripDetail = detail;
     },
@@ -197,6 +230,13 @@ export default new Vuex.Store({
     setCourseIndex(state, index) {
       state.courseIndex = index; 
     },
+    setCount(state,count){
+      state.count = count;
+    },
+    setAnswer(state,answer){
+      state.answer = answer;
+    }
+    
   },
     
     
