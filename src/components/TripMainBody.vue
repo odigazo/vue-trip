@@ -49,7 +49,7 @@
           </v-col>
         </template>
       </v-row>
-      <v-container>
+      <v-container class="pageBtn_">
       <v-btn v-if="prev" @click="prevPage($store.getters.getCurrentPage)">이전</v-btn>
       <v-btn v-for="i in this.$store.getters.getCreateCount" :key="i" @click="changeCurrentPage(i + $store.getters.getPageGroup)"
       min-width="34px" min-height="30px" class="pageBtn" >
@@ -410,6 +410,10 @@ export default {
 };
 </script>
 <style scoped>
+.pageBtn_ {
+    margin-top : 10px;
+    padding-right : 105px;
+}
 
 .pageBtn {
   margin-left : 4.8px;
