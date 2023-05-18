@@ -2,18 +2,20 @@
   <div class="mainHeader">
     <a @click="searchPlaces()"><img class="logo" src="../assets/image/triplogo.png" /></a>
     <div class="center">
-      <div class="signup"><a @click="searchPlaces()">여행지 찾기</a></div>
-      <div class="signup"><a @click="recommendPlaces()">여행지 추천</a></div>
-      <div class="signup"><a @click="courseBoard()">코스바구니</a></div>
+      <div class="my-2"><v-btn text color="primary" X-large @click="searchPlaces()">여행지 찾기</v-btn></div>
+      <div class="my-2"><v-btn text color="primary" X-large @click="recommendPlaces()">여행지 추천</v-btn></div>
+      <div class="my-2"><v-btn text color="primary" X-large @click="courseBoard()">코스바구니</v-btn></div>
     </div>
     <div class="right">
       <div>{{ $store.getters.getUserInfo.userNickname }}</div>
+      <div class="signup2"><a @click="logout()">로그아웃</a></div>
       <div class="signup2"><a @click="myPage()">마이페이지</a></div>
       <div>
-        미방문한 코스가<a class="signup" @click="courseBoard()">0</a>개
+        미방문한 코스가<a class="signup" @click="myPage()">{{$store.getters.getCount}}</a>개
         있습니다.
       </div>
     </div>
+    
   </div>
 </template>
 <script>
@@ -84,6 +86,10 @@ export default {
       }
 
     },
+    logout() {
+      this.$store.commit("RESET_STATE");
+      this.$router.push({ name: "main" });
+    },
     courseBoard() {
       axios
         .get(this._baseUrl + "courseBoard/courseList", {
@@ -100,9 +106,25 @@ export default {
           console.error("에러 ", error);
         });
     },
-    myPage(component) {
+    myPage() {
       if (window.location.pathname !== "/mypage") {
-        this.$router.push({ name: "mypage", params: { component: component } });
+        axios
+        .get(this._baseUrl + "courseBoard/myList", {
+          params: {
+            userNum : this.$store.getters.getUserInfo.userNum
+          },
+        })
+        .then(result=> {
+          console.log(result.data);
+          this.$store.commit("setMyList",JSON.parse(result.data.boardlist));
+          this.$store.commit("setMyComments",JSON.parse(result.data.commentlist));
+          // this.$store.commit("setCourseList", result.data);
+          this.$router.push({ name: "mypage" });
+        })
+        .catch(function (error) {
+          console.error("에러 ", error);
+        });
+        
       }else{
         console.log('페이지 동일');
       }
@@ -143,7 +165,7 @@ div.mainHeader {
   display: flex;
   align-items: center;
   height: 80px;
-  background-color: rgb(0, 166, 255);
+  background-color: rgb(255, 255, 255);
 }
 .center {
   flex: 4;

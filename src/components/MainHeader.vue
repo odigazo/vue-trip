@@ -19,7 +19,7 @@
       <div class="signup2"><a @click="logout()">로그아웃</a></div>
       <div class="signup2"><a @click="myPage()">마이페이지</a></div>
       <div>
-        미방문한 코스가<a class="signup" @click="myPage(MyPageCourseBody)">0</a>개
+        미방문한 코스가<a class="signup" @click="myPage()">{{$store.getters.getCount}}</a>개
         있습니다.
       </div>
     </div>
@@ -50,9 +50,25 @@ export default {
           console.error("에러 ", error);
         });
     },
-    myPage(component) {
+    myPage() {
       if (window.location.pathname !== "/mypage") {
-        this.$router.push({ name: "mypage", params: { component: component } });
+        axios
+        .get(this._baseUrl + "courseBoard/myList", {
+          params: {
+            userNum : this.$store.getters.getUserInfo.userNum
+          },
+        })
+        .then(result=> {
+          console.log(result.data);
+          this.$store.commit("setMyList",JSON.parse(result.data.boardlist));
+          this.$store.commit("setMyComments",JSON.parse(result.data.commentlist));
+          // this.$store.commit("setCourseList", result.data);
+          this.$router.push({ name: "mypage" });
+        })
+        .catch(function (error) {
+          console.error("에러 ", error);
+        });
+        
       }else{
         console.log('페이지 동일');
       }

@@ -1,39 +1,72 @@
 <template>
   <div class="tripcoursebody text-center">
+    <hr />
     <div>
-      <modal name="myModal">
-        <div>
-          <h3>{{ $store.getters.getUserInfo.userNickname }}님의 여행 스타일</h3>
-          <p>원하시는 여행에 대한 상세 정보를 입력해주세요</p>
-          <div>
-            <span>출발일</span>
-            <div>
-              <input type="date" v-model.lazy="startDate" />
-            </div>
-          </div>
-          <div>
-            <span>복귀일</span>
-            <div>
-              <input type="date" v-model.lazy="endDate" />
-            </div>
-          </div>
-          <div>
-            <span>여행목적</span>
-            <div>
-              <select v-model="selectedPurpose">
-                <option v-for="purpose in purposes" :key="purpose">
-                  {{ purpose }}
-                </option>
-              </select>
-            </div>
-          </div>
-          <v-btn class="ma-2" outlined color="indigo" @click="newCourse">코스 보러가기</v-btn>
-          <v-btn class="ma-2" outlined color="red" @click="$modal.hide('myModal')">닫기</v-btn>
-        </div>
-      </modal>
       <div>
-        <v-btn class="ma-2" outlined color="indigo" @click="$modal.show('myModal')">재추천 받기</v-btn>
-        <v-btn class="ma-2" outlined color="indigo" @click="selectCourse">코스 담기</v-btn>
+        <br />
+        <v-row justify="center">
+          <v-dialog v-model="dialog" persistent max-width="400px">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                class="ma-2"
+                outlined
+                color="indigo"
+                v-bind="attrs"
+                v-on="on"
+              >
+                재추천받기
+              </v-btn>
+            </template>
+            <v-card>
+              <v-card-title>
+                <span class="text-h5">상세 여행 정보</span>
+              </v-card-title>
+              <v-card-text>
+                <v-container>
+                  <v-row>
+                    <v-col cols="12">
+                      <v-text-field
+                        label="출발일"
+                        v-model.lazy="startDate"
+                        hide-details="auto"
+                        type="date"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12">
+                      <v-text-field
+                        label="복귀일"
+                        v-model.lazy="endDate"
+                        hide-details="auto"
+                        type="date"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12">
+                      <v-select
+                        :items="purposes"
+                        label="여행목적"
+                        required
+                        v-model="selectedPurpose"
+                      ></v-select>
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="dialog = false">
+                  닫기
+                </v-btn>
+                <v-btn color="blue darken-1" text @click="newCourse()">
+                  저장
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+          <v-btn class="ma-2" outlined color="indigo" @click="selectCourse"
+            >코스 담기</v-btn
+          >
+        </v-row>
+        <br />
       </div>
     </div>
     <div v-if="$store.getters.getIsLoading">
@@ -41,16 +74,70 @@
       <div>최적의 코스를 찾는 중입니다...</div>
     </div>
     <div v-else>
-      <ul>
-        <li v-for="(answer, i) in $store.getters.getSchedule" :key="i">
-          {{ answer }}
-        </li>
-      </ul>
+      <v-timeline>
+        <v-timeline-item
+          v-for="(values, key) in $store.getters.getCourseMap"
+          :key="key"
+          color="blue"
+          small
+        >
+          <!-- <template v-slot:opposite>
+            <span
+              :class="`headline font-weight-bold blue--text`"
+              v-text="key"
+            ></span>
+          </template> -->
+          <v-card>
+            <v-card-title class="blue lighten-2">
+              <h2
+                class="text-h4 white--text font-weight-light"
+                v-text="key"
+              ></h2>
+            </v-card-title>
+            <v-card-text>
+              <ul class="items">
+                <li v-for="(answer, i) in values" :key="i">
+                  {{ answer }}
+                </li>
+              </ul>
+              
+              <!-- <v-stepper non-linear>
+                <v-stepper-header>
+                  <template v-for="(answer, i) in values">
+                    <v-stepper-step
+                      :key="i"
+                      :step="(i + 1).toString()"
+                      complete
+                      complete-icon=""
+                      class="step-text"
+                    >
+                      {{ answer }}
+                    </v-stepper-step>
+
+                    <v-divider
+                      v-if="i !== values.length - 1"
+                      :key="'divider-' + i"
+                    ></v-divider>
+                  </template>
+                </v-stepper-header>
+              </v-stepper> -->
+            </v-card-text>
+          </v-card>
+        </v-timeline-item>
+      </v-timeline>
+      <br />
+      <div>
+        <div v-if="$store.getters.getIsMapReady">
+          <v-btn class="ma-2" outlined color="indigo" @click="kakaomap">
+            지도 보기
+          </v-btn>
+        </div>
+        <div v-else>
+          <img src="../assets/image/worldmap.gif" />
+        </div>
+      </div>
     </div>
-    <!-- <div>{{ chat }}</div> -->
-    <v-btn class="ma-2" outlined color="indigo" v-if="$store.getters.getIsMapReady" @click="kakaomap">
-      지도 보기
-    </v-btn>
+
     <div class="map" id="map" style="height: 500px"></div>
   </div>
 </template>
@@ -66,7 +153,7 @@ export default {
   data() {
     return {
       prompt:
-        "의 반경 50km 안에서 여행하는 여행코스를 날짜, 시간 : 장소의 형태로 장소에 대한 설명은 생략해서 알려줘요.",
+        " 여행코스를 하루에 최소 3군데 이상 방문하고 싶어 날짜 - 시간 : 장소의 형태로 장소에 대한 설명은 생략해서 알려줘요. ex) 날짜 - 09:00~11:00 : 관광지명",
       maxTokens: 2000,
       temperature: 0.2,
       error: "",
@@ -81,31 +168,35 @@ export default {
         "축제와 이벤트 여행",
       ],
       selectedPurpose: "",
+      dialog: false,
     };
   },
   methods: {
     newCourse() {
+      this.dialog = false;
       this.generateText(
         this.startDate +
           "부터 " +
           this.endDate +
           "까지 " +
           this.selectedPurpose +
-          "목적으로 "
+          "목적으로 여행을 가고싶어. "
       );
-      this.$modal.hide("myModal");
     },
     selectCourse() {
       axios
         .post(this._baseUrl + "courseBoard/insertCourse", {
-            userNum : this.$store.getters.getUserInfo.userNum,
-            // placeName : this.$store.getters.getTripDetail.placeName,
-            courseTitle : this.$store.getters.getTripDetail.placeName + this.selectedPurpose,
-            courseContents : this.$store.getters.getSchedule
+          userNum: this.$store.getters.getUserInfo.userNum,
+          // placeName : this.$store.getters.getTripDetail.placeName,
+          courseTitle:
+            this.$store.getters.getTripDetail.placeName +
+            " " +
+            this.selectedPurpose,
+          courseContents: this.$store.getters.getSchedule,
         })
         .then((result) => {
-          if(result.data==1){
-            console.log('코스 담기 성공');
+          if (result.data == 1) {
+            console.log("코스 담기 성공");
           }
           // console.log(result.data);
           // this.$store.commit("setSchedule", result.data);
@@ -181,7 +272,15 @@ export default {
       };
 
       const body = {
-        prompt: "너는 여행 스케쥴러야 " + detail +  this.$store.getters.getTripDetail.placeName +"를 포함한 "+ this.$store.getters.getTripDetail.placeAddress.split(" ")[0] + this.prompt,
+        prompt:
+          "너는 여행 스케쥴러야 " +
+          detail +
+          this.$store.getters.getAddrStr +
+          " 의 관광지들 중에서" +
+          this.$store.getters.getTripDetail.placeName +
+          "를 포함하는 " +
+          // this.$store.getters.getTripDetail.placeAddress.split(" ")[0] +
+          this.prompt,
         max_tokens: this.maxTokens,
         temperature: this.temperature,
       };
@@ -190,60 +289,57 @@ export default {
         const response = await axios.post(API_URL, body, config);
         const answer = response.data.choices[0].text;
         console.log(answer);
-        axios
-          .get(this._baseUrl + "course/schedule", {
-            params: {
-              answer: response.data.choices[0].text,
-            },
-          })
-          .then((result) => {
-            console.log(result);
-            this.$store.commit("setSchedule", result.data);
-            this.$store.commit("setIsLoading", false);
-          })
-          .catch(function () {
-            console.log("fail");
-          });
-        // this.chat = answer;
-        // this.lastQuestion = this.lastQuestion + this.prompt;
-        // this.lastAnswer = answer;
-        var newbody = {
-          prompt:
-            answer +
-            "이 코스에서 관광지명만 추출해서 관광지명 : 해당 관광지의 각기 다른 정확한 위도,경도 형태로 출력해줘요. ex) 부산 자연과학박물관 : 35.170931,129.170771",
-          max_tokens: this.maxTokens,
-          temperature: this.temperature,
-        };
-        const response2 = await axios.post(API_URL, newbody, config);
-        console.log(response2.data.choices[0]);
-        axios
-          .get(this._baseUrl + "course/map", {
-            params: {
-              answer: response2.data.choices[0].text,
-            },
-          })
-          .then((result) => {
-            console.log(result);
-            this.$store.commit("setNames", result.data.names);
-            this.$store.commit("setLatitudes", result.data.latitudes);
-            this.$store.commit("setLongitudes", result.data.longitudes);
-            if (this.$store.getters.getNames != null) {
-              this.$store.commit("setIsMapReady", true);
-            }
-          })
-          .catch(function () {
-            console.log("fail");
-          });
       } catch (error) {
         this.error = error.message;
       }
-      this.prompt = "";
+      axios
+        .get(this._baseUrl + "course/schedule", {
+          params: {
+            answer: this.$store.getters.getAnswer,
+          },
+        })
+        .then((result) => {
+          console.log(result);
+          this.$store.commit("setSchedule", result.data.list);
+          this.$store.commit("setCourseMap", result.data.tripmap);
+          this.$store.commit("setIsLoading", false);
+          axios
+            .get(this._baseUrl + "course/map", {
+              params: {
+                answer: this.$store.getters.getAnswer,
+              },
+            })
+            .then((result2) => {
+              console.log(result2);
+              this.$store.commit("setNames", result2.data.names);
+              this.$store.commit("setLatitudes", result2.data.latitudes);
+              this.$store.commit("setLongitudes", result2.data.longitudes);
+              if (this.$store.getters.getNames != null) {
+                this.$store.commit("setIsMapReady", true);
+              }
+            })
+            .catch(function () {
+              console.log("fail");
+            });
+        })
+        .catch(function () {
+          console.log("fail 스케쥴 저장");
+        });
     },
   },
 };
 </script>
+
 <style scoped>
 div.map {
   align-content: center;
+}
+
+.items > li {
+  list-style: none;
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 10px;
+  margin-top: 10px;
 }
 </style>
