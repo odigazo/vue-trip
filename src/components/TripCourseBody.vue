@@ -100,7 +100,8 @@
                   {{ answer }}
                 </li>
               </ul>
-              <v-stepper>
+              
+              <!-- <v-stepper non-linear>
                 <v-stepper-header>
                   <template v-for="(answer, i) in values">
                     <v-stepper-step
@@ -119,7 +120,7 @@
                     ></v-divider>
                   </template>
                 </v-stepper-header>
-              </v-stepper>
+              </v-stepper> -->
             </v-card-text>
           </v-card>
         </v-timeline-item>
@@ -340,8 +341,5 @@ div.map {
   font-size: 20px;
   margin-bottom: 10px;
   margin-top: 10px;
-}
-.step-text {
-  font-weight: bold;
 }
 </style>

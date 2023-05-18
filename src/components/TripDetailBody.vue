@@ -110,7 +110,7 @@ export default {
         prompt:
           "너는 여행 스케쥴러야 " +
           this.$store.getters.getAddrStr +
-          " 의 관광지들 중에서" +
+          " 의 관광지들 중에서 " +
           this.$store.getters.getTripDetail.placeName +
           "를 포함하여 " +
           this.prompt,
