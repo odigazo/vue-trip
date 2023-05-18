@@ -27,6 +27,7 @@
             v-model.lazy="password"
             hide-details="auto"
             class="my-text-field"
+            type="password"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -39,6 +40,8 @@
             v-model.lazy="password_check"
             hide-details="auto"
             class="my-text-field"
+            type="password"
+            @keyup="checkPW()"
           ></v-text-field>
           <div>{{ pwnotice }}</div>
         </v-col>
@@ -220,7 +223,8 @@ export default {
 
 <style>
 .my-text-field {
-  width: 200px;
-  max-width: 400px;
+  width: 300px;
+  max-width: 400px; 
 }
+
 </style>
