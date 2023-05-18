@@ -28,7 +28,7 @@
         :key="index"
       >
         <v-list-item-content>
-          <v-list-item-title>{{ comment.userNum }}</v-list-item-title>
+          <v-list-item-title>{{ comment.userNickname }}</v-list-item-title>
           <v-list-item-subtitle v-if="!$store.state.isEditing[index]">{{ comment.contents }}</v-list-item-subtitle>
           <v-text-field v-else v-model="newContents[index]" label="Edit comment"></v-text-field>
         </v-list-item-content>
@@ -52,6 +52,7 @@
 
 <script>
 import axios from "axios";
+
 export default {
   data() {
     return {
@@ -82,7 +83,7 @@ export default {
         .get(this._baseUrl + `comment/commentList/${this.courseNum}`, {
           params: {
             courseNum: this.courseNum,
-            userNum: this.userNum
+            userNum: this.userNum,
           },
         })
         .then((result) => {
