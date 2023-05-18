@@ -12,6 +12,11 @@ export default new Vuex.Store({
     latitudes:[],
     longitudes:[],
     placeList:[],
+
+    currentPage: 1,
+    pageGroup : 0,
+    createCount : 5,
+
     tripDetail: {},
     recommendList: [],
     recommendLikeList: [],
@@ -43,8 +48,19 @@ export default new Vuex.Store({
       return state.longitudes;
     },
     getPlaceList: function(state){
-      return state.placeList;
+      return state.placeList[state.currentPage-1];
     },
+    getCurrentPage : function(state) {
+      return state.currentPage;      
+    },
+    getPageGroup : function(state) {
+      return state.pageGroup;
+    },
+    getCreateCount : function(state) {
+      return state.createCount;
+    },
+
+
     getTripDetail: function(state){
       return state.tripDetail;
     },
@@ -126,7 +142,22 @@ export default new Vuex.Store({
     },
     setPlaceList(state, list){
       state.placeList = list;
+      state.currentPage = 1;
+      state.pageGroup = 0;
+      state.currentGroup = 1;
+      state.createCount = list.length/5 < 1 ? list.length : 5; 
     },
+    setCurrentPage(state, page) {
+      state.currentPage = page;
+    },
+    setPageGroup : function(state, number) {
+      state.pageGroup += number;
+    },
+    setCreateCount : function(state, count) {
+      state.createCount = count;
+    },
+
+
     setTripDetail(state, detail) {
       state.tripDetail = detail;
     },
