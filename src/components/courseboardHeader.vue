@@ -2,9 +2,9 @@
   <div class="mainHeader">
     <img class="logo" src="../assets/image/triplogo.png" />
     <div class="center">
-      <div class="signup"><a @click="searchPlaces()">여행지 찾기</a></div>
-      <div class="signup"><a @click="recommendPlaces()">여행지 추천</a></div>
-      <div class="signup"><a @click="courseBoard()">코스바구니</a></div>
+      <div class="signup"><a @click="searchPlaces()">사계절여행</a></div>
+      <div class="signup"><a @click="recommendPlaces()">맞춤 여행추천</a></div>
+      <div class="signup"><a @click="courseBoard()">모행객 추천코스</a></div>
       <div class="search-container">
       <input
         id="search"
@@ -27,14 +27,44 @@
 </template>
 
 <script>
-
-// export default({
-//   methods:{
-//     signup(){
-//       this.$router.push({name:"main"})
-//     }
-//   }
-// })
+import axios from 'axios';
+export default {
+  methods: {
+    searchPlaces() {
+      if (this.$router.currentRoute.name == "tripMain") {
+        return;
+      } else {
+        this.$router.push({ name: "tripMain" });
+      }
+    },
+    recommendPlaces() {
+      // this.$router.push({name:})
+    },
+    courseBoard() {
+      axios
+        .get(this._baseUrl + "courseBoard/courseList", {
+          params: {
+          },
+        })
+        .then(result=> {
+          console.log(result.data);
+          this.$store.commit("setCourseList",result.data);
+          // this.$store.commit("setCourseList", result.data);
+          this.$router.push({name:'courseboardList'});
+        })
+        .catch(function (error) {
+          console.error("에러 ", error);
+        });
+    },
+    myPage(component) {
+      if (window.location.pathname !== "/mypage") {
+        this.$router.push({ name: "mypage", params: { component: component } });
+      }else{
+        console.log('페이지 동일');
+      }
+    },
+  },
+};
 </script>
 
 

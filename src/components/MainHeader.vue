@@ -2,9 +2,9 @@
   <div class="mainHeader">
     <img class="logo" src="../assets/image/triplogo.png" />
     <div class="center">
-      <div class="signup"><a @click="searchPlaces()">여행지 찾기</a></div>
-      <div class="signup"><a @click="recommendPlaces()">여행지 추천</a></div>
-      <div class="signup"><a @click="courseBoard()">코스바구니</a></div>
+      <div class="signup"><a @click="searchPlaces()">사계절여행</a></div>
+      <div class="signup"><a @click="recommendPlaces()">맞춤 여행추천</a></div>
+      <div class="signup"><a @click="courseBoard()">모행객 추천코스</a></div>
       <div class="search-container">
       <input
         id="search"

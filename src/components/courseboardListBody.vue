@@ -1,55 +1,58 @@
 <template>
   <v-container fluid>
-    <v-row>
+     <v-row>
+       <v-col cols="9">
+         <v-row justify="center">
+           <v-col cols="12" md="10">
+             <v-card class="mb-5">
+               <v-card-title class="text-center title font-weight-bold custom-card-title">코스 목록</v-card-title>
+               <v-card-text>
+                 <v-list>
+                   <v-list-item
+                     v-for="(course, index) in paginatedCourses"
+                     :key="index"
+                     @click="goBoard(index, course.courseNum)"
+                     class="py-2"
+                     two-line
+                   >
+                     <v-list-item-content>
+                       <v-list-item-title class="subtitle-1" style="color: #00000099; font-weight:900; font-size: 1.2em;">{{ course.courseTitle }}</v-list-item-title>
+                       <v-list-item-subtitle class="caption" style="font-weight:800">{{ course.courseLike }} Likes</v-list-item-subtitle>
+                     </v-list-item-content>
+                   </v-list-item>
+                 </v-list>
+                 <v-pagination v-model="page" :length="totalPages" />
+               </v-card-text>
+             </v-card>
+           </v-col>
+         </v-row>
+       </v-col>
+
+
       <v-col cols="3">
         <v-card class="elevation-2 mb-5 best-course-card" outlined tile>
-          <v-card-title class="text-center title font-weight-bold" style="background-color: #f8f9fa;">베스트 코스 목록</v-card-title>
+          <v-card-title class="text-center title font-weight-bold" style="background-color: #f8f9fa;">베스트 순위</v-card-title>
           <v-list>
             <v-list-item
-  v-for="(bestCourse, index) in topTenCourses"
-  :key="index"
-  @click="goLikeBoard(index, bestCourse.courseNum)"
-  class="py-2"
-  two-line
-  link
->
+              v-for="(bestCourse, index) in topTenCourses"
+              :key="index"
+              @click="goLikeBoard(index, bestCourse.courseNum)"
+              class="py-2"
+              two-line
+              link
+            >
               <v-list-item-content>
-                <v-list-item-title class="subtitle-1 font-weight-bold">{{ bestCourse.courseTitle }}</v-list-item-title>
+                <v-list-item-title class="subtitle-1 font-weight-bold" style="color: #00000099;">{{ bestCourse.courseTitle }}</v-list-item-title>
                 <v-list-item-subtitle class="caption">{{ bestCourse.courseLike }} Likes</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </v-list>
         </v-card>
       </v-col>
-
-      <v-col cols="9">
-        <v-row justify="center">
-          <v-col cols="12" md="8">
-            <v-card class="elevation-2 mb-5" outlined>
-              <v-card-title class="text-center title font-weight-bold" style="background-color: #f8f9fa;">코스 목록</v-card-title>
-              <v-card-text>
-                <v-list>
-                  <v-list-item
-                    v-for="(course, index) in $store.getters.getCourseList"
-                    :key="index"
-                    @click="goBoard(index, course.courseNum)"
-                    class="py-2"
-                    two-line
-                  >
-                    <v-list-item-content>
-                      <v-list-item-title class="subtitle-1" style="color: #00000099; font-weight:800">{{ course.courseTitle }}</v-list-item-title>
-                      <v-list-item-subtitle class="caption" style="font-weight:800">{{ course.courseLike }} Likes</v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-list>
-              </v-card-text>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-col>
     </v-row>
   </v-container>
 </template>
+
 
 
 
@@ -65,13 +68,22 @@ export default {
       courseLike: "",
       sortedCourseList:[],
       indexy:[],
-      // index:
+      page: 1, // 현재 페이지
+      itemsPerPage: 10 // 페이지당 항목 수
     }
   },
   computed: {
   topTenCourses() {
     return this.sortedCourseList.slice(0, 10);
-  }
+  },
+  totalPages() {
+      return Math.ceil(this.$store.getters.getCourseList.length / this.itemsPerPage);
+    },
+    paginatedCourses() {
+      const start = (this.page - 1) * this.itemsPerPage;
+      const end = start + this.itemsPerPage;
+      return this.$store.getters.getCourseList.slice(start, end);
+    }
 },
   mounted() {
     const courses = this.$store.getters.getCourseList;
@@ -117,7 +129,9 @@ export default {
       console.log(this.$store.getters.getCourseList[index]);
       this.schedule();
       this.$store.commit("setCourseNum", courseNum);
-      this.$store.commit("setCourseIndex", index);
+      this.$store.commit("setCourseIndex", index + (this.page - 1) * this.itemsPerPage);
+
+      // this.$store.commit("setCourseIndex", index);
       // this.$router.push({ name: "courseboard", params: { index: index } });
       this.$router.push({ name: "courseboard" });
     },
@@ -170,4 +184,9 @@ export default {
 </script>
 
 <style scoped>
+.custom-card-title {
+  background-color: #f8f9fa;
+  font-size: 2em !important;
+}
+
 </style>
