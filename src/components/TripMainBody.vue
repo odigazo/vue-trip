@@ -19,10 +19,11 @@
       <h1 class="category" @click="searchCategory('autumn')">#가을</h1>
       <h1 class="category" @click="searchCategory('winter')">#겨울</h1>
     </div>
-    <v-container class="pa-4 text-center">
-      <v-row class="fill-height" align="center" justify="center">
-        <template v-for="(place, i) in $store.getters.getPlaceList">
-          <v-col :key="i" cols="12" md="3" class="grid-image">
+  <v-container class="pa-4 text-center">
+    <v-row class="fill-height" align="center" justify="center">
+      <template v-for="(place, i) in $store.getters.getPlaceList">
+        <v-col :key="i" cols="12" md="3" class="grid-image">
+          <div class="grid-container">
             <v-hover v-slot="{ hover }">
               <v-card
                 :elevation="hover ? 12 : 2"
@@ -46,23 +47,42 @@
                 </v-img>
               </v-card>
             </v-hover>
-          </v-col>
-        </template>
-      </v-row>
-      <v-container class="pageBtn_">
-      <v-btn v-if="prev" @click="prevPage($store.getters.getCurrentPage)">이전</v-btn>
-      <v-btn v-for="i in this.$store.getters.getCreateCount" :key="i" @click="changeCurrentPage(i + $store.getters.getPageGroup)"
-      min-width="34px" min-height="30px" class="pageBtn" >
+          </div>
+        </v-col>
+      </template>
+    </v-row>
+    <v-container class="pageBtnContainer">
+      <v-btn
+        v-if="prev"
+        @click="prevPage($store.getters.getCurrentPage)"
+        class="pageBtn"
+      >
+        이전
+      </v-btn>
+      <v-btn
+        v-for="i in $store.getters.getCreateCount"
+        :key="i"
+        @click="changeCurrentPage(i + $store.getters.getPageGroup)"
+        :class="{'pageBtn': true, 'active': i + $store.getters.getPageGroup === $store.getters.getCurrentPage}"
+        min-width="34px"
+      >
         {{i + $store.getters.getPageGroup}}
       </v-btn>
-      <v-btn v-if="next" @click="nextPage($store.getters.getCurrentPage)">다음</v-btn>
-      </v-container>
+      <v-btn
+        v-if="next"
+        @click="nextPage($store.getters.getCurrentPage)"
+        class="pageBtn"
+      >
+        다음
+      </v-btn>
+    </v-container>
       
     </v-container>
   </div>
 </template>
 
 <script>
+
 export default {
   data() {
     return {
@@ -410,18 +430,39 @@ export default {
 };
 </script>
 <style scoped>
-.pageBtn_ {
-    margin-top : 10px;
-    padding-right : 105px;
+.grid-image {
+  position: relative;
+  padding: 10% 10%; /* Added padding to create the invisible grid */
+}
+
+.grid-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+.pageBtnContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  padding-right: 200px;
 }
 
 .pageBtn {
-  margin-left : 4.8px;
-  margin-right : 4.8px;
   background-color: white;
   color: black;
   border: 1px solid #ccc;
+  margin-left: 4.8px;
+  margin-right: 4.8px;
   margin-right: 5px;
+  min-width: 34px;
+}
+
+.pageBtn.active {
+  background-color: skyblue;
+  color: white;
 }
 .tripMainBody {
   position: relative;
@@ -450,6 +491,7 @@ export default {
   justify-content: center;
   flex-wrap: wrap;
   margin-bottom: 20px;
+  margin-right: 140px;
 }
 .category {
   font-size: 24px;
@@ -465,14 +507,14 @@ export default {
 .v-card {
   transition: opacity 0.5s ease-in-out;
   opacity: 1; /* 초기에 선명하게 설정 */
-  width: 60%;
-  height: 60%;
+  width: 50%;
+  height: 50%;
   border-radius: 30px;
 }
 
 .v-card.on-hover {
-  width: 80%;
-  height: 80%;
+  width: 70%;
+  height: 70%;
 }
 
 .place-name {

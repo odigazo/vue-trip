@@ -1,8 +1,9 @@
 <template>
+<v-container>
   <v-sheet
     class="mx-auto"
     elevation="8"
-    max-width="1000"
+    max-width="1030"
   >
     <v-slide-group
       class="pa-4"
@@ -11,6 +12,71 @@
     >
       <v-slide-item
         v-for="(place, i) in $store.getters.getPlaceList"
+        :key="i"
+      >
+        <v-card
+          class="ma-4"
+          height="160"
+          width="190"
+        >
+        
+          <v-hover v-slot="{ hover }">
+            <v-card :elevation="hover ? 12 : 2" :class="{ 'on-hover': hover }" @click="tripDetail(place.placeName)">
+              <v-img :src="place.thumnailUrl">
+                <v-card-title class="text-h6 white--text">
+                  <v-row class="fill-height flex-column" justify="space-between">
+                    <p class="mt-4 subheading text-left place-name" :style="{ visibility: hover ? 'visible' : 'hidden' }">
+                      {{ place.placeName }}
+                    </p>
+                  </v-row>
+                </v-card-title>
+              </v-img>
+            </v-card>
+          </v-hover>
+        </v-card>
+      </v-slide-item>
+    </v-slide-group>
+
+
+    <v-slide-group
+      class="pa-4"
+      active-class="success"
+      show-arrows
+    >
+      <v-slide-item
+        v-for="(place, i) in $store.getters.getRecommendLikeList"
+        :key="i"
+      >
+        <v-card
+          class="ma-4"
+          height="160"
+          width="190"
+        >
+          <v-hover v-slot="{ hover }">
+            <v-card :elevation="hover ? 12 : 2" :class="{ 'on-hover': hover }" @click="tripDetail(place.placeName)">
+              <v-img :src="place.thumnailUrl">
+                <v-card-title class="text-h6 white--text">
+                  <v-row class="fill-height flex-column" justify="space-between">
+                    <p class="mt-4 subheading text-left place-name" :style="{ visibility: hover ? 'visible' : 'hidden' }">
+                      {{ place.placeName }}
+                    </p>
+                  </v-row>
+                </v-card-title>
+              </v-img>
+            </v-card>
+          </v-hover>
+        </v-card>
+      </v-slide-item>
+    </v-slide-group>
+
+
+    <v-slide-group
+      class="pa-4"
+      active-class="success"
+      show-arrows
+    >
+      <v-slide-item
+        v-for="(place, i) in $store.getters.getRecentCourseList"
         :key="i"
       >
         <v-card
@@ -35,41 +101,12 @@
       </v-slide-item>
     </v-slide-group>
   </v-sheet>
+    <v-btn @click="recommendInput()">추천 받기</v-btn>
+</v-container>
 </template>
-    <!-- <button @click="recommendInput()">추천 받기</button> -->
-    <!-- <tiny-slider ref="slider" :mouse-drag="true" :loop="false" :autoplay="false" items="3" gutter="10" speed="1000" id="my-slider" style="display:flex;" :controls="false" :nav="false">
-      <div style="height: 200px;" v-for="(place, i) in $store.getters.getRecommendList" :key="i">
-        <img :src="place.thumnailUrl" class="slideImg" @click="tripDetail(place.placeName)">
-        <div>
-          <font>{{ place.placeName }}</font>
-        </div>
-      </div>
-    </tiny-slider>
-
-    <tiny-slider ref="like-slider" :mouse-drag="true" :loop="false" :autoplay="false" items="3" gutter="20" speed="1000" id="my-slider" style="display:flex;" :controls="false" :nav="false">
-      <div style="height: 200px;" v-for="(place, i) in $store.getters.getRecommendLikeList" :key="i">
-        <img :src="place.thumnailUrl" class="slideImg" @click="tripDetail(place.placeName)">
-        <div>
-          <font>{{ place.placeName }}</font>
-        </div>
-      </div>
-    </tiny-slider>
-
-    <tiny-slider ref="like-slider" :mouse-drag="true" :loop="false" :autoplay="false" items="3" gutter="20" speed="1000" id="my-slider" style="display:flex;" :controls="false" :nav="false">
-      <div style="height: 200px;" v-for="(place, i) in $store.getters.getRecentCourseList" :key="i">
-        <img :src="place.thumnailUrl" class="slideImg" @click="tripDetail(place.placeName)">
-        <div>
-          <font>{{ place.placeName }}</font>
-        </div>
-      </div>
-    </tiny-slider> -->
 <script>
-// import VueTinySlider from 'vue-tiny-slider';
-
 export default {
-  // components: {
-  //   'tiny-slider': VueTinySlider
-  // },
+  
   methods: {
     tripDetail(placeName) {
       this.$axios({
@@ -116,12 +153,28 @@ export default {
   background-color: rgba(100, 100, 100, 0.6);
   color: white;
   position: absolute;
-  /* bottom: -16px; */
-  /* left: 0; */
   display: flex;
   border-radius: 5px;
   letter-spacing: -1px;
   line-height: 2;
   margin: auto;
 }
+
+.category-label {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+}
+
+.recommend-button {
+  background-color: #333;
+  color: #fff;
+  margin-top: 20px;
+  border-radius: 4px;
+  padding: 10px 20px;
+}
 </style>
+
