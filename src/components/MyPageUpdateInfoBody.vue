@@ -27,6 +27,7 @@
               <v-col cols="6" class="d-flex align-self-center">
                 <v-text-field
                   :label="$store.getters.getUserInfo.userNickname"
+                  v-model.lazy="nickname"
                   hide-details="auto"
                   class="my-text-field"
                 ></v-text-field>
@@ -48,6 +49,7 @@
               <v-col cols="6" class="d-flex align-self-center">
                 <v-text-field
                   :label="$store.getters.getUserInfo.userAddr"
+                  v-model.lazy="address"
                   hide-details="auto"
                   class="my-text-field"
                 ></v-text-field>
@@ -68,6 +70,7 @@
               <v-col cols="6" class="d-flex align-self-center">
                 <v-text-field
                   :label="$store.getters.getUserInfo.userAge.toString()"
+                  v-model.lazy="age"
                   hide-details="auto"
                   class="my-text-field"
                   type="number"
