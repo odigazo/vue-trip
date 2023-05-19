@@ -3,7 +3,7 @@
     <h3>회원가입</h3>
     <div>
       <v-row justify="center">
-        <v-col cols="3">
+        <v-col cols="3" class="d-flex align-self-center">
           <v-text-field
             label="E-mail"
             v-model.lazy="email"
@@ -11,17 +11,21 @@
             class="my-text-field"
           ></v-text-field>
         </v-col>
-        <v-col cols="3">
+        <v-col cols="3" class="d-flex align-self-center">
           <v-btn class="ma-2" outlined color="indigo" @click="checkEmail()"
             >중복확인</v-btn
           >
         </v-col>
       </v-row>
-      <div>{{ emailnotice }}</div>
+      <v-row justify="center">
+        <v-col cols="6" class="d-flex align-self-center">
+          <div>{{ emailnotice }}</div>
+        </v-col>
+      </v-row>
     </div>
     <div>
       <v-row justify="center">
-        <v-col cols="6">
+        <v-col cols="6" class="d-flex align-self-center">
           <v-text-field
             label="비밀번호"
             v-model.lazy="password"
@@ -34,7 +38,7 @@
     </div>
     <div>
       <v-row justify="center">
-        <v-col cols="6">
+        <v-col cols="6" class="d-flex align-self-center">
           <v-text-field
             label="비밀번호 확인"
             v-model.lazy="password_check"
@@ -43,13 +47,17 @@
             type="password"
             @keyup="checkPW()"
           ></v-text-field>
+        </v-col>
+      </v-row>
+      <v-row justify="center">
+        <v-col cols="6" class="d-flex align-self-center">
           <div>{{ pwnotice }}</div>
         </v-col>
       </v-row>
     </div>
     <div>
       <v-row justify="center">
-        <v-col cols="3">
+        <v-col cols="3" class="d-flex align-self-center">
           <v-text-field
             label="닉네임"
             v-model.lazy="nickname"
@@ -57,17 +65,21 @@
             class="my-text-field"
           ></v-text-field>
         </v-col>
-        <v-col cols="3">
+        <v-col cols="3" class="d-flex align-self-center">
           <v-btn class="ma-2" outlined color="indigo" @click="checkNickName()"
             >중복확인</v-btn
           >
         </v-col>
       </v-row>
-      <div>{{ nicknamenotice }}</div>
+      <v-row justify="center">
+        <v-col cols="6" class="d-flex align-self-center">
+          <div>{{ nicknamenotice }}</div>
+        </v-col>
+      </v-row>
     </div>
     <div>
       <v-row justify="center">
-        <v-col cols="3">
+        <v-col cols="3" class="d-flex align-self-center">
           <v-text-field
             label="도로명 주소"
             v-model.lazy="address"
@@ -75,7 +87,7 @@
             class="my-text-field"
           ></v-text-field>
         </v-col>
-        <v-col cols="3">
+        <v-col cols="3" class="d-flex align-self-center">
           <v-btn large color="primary" dark @click="execDaumPostcode()"
             >주소 검색</v-btn
           >
@@ -84,7 +96,7 @@
     </div>
     <div>
       <v-row justify="center">
-        <v-col cols="6">
+        <v-col cols="6" class="d-flex align-self-center">
           <v-text-field
             label="나이"
             v-model.lazy="age"
@@ -224,7 +236,6 @@ export default {
 <style>
 .my-text-field {
   width: 300px;
-  max-width: 400px; 
+  max-width: 400px;
 }
-
 </style>
