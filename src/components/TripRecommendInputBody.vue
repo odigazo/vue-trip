@@ -28,7 +28,7 @@ export default {
             let distance = document.getElementById('distance');
 
             let userInfo = this.$store.getters.getUserInfo;
-
+            console.log(userInfo);
             if (this.checkEmpty(startDate.value) && this.checkEmpty(endDate.value) && this.checkEmpty(purpose.value) && this.checkEmpty(distance.value)) {
                 this.$axios({
                     url : 'http://dapi.kakao.com/v2/local/search/address.json',
@@ -55,7 +55,7 @@ export default {
                             distance : distance.value,
                             longitude : longitude,
                             latitude : latitude,
-                            userInfo : userInfo.userNum
+                            userNum : userInfo.userNum
                         },
                         responseType: 'json'
                     }).then(function(detail) {
