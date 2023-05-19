@@ -1,15 +1,15 @@
 <template>
     <div>
-        <MainHeader></MainHeader>
+        <MainHeader2></MainHeader2>
         <RecommendBody></RecommendBody>
     </div>
 </template>
 <script>
-import MainHeader from '../components/MainHeader.vue';
+import MainHeader2 from '../components/MainHeader2.vue';
 import RecommendBody from '../components/RecommendBody.vue';
 export default {
     components : {
-        MainHeader : MainHeader,
+        MainHeader2 : MainHeader2,
         RecommendBody : RecommendBody
     },
 }
