@@ -1,17 +1,17 @@
 <template>
   <div class="courseboardList">
-    <courseboardListHeader></courseboardListHeader>
+    <MainHeader2></MainHeader2>
     <courseboardListBody></courseboardListBody>
   </div>
 </template>
 
 <script>
-import courseboardListHeader from '@/components/courseboardListHeader.vue' 
+import MainHeader2 from '../components/MainHeader2.vue'; 
 import courseboardListBody from '@/components/courseboardListBody.vue'
 export default ({
   name:'courseboardListView',
   components:{
-    courseboardListHeader,
+    MainHeader2,
     courseboardListBody
   }
 })

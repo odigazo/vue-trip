@@ -23,7 +23,7 @@ export default({
     display: flex;
     align-items: center;
     height: 80px;
-    background-color: rgb(0, 166, 255);
+    background-color: rgb(255, 255, 255);
   }
 
   div.middle {
