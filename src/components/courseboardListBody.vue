@@ -1,4 +1,6 @@
 <template>
+<div>
+  <hr/>
   <v-container fluid>
      <v-row>
        <v-col cols="9">
@@ -51,6 +53,7 @@
       </v-col>
     </v-row>
   </v-container>
+</div>
 </template>
 
 
@@ -119,6 +122,7 @@ export default {
           .then((result) => {
             console.log(result);
             this.$store.commit("setSchedule", result.data);
+            this.$store.commit("setCourseMap", result.data.tripmap);
             // this.$store.commit("setIsLoading", false);
           })
           .catch(function () {

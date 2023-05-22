@@ -1,5 +1,6 @@
 <template>
   <div class="signupbody text-center">
+    <hr />
     <h3>회원가입</h3>
     <div>
       <v-row justify="center">

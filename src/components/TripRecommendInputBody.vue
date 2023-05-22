@@ -1,5 +1,6 @@
 <template>
     <div>
+        <hr/>
     여행 출발일 : <input type="date" id="startDate"><br>
     여행 종료일 : <input type="date" id="endDate"><br>    
     

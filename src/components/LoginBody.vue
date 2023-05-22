@@ -1,5 +1,6 @@
 <template>
   <div class="loginbody">
+    <hr />
     <h3>로그인</h3>
     <div>
       <v-row justify="center">

@@ -1,4 +1,6 @@
 <template>
+<div>
+  <hr/>
 <v-container>
   <v-sheet
     class="mx-auto"
@@ -103,6 +105,7 @@
   </v-sheet>
     <v-btn @click="recommendInput()">추천 받기</v-btn>
 </v-container>
+</div>
 </template>
 <script>
 export default {

@@ -1,26 +1,29 @@
 <template>
-  <div class="container">
-    <div class="image-container">
-      <img
-        :src="$store.getters.getTripDetail.imageUrl"
-        alt="Image"
-        style="height: 500px; width: 600px"
-      />
+  <div>
+    <hr />
+    <div class="container">
+      <div class="image-container">
+        <img
+          :src="$store.getters.getTripDetail.imageUrl"
+          alt="Image"
+          style="height: 500px; width: 600px"
+        />
+      </div>
+      <div class="description-container">
+        <h1 style="text-align: left">
+          {{ $store.getters.getTripDetail.placeName }}
+        </h1>
+        <font>{{ $store.getters.getTripDetail.placeAddress }}</font>
+        <font style="text-align: left">{{
+          $store.getters.getTripDetail.placeContents
+        }}</font>
+        <a v-if="urlCheck" :href="$store.getters.getTripDetail.placeUrl"
+          >여행지 리뷰 확인하러 가기</a
+        >
+        <div id="map" style="width: 500px; height: 300px"></div>
+      </div>
+      <v-btn @click="courseRecommend">코스 추천받기</v-btn>
     </div>
-    <div class="description-container">
-      <h1 style="text-align: left">
-        {{ $store.getters.getTripDetail.placeName }}
-      </h1>
-      <font>{{ $store.getters.getTripDetail.placeAddress }}</font>
-      <font style="text-align: left">{{
-        $store.getters.getTripDetail.placeContents
-      }}</font>
-      <a v-if="urlCheck" :href="$store.getters.getTripDetail.placeUrl"
-        >여행지 리뷰 확인하러 가기</a
-      >
-      <div id="map" style="width: 500px; height: 300px"></div>
-    </div>
-    <v-btn @click="courseRecommend">코스 추천받기</v-btn>
   </div>
 </template>
 <script>
@@ -124,7 +127,6 @@ export default {
         this.$store.commit("setAnswer", answer);
         console.log(answer);
         console.log(body.prompt);
-        
       } catch (error) {
         this.error = error.message;
       }

@@ -1,4 +1,6 @@
 <template>
+<div>
+  <hr/>
   <v-container>
     <v-card class="mt-5" outlined>
       <v-card-title class="headline">{{ this.$store.getters.getCourseList[$store.getters.getCourseIndex].courseTitle }}</v-card-title>
@@ -46,6 +48,7 @@
       <v-btn type="submit" color="primary">댓글쓰기</v-btn>
     </v-form>
   </v-container>
+</div>
 </template>
 
 
