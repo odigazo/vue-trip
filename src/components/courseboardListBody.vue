@@ -112,11 +112,12 @@ export default {
     next(input) {
       document.getElementById(input).focus();
     },
-    schedule(){
+    schedule(contents){
+      
     axios
           .get(this._baseUrl + "course/schedule", {
             params: {
-              answer: this.$store.getters.getCourseList[this.$store.getters.getCourseIndex].courseContents
+              answer: contents
             },
           })
           .then((result) => {
@@ -130,8 +131,9 @@ export default {
           });
         },
     goBoard(index, courseNum) {
-      console.log(this.$store.getters.getCourseList[index]);
-      this.schedule();
+      console.log(this.$store.getters.getCourseList[index].courseContents);
+      
+      this.schedule(this.$store.getters.getCourseList[index].courseContents);
       this.$store.commit("setCourseNum", courseNum);
       this.$store.commit("setCourseIndex", index + (this.page - 1) * this.itemsPerPage);
 
