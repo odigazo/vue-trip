@@ -2,15 +2,18 @@
   <div class="tripMainBody">
     <div
       class="background-image"
-      :style="`background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 1)), url(${imagePath});`"
+      :style="`background-image: url('${imagePath}');`"
     ></div>
     <div class="search-container">
+    <v-toolbar dense floating style="border-radius: 6px;">
       <v-text-field
-        outlined
+        hide-details
+        single-line
         label="주소명"
-        variant="solo"
         v-model="keyword"
       ></v-text-field>
+    </v-toolbar>
+    
     </div>
     <div class="category-container">
       <h1 class="category" @click="searchCategory('전체')">#전체</h1>
@@ -316,7 +319,7 @@ export default {
             this.next = true;
             this.$store.commit("setPlaceList", pageList);
             //---------------------------------------------------
-            this.imagePath = "../전체.png";
+            this.imagePath = "../전체.jpg";
           }.bind(this)
         );
       } else {
@@ -447,7 +450,7 @@ export default {
   display: flex;
   justify-content: center;
   margin-top: 10px;
-  padding-right: 200px;
+  padding-right: 150px;
 }
 
 .pageBtn {
@@ -468,21 +471,19 @@ export default {
   position: relative;
 }
 .search-container {
-  position: relative;
-  width: 400px;
   padding: 10px;
 }
-.search-container > * {
-  background-color: white;
-  height: 55px;
-  transition: 0.15s opacity cubic-bezier(0.4, 0, 0.2, 1);
+.v-toolbar {
+  width: 400px;
+}
+.v-text-field {
+  width: 370px;
 }
 .background-image {
-  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 1200px;
+  height: 300px;
 }
 
 .category-container {
@@ -500,8 +501,9 @@ export default {
   cursor: pointer;
   transition: color 0.3s;
 }
+/* hover 수정 */
 .category:hover {
-  color: #f7fffb;
+  color: skyblue;
 }
 
 .v-card {
@@ -509,7 +511,7 @@ export default {
   opacity: 1; /* 초기에 선명하게 설정 */
   width: 50%;
   height: 50%;
-  border-radius: 30px;
+  border-radius: 10px;
 }
 
 .v-card.on-hover {
@@ -520,15 +522,16 @@ export default {
 .place-name {
   font-size: 15px;
   font-weight: bold;
-  background-color: rgba(100, 100, 100, 0.6);
+  background-color: rgba(100, 100, 100, 0.4);
   color: white;
   position: absolute;
-  bottom: -16px;
-  left: 0;
+  bottom: -25px;
+  left: -5px;
   display: flex;
   border-radius: 5px;
   letter-spacing: -1px;
   line-height: 2;
   margin: 0 0 30px 10px;
 }
+/* linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 1), rgba(255, 255, 255, 1)), */
 </style>
