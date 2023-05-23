@@ -10,6 +10,7 @@ import RecommendView from '../views/RecommendView.vue'
 import SignUpView from '../views/SignUpView.vue'
 import TripCourseView from '../views/TripCourseView.vue'
 import MyPageView from '../views/MyPageView.vue'
+import store from "../store/index.js"
 
 Vue.use(VueRouter)
 
@@ -27,44 +28,115 @@ const routes = [
   {
     path:'/courseboar',
     name:'courseboard',
-    component: courseboardView
+    component: courseboardView,
+    props: true,
+        beforeEnter: function(to, from, next) {
+            if (!store.getters["isLogin"]) {
+                alert("로그인 정보 없음, 로그인 페이지로 이동합니다.");
+                next('/login');
+            } else {
+                next();
+            }
+
+        }
   },
   //코스바구니 리스트(임시)
   {
     path:'/courseboardList',
     name:'courseboardList',
-    component: courseboardListView
+    component: courseboardListView,
+    props: true,
+        beforeEnter: function(to, from, next) {
+            if (!store.getters["isLogin"]) {
+                alert("로그인 정보 없음, 로그인 페이지로 이동합니다.");
+                next('/login');
+            } else {
+                next();
+            }
+
+        }
   },
   {
 
     path: '/tripMain',
     name: 'tripMain',
-    component: TripMainView
+    component: TripMainView,
+    props: true,
+        beforeEnter: function(to, from, next) {
+            if (!store.getters["isLogin"]) {
+                alert("로그인 정보 없음, 로그인 페이지로 이동합니다.");
+                next('/login');
+            } else {
+                next();
+            }
+
+        }
   },
   {
     path: '/tripDetail',
     name: 'tripDetail',
-    component: TripDetailView
+    component: TripDetailView,
+    props: true,
+        beforeEnter: function(to, from, next) {
+            if (!store.getters["isLogin"]) {
+                alert("로그인 정보 없음, 로그인 페이지로 이동합니다.");
+                next('/login');
+            } else {
+                next();
+            }
+
+        }
   },
   {
     path: '/recommend',
     name: 'recommend',
-    component: RecommendView
+    component: RecommendView,
+    props: true,
+        beforeEnter: function(to, from, next) {
+            if (!store.getters["isLogin"]) {
+                alert("로그인 정보 없음, 로그인 페이지로 이동합니다.");
+                next('/login');
+            } else {
+                next();
+            }
+
+        }
   },
   {
     path: '/signup',
     name: 'signup',
-    component: SignUpView
+    component: SignUpView,
+    
   },
   {
     path: '/tripcourse',
     name: 'tripcourse',
-    component: TripCourseView
+    component: TripCourseView,
+    props: true,
+        beforeEnter: function(to, from, next) {
+            if (!store.getters["isLogin"]) {
+                alert("로그인 정보 없음, 로그인 페이지로 이동합니다.");
+                next('/login');
+            } else {
+                next();
+            }
+
+        }
   },
   {
     path: '/mypage',
     name: 'mypage',
-    component: MyPageView
+    component: MyPageView,
+    props: true,
+        beforeEnter: function(to, from, next) {
+            if (!store.getters["isLogin"]) {
+                alert("로그인 정보 없음, 로그인 페이지로 이동합니다.");
+                next('/login');
+            } else {
+                next();
+            }
+
+        }
   }
 ]
 

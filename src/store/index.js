@@ -6,140 +6,143 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    userinfo:[],
-    schedule:[],
-    names:[],
-    latitudes:[],
-    longitudes:[],
-    placeList:[],
+    userinfo: [],
+    schedule: [],
+    names: [],
+    latitudes: [],
+    longitudes: [],
+    placeList: [],
 
     currentPage: 1,
-    pageGroup : 0,
-    createCount : 5,
-    addrStr:'',
-    courseMap:null,
+    pageGroup: 0,
+    createCount: 5,
+    addrStr: '',
+    courseMap: null,
     tripDetail: {},
     recommendList: [],
     recommendLikeList: [],
-    recentCourseList : [],
-    comments:[],
-    mycomments:[],
-    isEditing:[],
-    isLoading:false,
-    isMapReady:false,
-    courseList:[], //전체코스목록
-    myList:[], //개인코스목록 
+    recentCourseList: [],
+    comments: [],
+    mycomments: [],
+    isEditing: [],
+    isLoading: false,
+    isMapReady: false,
+    courseList: [], //전체코스목록
+    myList: [], //개인코스목록 
     courses: {},
-    courseNum:{},
+    courseNum: {},
     bestCourseList: [],
-    courseIndex:null,
-    count:'',
-    answer:'',
+    courseIndex: null,
+    count: '',
+    answer: '',
   },
   getters: {
-    getUserInfo:function(state){
+    getUserInfo: function (state) {
       return state.userinfo;
     },
-    getSchedule:function(state){
+    isLogin: function (state) {
+      return state.userinfo.userNum >= 1;
+    },
+    getSchedule: function (state) {
       return state.schedule;
     },
-    getNames:function(state){
+    getNames: function (state) {
       return state.names;
     },
-    getLatitudes:function(state){
+    getLatitudes: function (state) {
       return state.latitudes;
     },
-    getLongitudes:function(state){
+    getLongitudes: function (state) {
       return state.longitudes;
     },
-    getPlaceList: function(state){
-      return state.placeList[state.currentPage-1];
+    getPlaceList: function (state) {
+      return state.placeList[state.currentPage - 1];
     },
-    getCurrentPage : function(state) {
-      return state.currentPage;      
+    getCurrentPage: function (state) {
+      return state.currentPage;
     },
-    getPageGroup : function(state) {
+    getPageGroup: function (state) {
       return state.pageGroup;
     },
-    getCreateCount : function(state) {
+    getCreateCount: function (state) {
       return state.createCount;
     },
 
-    getAddrStr : function(state){
+    getAddrStr: function (state) {
       return state.addrStr;
     },
-    getCourseMap : function(state){
+    getCourseMap: function (state) {
       return state.courseMap;
     },
-    getTripDetail: function(state){
+    getTripDetail: function (state) {
       return state.tripDetail;
     },
-    getRecommendList: function(state){
+    getRecommendList: function (state) {
       return state.recommendList;
     },
-    getRecommendLikeList: function(state){
+    getRecommendLikeList: function (state) {
       return state.recommendLikeList;
     },
     getRecentCourseList(state) {
       return state.recentCourseList;
     },
-    getIsLoading: function(state){
+    getIsLoading: function (state) {
       return state.isLoading;
     },
-    getIsMapReady: function(state){
+    getIsMapReady: function (state) {
       return state.isMapReady;
     },
-    getCourseList: function(state){
+    getCourseList: function (state) {
       return state.courseList;
     },
-    getMyList: function(state){
+    getMyList: function (state) {
       return state.myList;
     },
-    getMyComments: function(state){
+    getMyComments: function (state) {
       return state.mycomments;
     },
-    getCourses: function(state){
+    getCourses: function (state) {
       return state.courses;
     },
-    getCourseNum: function(state){
+    getCourseNum: function (state) {
       return state.courseNum;
     },
     getCourseLikeByIndex: (state) => (index) => {
       return state.courseList[index].courseLike;
     },
-    getCourseIndex: function(state){
+    getCourseIndex: function (state) {
       return state.courseIndex;
     },
-    getCount : function(state){
+    getCount: function (state) {
       return state.count;
     },
-    getAnswer : function(state){
+    getAnswer: function (state) {
       return state.answer;
     },
     getBestCourseList: (state) => state.bestCourseList,
   },
   mutations: {
     RESET_STATE(state) {
-      state.userinfo=null;
-      state.schedule=null;
-      state.names=null;
-      state.latitudes=null;
-      state.longitudes=null;
+      state.userinfo = null;
+      state.schedule = null;
+      state.names = null;
+      state.latitudes = null;
+      state.longitudes = null;
     },
-    setUserInfo(state,list){
-      state.userinfo=list;
+    setUserInfo(state, list) {
+      state.userinfo = list;
     },
-    setComments(state, comments){
-      state.comments=comments;
+    setComments(state, comments) {
+      state.comments = comments;
     },
-    setMyComments(state, mycomments){
-      state.mycomments=mycomments;
+    setMyComments(state, mycomments) {
+      state.mycomments = mycomments;
     },
-    setIsLoading(state,status){
-      state.isLoading=status;
+    setIsLoading(state, status) {
+      state.isLoading = status;
     },
-    setIsMapReady(state,status){
-      state.isMapReady=status;
+    setIsMapReady(state, status) {
+      state.isMapReady = status;
     },
     setCourseList(state, courseList) {
       state.courseList = courseList;
@@ -147,49 +150,49 @@ export default new Vuex.Store({
     setMyList(state, courseList) {
       state.myList = courseList;
     },
-    setIsEditing(state){
-      for(var i=0;i<state.comments.length;i++){
-        state.isEditing[i]=false;
+    setIsEditing(state) {
+      for (var i = 0; i < state.comments.length; i++) {
+        state.isEditing[i] = false;
       }
     },
-    setIsEditingTrue(state,index){
-      for(var i=0;i<state.comments.length;i++){
-        console.log("왜 안찍혀",state.isEditing[i]);
-        if(i==index){
-          state.isEditing[i]=true;
+    setIsEditingTrue(state, index) {
+      for (var i = 0; i < state.comments.length; i++) {
+        console.log("왜 안찍혀", state.isEditing[i]);
+        if (i == index) {
+          state.isEditing[i] = true;
         }
       }
     },
-    setIsEditingFalse(state,index){
-      for(var i=0;i<state.comments.length;i++){
-        console.log("왜 안찍혀",state.isEditing[i]);
-        if(i==index){
-          state.isEditing[i]=false;
+    setIsEditingFalse(state, index) {
+      for (var i = 0; i < state.comments.length; i++) {
+        console.log("왜 안찍혀", state.isEditing[i]);
+        if (i == index) {
+          state.isEditing[i] = false;
         }
       }
     },
-    setPlaceList(state, list){
+    setPlaceList(state, list) {
       state.placeList = list;
       state.currentPage = 1;
       state.pageGroup = 0;
       state.currentGroup = 1;
-      state.createCount = list.length/5 < 1 ? list.length : 5; 
+      state.createCount = list.length / 5 < 1 ? list.length : 5;
     },
     setCurrentPage(state, page) {
       state.currentPage = page;
     },
-    setPageGroup : function(state, number) {
+    setPageGroup: function (state, number) {
       state.pageGroup += number;
     },
-    setCreateCount : function(state, count) {
+    setCreateCount: function (state, count) {
       state.createCount = count;
     },
 
-    setAddrStr(state,addr){
+    setAddrStr(state, addr) {
       state.addrStr = addr;
     },
-    setCourseMap(state,map){
-      state.courseMap=map;
+    setCourseMap(state, map) {
+      state.courseMap = map;
     },
     setTripDetail(state, detail) {
       state.tripDetail = detail;
@@ -203,17 +206,17 @@ export default new Vuex.Store({
     setRecentCourseList(state, list) {
       state.recentCourseList = list;
     },
-    setSchedule(state,list){
-      state.schedule=list;
+    setSchedule(state, list) {
+      state.schedule = list;
     },
-    setNames(state,list){
-      state.names=list;
+    setNames(state, list) {
+      state.names = list;
     },
-    setLatitudes(state,list){
-      state.latitudes=list;
+    setLatitudes(state, list) {
+      state.latitudes = list;
     },
-    setLongitudes(state,list){
-      state.longitudes=list;
+    setLongitudes(state, list) {
+      state.longitudes = list;
     },
     setCourses(state, courses) {
       state.courses = courses;
@@ -221,30 +224,30 @@ export default new Vuex.Store({
     updateCourseLike(state, { index, newLikeCount }) {
       state.courseList[index].courseLike = newLikeCount;
     },
-    setCourseNum(state, courseNum){
-      state.courseNum= courseNum;
+    setCourseNum(state, courseNum) {
+      state.courseNum = courseNum;
     },
     setBestCourseList(state, bestCourseList) {
-      state.bestCourseList = bestCourseList; 
+      state.bestCourseList = bestCourseList;
     },
     setCourseIndex(state, index) {
-      state.courseIndex = index; 
+      state.courseIndex = index;
     },
-    setCount(state,count){
+    setCount(state, count) {
       state.count = count;
     },
-    setAnswer(state,answer){
+    setAnswer(state, answer) {
       state.answer = answer;
     }
-    
+
   },
-    
-    
+
+
   actions: {
   },
   modules: {
   },
-  plugins:[
+  plugins: [
     createPersistedState()
   ]
 })
