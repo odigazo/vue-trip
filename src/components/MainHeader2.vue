@@ -2,9 +2,9 @@
   <div class="mainHeader">
     <a @click="searchPlaces()"><img class="logo" src="../assets/image/triplogo.png" /></a>
     <div class="center">
-      <div class="my-2"><v-btn text color="primary" style="font: inherit;" x-large @click="searchPlaces()">여행지 찾기</v-btn></div>
-      <div class="my-2"><v-btn text color="primary" style="font: inherit;" x-large @click="recommendPlaces()">여행지 추천</v-btn></div>
-      <div class="my-2"><v-btn text color="primary" style="font: inherit;" x-large @click="courseBoard()">코스바구니</v-btn></div>
+      <div class="my-2"><v-btn text color="primary" style="font: inherit;" x-large @click="searchPlaces()">사계절여행</v-btn></div>
+      <div class="my-2"><v-btn text color="primary" style="font: inherit;" x-large @click="recommendPlaces()">맞춤 여행추천</v-btn></div>
+      <div class="my-2"><v-btn text color="primary" style="font: inherit;" x-large @click="courseBoard()">모행객 추천코스</v-btn></div>
     </div>
     <div class="right">
       <div>{{ $store.getters.getUserInfo.userNickname }}</div>

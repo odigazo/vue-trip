@@ -2,9 +2,9 @@
   <div class="mainHeader">
     <img class="logo" src="../assets/image/triplogo.png" />
     <div class="center">
-      <div class="signup"><a @click="searchPlaces()">사계절여행</a></div>
-      <div class="signup"><a @click="recommendPlaces()">맞춤 여행추천</a></div>
-      <div class="signup"><a @click="courseBoard()">모행객 추천코스</a></div>
+      <div class="my-2"><v-btn text color="primary" style="font: inherit;" small @click="searchPlaces()">사계절여행</v-btn></div>
+      <div class="my-2"><v-btn text color="primary" style="font: inherit;" small @click="recommendPlaces()">맞춤 여행추천</v-btn></div>
+      <div class="my-2"><v-btn text color="primary" style="font: inherit;" small @click="courseBoard()">모행객 추천코스</v-btn></div>
       <div class="search-container">
       <input
         id="search"

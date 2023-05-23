@@ -38,7 +38,7 @@ export default {
     return {
       urlCheck: false,
       prompt:
-        " 자연풍경구경 목적의 2박 3일 여행 코스를 하루에 최소 3군데 이상 방문하도록 여행일차 - 시간 : 장소의 형태로 장소에 대한 설명은 생략해서 알려줘요. ex) 1일차 - 09:00~11:00 : 관광지",
+        " 자연풍경구경 목적의 2박 3일 여행 코스를 하루에 최소 3곳 최대 5곳 방문하도록 여행일차 # 시간 : 장소의 형태로 장소에 대한 설명은 생략해서 알려줘요. ex) 1일차 # 09:00~11:00 : 관광지",
       maxTokens: 2000,
       temperature: 0.2,
       error: "",
@@ -115,7 +115,7 @@ export default {
           this.$store.getters.getAddrStr +
           " 의 관광지들 중에서 " +
           this.$store.getters.getTripDetail.placeName +
-          "를 포함하여 " +
+          " 을(를) 포함하여 " +
           this.prompt,
         max_tokens: this.maxTokens,
         temperature: this.temperature,

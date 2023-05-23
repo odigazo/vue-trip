@@ -5,7 +5,7 @@
       <div>
         <br />
         <v-row justify="center">
-          <v-dialog v-model="dialog" persistent max-width="400px">
+          <v-dialog v-model="dialog" transition="dialog-bottom-transition" max-width="600px">
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 class="ma-2"
@@ -18,6 +18,80 @@
               </v-btn>
             </template>
             <v-card>
+              <v-toolbar color="blue" dark style="font-size: larger">여행 코스 추천</v-toolbar>
+              <div style="margin-left : 10px;">
+                <v-container>
+
+                <br>
+                <v-spacer style="font-weight: bold">여행 출발일</v-spacer>
+                <v-menu
+                  v-model="menu1"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      style="font-weight : 500; width: 550px;"
+                      v-model="startDate"
+                      label="날짜"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    v-model="startDate"
+                    @input="menu1 = false"
+                  ></v-date-picker>
+                </v-menu>
+
+                <v-spacer style="font-weight: bold">여행 종료일</v-spacer>
+                <v-menu
+                  v-model="menu2"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      style="font-weight : 500; width: 550px;"  
+                      v-model="endDate"
+                      label="날짜"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    v-model="endDate"
+                    @input="menu2 = false"
+                  ></v-date-picker>
+                </v-menu>
+                
+                <v-spacer style="font-weight: bold">여행 목적</v-spacer>
+                <v-select 
+                style="font-weight : 500; width: 550px;"
+                v-model="selectedPurpose" 
+                label="목적 선택"
+                :items="purposes" 
+                item-text="text" 
+                item-value="value"></v-select>
+                </v-container>
+              </div>
+
+              <v-card-actions class="justify-end">
+                 <v-btn text color="primary" style="font-weight: 550" @click="newCourse()">추천받기</v-btn>
+                <v-btn text @click="dialog = false">닫기</v-btn>
+              </v-card-actions>
+            </v-card>
+            <!-- <v-card>
               <v-card-title>
                 <span class="text-h5">상세 여행 정보</span>
               </v-card-title>
@@ -60,7 +134,7 @@
                   저장
                 </v-btn>
               </v-card-actions>
-            </v-card>
+            </v-card> -->
           </v-dialog>
           <v-btn class="ma-2" outlined color="indigo" @click="selectCourse"
             >코스 담기</v-btn
@@ -100,27 +174,6 @@
                   {{ answer }}
                 </li>
               </ul>
-              
-              <!-- <v-stepper non-linear>
-                <v-stepper-header>
-                  <template v-for="(answer, i) in values">
-                    <v-stepper-step
-                      :key="i"
-                      :step="(i + 1).toString()"
-                      complete
-                      complete-icon=""
-                      class="step-text"
-                    >
-                      {{ answer }}
-                    </v-stepper-step>
-
-                    <v-divider
-                      v-if="i !== values.length - 1"
-                      :key="'divider-' + i"
-                    ></v-divider>
-                  </template>
-                </v-stepper-header>
-              </v-stepper> -->
             </v-card-text>
           </v-card>
         </v-timeline-item>
@@ -153,7 +206,7 @@ export default {
   data() {
     return {
       prompt:
-        " 여행코스를 하루에 최소 3군데 이상 방문하고 싶어 날짜 - 시간 : 장소의 형태로 장소에 대한 설명은 생략해서 알려줘요. ex) 날짜 - 09:00~11:00 : 관광지명",
+        " 오전 11시부터 밤 10시까지 여행하는데 12~2시는 점심시간, 6~8시는 저녁시간으로 해서 여행코스를 짜줘 날짜 # 시간 : 장소의 형태로 장소에 대한 설명은 생략해서 알려줘요. ex) 2023.05.12 # 09:00~11:00 : 관광지명",
       maxTokens: 2000,
       temperature: 0.2,
       error: "",
@@ -161,6 +214,8 @@ export default {
       lastAnswer: "",
       startDate: "",
       endDate: "",
+      menu1:"",
+      menu2:"",
       purposes: [
         "자연 속 여행",
         "역사와 문화 여행",
@@ -276,9 +331,9 @@ export default {
           "너는 여행 스케쥴러야 " +
           detail +
           this.$store.getters.getAddrStr +
-          " 의 관광지들 중에서" +
+          " 의 관광지들 중에서 " +
           this.$store.getters.getTripDetail.placeName +
-          "를 포함하는 " +
+          " 을(를) 포함하는 " +
           // this.$store.getters.getTripDetail.placeAddress.split(" ")[0] +
           this.prompt,
         max_tokens: this.maxTokens,
@@ -288,6 +343,7 @@ export default {
       try {
         const response = await axios.post(API_URL, body, config);
         const answer = response.data.choices[0].text;
+        this.$store.commit("setAnswer",answer);
         console.log(answer);
       } catch (error) {
         this.error = error.message;
