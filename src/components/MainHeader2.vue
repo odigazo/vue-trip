@@ -76,7 +76,7 @@ export default {
         }.bind(this));
 
         this.$axios({
-          url: 'http://localhost:8080/trip/mainPage/recentCourse',
+          url: 'http://localhost:8080/trip/mainPage/mostPlace',
           method: 'GET',
           responseType: 'json'
         }).then(function(result) {
