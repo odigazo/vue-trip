@@ -5,7 +5,11 @@
       <div>
         <br />
         <v-row justify="center">
-          <v-dialog v-model="dialog" transition="dialog-bottom-transition" max-width="600px">
+          <v-dialog
+            v-model="dialog"
+            transition="dialog-bottom-transition"
+            max-width="600px"
+          >
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 class="ma-2"
@@ -18,76 +22,84 @@
               </v-btn>
             </template>
             <v-card>
-              <v-toolbar color="blue" dark style="font-size: larger">여행 코스 추천</v-toolbar>
-              <div style="margin-left : 10px;">
+              <v-toolbar color="blue" dark style="font-size: larger"
+                >여행 코스 추천</v-toolbar
+              >
+              <div style="margin-left: 10px">
                 <v-container>
-
-                <br>
-                <v-spacer style="font-weight: bold">여행 출발일</v-spacer>
-                <v-menu
-                  v-model="menu1"
-                  :close-on-content-click="false"
-                  :nudge-right="40"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="auto"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                      style="font-weight : 500; width: 550px;"
+                  <br />
+                  <v-spacer style="font-weight: bold">여행 출발일</v-spacer>
+                  <v-menu
+                    v-model="menu1"
+                    :close-on-content-click="false"
+                    :nudge-right="40"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="auto"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                        style="font-weight: 500; width: 550px"
+                        v-model="startDate"
+                        label="날짜"
+                        prepend-icon="mdi-calendar"
+                        readonly
+                        v-bind="attrs"
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker
                       v-model="startDate"
-                      label="날짜"
-                      prepend-icon="mdi-calendar"
-                      readonly
-                      v-bind="attrs"
-                      v-on="on"
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker
-                    v-model="startDate"
-                    @input="menu1 = false"
-                  ></v-date-picker>
-                </v-menu>
+                      @input="menu1 = false"
+                    ></v-date-picker>
+                  </v-menu>
 
-                <v-spacer style="font-weight: bold">여행 종료일</v-spacer>
-                <v-menu
-                  v-model="menu2"
-                  :close-on-content-click="false"
-                  :nudge-right="40"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="auto"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                      style="font-weight : 500; width: 550px;"  
+                  <v-spacer style="font-weight: bold">여행 종료일</v-spacer>
+                  <v-menu
+                    v-model="menu2"
+                    :close-on-content-click="false"
+                    :nudge-right="40"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="auto"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                        style="font-weight: 500; width: 550px"
+                        v-model="endDate"
+                        label="날짜"
+                        prepend-icon="mdi-calendar"
+                        readonly
+                        v-bind="attrs"
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker
                       v-model="endDate"
-                      label="날짜"
-                      prepend-icon="mdi-calendar"
-                      readonly
-                      v-bind="attrs"
-                      v-on="on"
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker
-                    v-model="endDate"
-                    @input="menu2 = false"
-                  ></v-date-picker>
-                </v-menu>
-                
-                <v-spacer style="font-weight: bold">여행 목적</v-spacer>
-                <v-select 
-                style="font-weight : 500; width: 550px;"
-                v-model="selectedPurpose" 
-                label="목적 선택"
-                :items="purposes" 
-                item-text="text" 
-                item-value="value"></v-select>
+                      @input="menu2 = false"
+                    ></v-date-picker>
+                  </v-menu>
+
+                  <v-spacer style="font-weight: bold">여행 목적</v-spacer>
+                  <v-select
+                    style="font-weight: 500; width: 550px"
+                    v-model="selectedPurpose"
+                    label="목적 선택"
+                    :items="purposes"
+                    item-text="text"
+                    item-value="value"
+                  ></v-select>
                 </v-container>
               </div>
 
               <v-card-actions class="justify-end">
-                 <v-btn text color="primary" style="font-weight: 550" @click="newCourse()">추천받기</v-btn>
+                <v-btn
+                  text
+                  color="primary"
+                  style="font-weight: 550"
+                  @click="newCourse()"
+                  >추천받기</v-btn
+                >
                 <v-btn text @click="dialog = false">닫기</v-btn>
               </v-card-actions>
             </v-card>
@@ -190,8 +202,8 @@
         </div>
       </div>
     </div>
-
-    <div class="map" id="map" style="height: 500px"></div>
+    <div style="margin: 0 auto; height: 500px" id="map"></div>
+    
   </div>
 </template>
 
@@ -206,7 +218,7 @@ export default {
   data() {
     return {
       prompt:
-        " 오전 11시부터 밤 10시까지 여행하는데 12~2시는 점심시간, 6~8시는 저녁시간으로 해서 여행코스를 짜줘 날짜 # 시간 : 장소의 형태로 장소에 대한 설명은 생략해서 알려줘요. ex) 2023.05.12 # 09:00~11:00 : 관광지명",
+        " 오전 11시부터 밤 10시까지 여행하는데 12~2시는 점심시간, 6~8시는 저녁시간으로 해서 여행코스를 짜줘 날짜 # 시간 : 장소의 형태로 장소에 대한 설명은 생략해서 알려줘요. ex) 2023.05.12 # 09:00~11:00 : 관광지",
       maxTokens: 2000,
       temperature: 0.2,
       error: "",
@@ -214,8 +226,8 @@ export default {
       lastAnswer: "",
       startDate: "",
       endDate: "",
-      menu1:"",
-      menu2:"",
+      menu1: "",
+      menu2: "",
       purposes: [
         "자연 속 여행",
         "역사와 문화 여행",
@@ -229,6 +241,7 @@ export default {
   methods: {
     newCourse() {
       this.dialog = false;
+      document.getElementById('map').innerHTML = '';
       this.generateText(
         this.startDate +
           "부터 " +
@@ -251,7 +264,20 @@ export default {
         })
         .then((result) => {
           if (result.data == 1) {
-            console.log("코스 담기 성공");
+            alert("코스 담기 성공");
+            axios
+              .get(this._baseUrl + "courseBoard/myList", {
+                params: {
+                  userNum: this.$store.getters.getUserInfo.userNum,
+                },
+              })
+              .then((result) => {
+                console.log(result.data);
+                this.$store.commit("setCount", result.data.count);
+              })
+              .catch(function (error) {
+                console.error("에러 ", error);
+              });
           }
           // console.log(result.data);
           // this.$store.commit("setSchedule", result.data);
@@ -262,6 +288,8 @@ export default {
         });
     },
     kakaomap() {
+      // this.$store.commit("setShowMap", true);
+      document.getElementById('map').innerHTML = '';
       if (window.kakao && window.kakao.maps) {
         console.log("초기화");
         this.initMap();
@@ -287,37 +315,43 @@ export default {
 
       var map = new kakao.maps.Map(container, options);
       for (var i = 1; i < this.$store.getters.getNames.length; i++) {
-        var markerPosition = new kakao.maps.LatLng(
-          this.$store.state.latitudes[i],
-          this.$store.state.longitudes[i]
-        );
-        var marker = new kakao.maps.Marker({
-          map: map,
-          position: markerPosition,
-          title: this.$store.state.names[i],
-        });
-        console.log(marker);
-        var infowindow = new kakao.maps.InfoWindow({
-          content: this.$store.state.names[i], // 인포윈도우에 표시할 내용
-        });
-        (function (marker, infowindow) {
-          // 마커에 mouseover 이벤트를 등록하고 마우스 오버 시 인포윈도우를 표시합니다
-          kakao.maps.event.addListener(marker, "mouseover", function () {
-            infowindow.open(map, marker);
+        if (
+          this.$store.state.latitudes[i] > 0 &&
+          this.$store.state.longitudes[i] > 0
+        ) {
+          var markerPosition = new kakao.maps.LatLng(
+            this.$store.state.latitudes[i],
+            this.$store.state.longitudes[i]
+          );
+          var marker = new kakao.maps.Marker({
+            map: map,
+            position: markerPosition,
+            title: this.$store.state.names[i],
           });
+          console.log(marker);
+          var infowindow = new kakao.maps.InfoWindow({
+            content: this.$store.state.names[i], // 인포윈도우에 표시할 내용
+          });
+          (function (marker, infowindow) {
+            // 마커에 mouseover 이벤트를 등록하고 마우스 오버 시 인포윈도우를 표시합니다
+            kakao.maps.event.addListener(marker, "mouseover", function () {
+              infowindow.open(map, marker);
+            });
 
-          // 마커에 mouseout 이벤트를 등록하고 마우스 아웃 시 인포윈도우를 닫습니다
-          kakao.maps.event.addListener(marker, "mouseout", function () {
-            infowindow.close();
-          });
-        })(marker, infowindow);
-        marker.setMap(map);
+            // 마커에 mouseout 이벤트를 등록하고 마우스 아웃 시 인포윈도우를 닫습니다
+            kakao.maps.event.addListener(marker, "mouseout", function () {
+              infowindow.close();
+            });
+          })(marker, infowindow);
+          marker.setMap(map);
+        }
       }
     },
 
     async generateText(detail) {
       this.$store.commit("setIsLoading", true);
       this.$store.commit("setIsMapReady", false);
+      // this.$store.commit("setShowMap", false);
       const config = {
         headers: {
           "Content-Type": "application/json",
@@ -343,7 +377,7 @@ export default {
       try {
         const response = await axios.post(API_URL, body, config);
         const answer = response.data.choices[0].text;
-        this.$store.commit("setAnswer",answer);
+        this.$store.commit("setAnswer", answer);
         console.log(answer);
       } catch (error) {
         this.error = error.message;
@@ -387,9 +421,10 @@ export default {
 </script>
 
 <style scoped>
-div.map {
+/* div.map {
   align-content: center;
-}
+  height: 500px;
+} */
 
 .items > li {
   list-style: none;
