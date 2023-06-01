@@ -41,9 +41,9 @@ export default({
   }
 
   .logo {
-    width: 80px;
-    height: 80px;
+    width: 160px;
     border-radius: 50%;
+    margin-left: 20px;
   }
 
 </style>
