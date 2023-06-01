@@ -20,7 +20,8 @@ export default {
 
 <style>
 .courseboard {
-  max-width: 800px;
+  /* max-width: 800px; */
+  max-width: 100%;
   margin: 0 auto;
   padding: 20px;
   background-color: #f5f5f5;
