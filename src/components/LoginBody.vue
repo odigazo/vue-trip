@@ -1,8 +1,83 @@
 <template>
   <div class="loginbody">
     <hr />
-    <h3>로그인</h3>
-    <div>
+    <br/>
+    <h1>로그인</h1>
+    <br/>
+    <v-row justify="center">
+    <v-col
+      cols="12"
+      sm="10"
+      md="8"
+      lg="4"
+    >
+      <v-card ref="form">
+        <v-card-text>
+          <v-text-field
+            ref="email"
+            v-model="email"
+            :rules="[() => !!email || 'This field is required']"
+            :error-messages="errorMessages"
+            label="E-mail"
+            required
+          ></v-text-field>
+          <v-text-field
+            :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+            :rules="[rules.required, rules.min]"
+            :type="show ? 'text' : 'password'"
+            v-model="password"
+            name="Password"
+            label="Password"
+            hint="At least 4 characters"
+            class="input-group--focused"
+            @click:append="show = !show"
+            @keyup.enter="login()"
+          ></v-text-field>
+        </v-card-text>
+        <v-divider class="mt-12"></v-divider>
+        <v-card-actions>
+          <v-btn text>
+            Cancel
+          </v-btn>
+          <v-spacer></v-spacer>
+          <!-- <v-slide-x-reverse-transition>
+            <v-tooltip
+              v-if="formHasErrors"
+              left
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  icon
+                  class="my-0"
+                  v-bind="attrs"
+                  @click="resetForm"
+                  v-on="on"
+                >
+                  <v-icon>mdi-refresh</v-icon>
+                </v-btn>
+              </template>
+              <span>Refresh form</span>
+            </v-tooltip>
+          </v-slide-x-reverse-transition> -->
+          <v-btn
+            color="primary"
+            text
+            @click="login()"
+          >
+            회원가입
+          </v-btn>
+          <v-btn
+            color="primary"
+            text
+            @click="login()"
+          >
+            로그인
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-col>
+  </v-row>
+    <!-- <div>
       <v-row justify="center">
         <v-col cols="4">
           <v-text-field
@@ -29,7 +104,7 @@
       </v-row>
     </div>
     <br />
-    <v-btn small color="primary" dark @click="login()">로그인</v-btn>
+    <v-btn small color="primary" dark @click="login()">로그인</v-btn> -->
   </div>
 </template>
 
@@ -41,6 +116,11 @@ export default {
     return {
       email: "",
       password: "",
+      show:false,
+      rules: {
+          required: value => !!value || 'This field is required',
+          min: v => v.length >= 4 || 'Min 4 characters',
+        },
     };
   },
   methods: {

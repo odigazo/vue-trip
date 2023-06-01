@@ -103,50 +103,7 @@
                 <v-btn text @click="dialog = false">닫기</v-btn>
               </v-card-actions>
             </v-card>
-            <!-- <v-card>
-              <v-card-title>
-                <span class="text-h5">상세 여행 정보</span>
-              </v-card-title>
-              <v-card-text>
-                <v-container>
-                  <v-row>
-                    <v-col cols="12">
-                      <v-text-field
-                        label="출발일"
-                        v-model.lazy="startDate"
-                        hide-details="auto"
-                        type="date"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12">
-                      <v-text-field
-                        label="복귀일"
-                        v-model.lazy="endDate"
-                        hide-details="auto"
-                        type="date"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12">
-                      <v-select
-                        :items="purposes"
-                        label="여행목적"
-                        required
-                        v-model="selectedPurpose"
-                      ></v-select>
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="dialog = false">
-                  닫기
-                </v-btn>
-                <v-btn color="blue darken-1" text @click="newCourse()">
-                  저장
-                </v-btn>
-              </v-card-actions>
-            </v-card> -->
+            
           </v-dialog>
           <v-btn class="ma-2" outlined color="indigo" @click="selectCourse"
             >코스 담기</v-btn
@@ -155,11 +112,14 @@
         <br />
       </div>
     </div>
+    <v-row justify="center">
+    <v-card width="1000">
     <div v-if="$store.getters.getIsLoading">
       <img src="../assets/image/Searching.gif" />
       <div>최적의 코스를 찾는 중입니다...</div>
     </div>
     <div v-else>
+      
       <v-timeline>
         <v-timeline-item
           v-for="(values, key) in $store.getters.getCourseMap"
@@ -167,12 +127,6 @@
           color="blue"
           small
         >
-          <!-- <template v-slot:opposite>
-            <span
-              :class="`headline font-weight-bold blue--text`"
-              v-text="key"
-            ></span>
-          </template> -->
           <v-card>
             <v-card-title class="blue lighten-2">
               <h2
@@ -203,7 +157,8 @@
       </div>
     </div>
     <div style="margin: 0 auto; height: 500px" id="map"></div>
-    
+    </v-card>
+    </v-row>
   </div>
 </template>
 
@@ -218,7 +173,7 @@ export default {
   data() {
     return {
       prompt:
-        " 오전 11시부터 밤 10시까지 여행하는데 12~2시는 점심시간, 6~8시는 저녁시간으로 해서 여행코스를 짜줘 날짜 # 시간 : 장소의 형태로 장소에 대한 설명은 생략해서 알려줘요. ex) 2023.05.12 # 09:00~11:00 : 관광지",
+        " 오전 11시부터 밤 10시까지 여행하는데 12~2시, 6~8시는 식사시간으로 해서 여행코스를 짜줘 날짜 # 시간 : 장소의 형태로 장소에 대한 설명은 생략해서 알려줘요. ex) 2023.05.12 # 09:00~11:00 : 관광지",
       maxTokens: 2000,
       temperature: 0.2,
       error: "",

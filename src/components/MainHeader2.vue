@@ -206,8 +206,9 @@ a.signup {
   cursor: pointer;
 }
 .logo {
-  width: 80px;
-  height: 80px;
+  width: 150px;
+  height: 120px;
   border-radius: 50%;
+  margin-left: 20px;
 }
 </style>
