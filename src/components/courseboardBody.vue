@@ -3,16 +3,12 @@
     <hr />
     <v-container>
       <v-card class="mt-5" outlined>
-        <v-card-title class="headline">{{
-          this.$store.getters.getCourseList[$store.getters.getCourseIndex]
-            .courseTitle
-        }}</v-card-title>
+        <v-card-title class="headline" style="font-weight: bold; font-size: 24px;">
+          {{
+            this.$store.getters.getCourseList[$store.getters.getCourseIndex].courseTitle
+          }}
+        </v-card-title>
         <v-card-text v-bind:style="{ 'word-wrap': 'break-word' }">
-          <!-- <ul>
-          <li v-for="(answer, i) in $store.getters.getSchedule" :key="i">
-            {{ answer }}
-          </li>
-        </ul> -->
           <v-timeline>
             <v-timeline-item
               v-for="(values, key) in $store.getters.getCourseMap"
@@ -20,18 +16,9 @@
               color="blue"
               small
             >
-              <!-- <template v-slot:opposite>
-            <span
-              :class="`headline font-weight-bold blue--text`"
-              v-text="key"
-            ></span>
-          </template> -->
-              <v-card>
+              <v-card elevation="2">
                 <v-card-title class="blue lighten-2">
-                  <h2
-                    class="text-h4 white--text font-weight-light"
-                    v-text="key"
-                  ></h2>
+                  <h2 class="text-h6 white--text font-weight-bold" v-text="key"></h2>
                 </v-card-title>
                 <v-card-text>
                   <ul class="items">
@@ -45,15 +32,16 @@
           </v-timeline>
         </v-card-text>
         <v-card-actions>
-          <v-btn text @click="$router.go(-1)">뒤로가기</v-btn>
+          <v-btn text @click="$router.go(-1)" color="primary">목록</v-btn>
           <v-spacer></v-spacer>
           <v-btn icon @click="addLike">
             <v-icon color="red">mdi-heart</v-icon>
           </v-btn>
-          <span class="mr-4">{{
-            this.$store.getters.getCourseList[$store.getters.getCourseIndex]
-              .courseLike
-          }}</span>
+          <span class="mr-4" style="font-weight: bold;">
+            {{
+              this.$store.getters.getCourseList[$store.getters.getCourseIndex].courseLike
+            }}
+          </span>
         </v-card-actions>
       </v-card>
 
@@ -67,9 +55,12 @@
         >
           <v-list-item-content>
             <v-list-item-title>{{ comment.userNickname }}</v-list-item-title>
-            <v-list-item-subtitle v-if="!$store.state.isEditing[index]">{{
-              comment.contents
-            }}</v-list-item-subtitle>
+            <v-list-item-subtitle
+              v-if="!$store.state.isEditing[index]"
+              style="font-weight: bold; color: #000"
+            >
+              {{ comment.contents }}
+            </v-list-item-subtitle>
             <v-text-field
               v-else
               v-model="newContents[index]"
@@ -81,12 +72,25 @@
               text
               v-if="!$store.state.isEditing[index]"
               @click="startUpdate(index)"
-              >수정</v-btn
+              color="primary"
             >
-            <v-btn text v-else @click="updateComment(index, comment.commentNum)"
-              >저장</v-btn
+              수정
+            </v-btn>
+            <v-btn
+              text
+              v-else
+              @click="updateComment(index, comment.commentNum)"
+              color="primary"
             >
-            <v-btn text color="red" @click="deleteComment(comment)">삭제</v-btn>
+              저장
+            </v-btn>
+            <v-btn
+              text
+              color="red"
+              @click="deleteComment(comment)"
+            >
+              삭제
+            </v-btn>
           </v-list-item-action>
         </v-list-item>
       </v-list>

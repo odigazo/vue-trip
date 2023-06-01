@@ -70,11 +70,11 @@ export default {
 
 <style scoped>
   div.mainHeader {
-  display: flex;
+    display: flex;
   align-items: center;
   height: 80px;
   background-color: rgb(0, 166, 255);
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 1px 1px 10px 1px rgba(0, 0, 0, 0.3);
 }
 .center {
   flex: 4;
