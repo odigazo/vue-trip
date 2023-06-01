@@ -27,6 +27,7 @@ export default new Vuex.Store({
     isEditing: [],
     isLoading: false,
     isMapReady: false,
+    // showMap:false,
     courseList: [], //전체코스목록
     myList: [], //개인코스목록 
     courses: {},
@@ -41,7 +42,7 @@ export default new Vuex.Store({
       return state.userinfo;
     },
     isLogin: function (state) {
-      return state.userinfo.userNum >= 1;
+      return state.userinfo && state.userinfo.userNum >= 1;
     },
     getSchedule: function (state) {
       return state.schedule;
@@ -92,6 +93,9 @@ export default new Vuex.Store({
     getIsMapReady: function (state) {
       return state.isMapReady;
     },
+    // getShowMap: function (state) {
+    //   return state.showMap;
+    // },
     getCourseList: function (state) {
       return state.courseList;
     },
@@ -144,6 +148,9 @@ export default new Vuex.Store({
     setIsMapReady(state, status) {
       state.isMapReady = status;
     },
+    // setShowMap(state, status) {
+    //   state.showMap = status;
+    // },
     setCourseList(state, courseList) {
       state.courseList = courseList;
     },
