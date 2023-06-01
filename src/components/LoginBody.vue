@@ -40,32 +40,6 @@
             Cancel
           </v-btn>
           <v-spacer></v-spacer>
-          <!-- <v-slide-x-reverse-transition>
-            <v-tooltip
-              v-if="formHasErrors"
-              left
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  icon
-                  class="my-0"
-                  v-bind="attrs"
-                  @click="resetForm"
-                  v-on="on"
-                >
-                  <v-icon>mdi-refresh</v-icon>
-                </v-btn>
-              </template>
-              <span>Refresh form</span>
-            </v-tooltip>
-          </v-slide-x-reverse-transition> -->
-          <v-btn
-            color="primary"
-            text
-            @click="login()"
-          >
-            회원가입
-          </v-btn>
           <v-btn
             color="primary"
             text
@@ -77,34 +51,7 @@
       </v-card>
     </v-col>
   </v-row>
-    <!-- <div>
-      <v-row justify="center">
-        <v-col cols="4">
-          <v-text-field
-            label="E-mail"
-            v-model.lazy="email"
-            hide-details="auto"
-            class="my-text-field"
-          ></v-text-field>
-        </v-col>
-      </v-row>
-    </div>
-    <div>
-      <v-row justify="center">
-        <v-col cols="4">
-          <v-text-field
-            label="Password"
-            v-model.lazy="password"
-            hide-details="auto"
-            type="password"
-            class="my-text-field"
-            @keyup.enter="login()"
-          ></v-text-field>
-        </v-col>
-      </v-row>
-    </div>
-    <br />
-    <v-btn small color="primary" dark @click="login()">로그인</v-btn> -->
+    
   </div>
 </template>
 

@@ -3,7 +3,7 @@
     <a @click="searchPlaces()"><img class="logo" src="../assets/image/triplogo.png" /></a>
     <div class="center">
       <div class="my-2"><v-btn text color="primary" style="font: inherit;" x-large @click="searchPlaces()">사계절여행</v-btn></div>
-      <div class="my-2"><v-btn text color="primary" style="font: inherit;" x-large @click="recommendPlaces()">맞춤 여행추천</v-btn></div>
+      <div class="my-2"><v-btn text color="primary" style="font: inherit;" x-large @click="recommendPlaces()">AI 여행추천</v-btn></div>
       <div class="my-2"><v-btn text color="primary" style="font: inherit;" x-large @click="courseBoard()">모행객 추천코스</v-btn></div>
     </div>
     <div class="right">

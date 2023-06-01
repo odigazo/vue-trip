@@ -1,116 +1,116 @@
 <template>
   <div class="signupbody text-center">
     <hr />
-    <h3>회원가입</h3>
-    <div>
-      <v-row justify="center">
-        <v-col cols="3" class="d-flex align-self-center">
-          <v-text-field
-            label="E-mail"
-            v-model.lazy="email"
-            hide-details="auto"
-            class="my-text-field"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="3" class="d-flex align-self-center">
-          <v-btn class="ma-2" outlined color="indigo" @click="checkEmail()"
-            >중복확인</v-btn
-          >
-        </v-col>
-      </v-row>
-      <v-row justify="center">
-        <v-col cols="6" class="d-flex align-self-center">
-          <div>{{ emailnotice }}</div>
-        </v-col>
-      </v-row>
-    </div>
-    <div>
-      <v-row justify="center">
-        <v-col cols="6" class="d-flex align-self-center">
-          <v-text-field
-            label="비밀번호"
-            v-model.lazy="password"
-            hide-details="auto"
-            class="my-text-field"
-            type="password"
-          ></v-text-field>
-        </v-col>
-      </v-row>
-    </div>
-    <div>
-      <v-row justify="center">
-        <v-col cols="6" class="d-flex align-self-center">
-          <v-text-field
-            label="비밀번호 확인"
-            v-model.lazy="password_check"
-            hide-details="auto"
-            class="my-text-field"
-            type="password"
-            @keyup="checkPW()"
-          ></v-text-field>
-        </v-col>
-      </v-row>
-      <v-row justify="center">
-        <v-col cols="6" class="d-flex align-self-center">
-          <div>{{ pwnotice }}</div>
-        </v-col>
-      </v-row>
-    </div>
-    <div>
-      <v-row justify="center">
-        <v-col cols="3" class="d-flex align-self-center">
-          <v-text-field
-            label="닉네임"
-            v-model.lazy="nickname"
-            hide-details="auto"
-            class="my-text-field"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="3" class="d-flex align-self-center">
-          <v-btn class="ma-2" outlined color="indigo" @click="checkNickName()"
-            >중복확인</v-btn
-          >
-        </v-col>
-      </v-row>
-      <v-row justify="center">
-        <v-col cols="6" class="d-flex align-self-center">
-          <div>{{ nicknamenotice }}</div>
-        </v-col>
-      </v-row>
-    </div>
-    <div>
-      <v-row justify="center">
-        <v-col cols="3" class="d-flex align-self-center">
-          <v-text-field
-            label="도로명 주소"
-            v-model.lazy="address"
-            hide-details="auto"
-            class="my-text-field"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="3" class="d-flex align-self-center">
-          <v-btn large color="primary" dark @click="execDaumPostcode()"
-            >주소 검색</v-btn
-          >
-        </v-col>
-      </v-row>
-    </div>
-    <div>
-      <v-row justify="center">
-        <v-col cols="6" class="d-flex align-self-center">
-          <v-text-field
-            label="나이"
-            v-model.lazy="age"
-            hide-details="auto"
-            class="my-text-field"
-            type="number"
-            @keyup.enter="signup()"
-          ></v-text-field>
-        </v-col>
-      </v-row>
-    </div>
+    <h1>회원가입</h1>
     <br />
-    <v-btn x-large color="success" dark @click="signup()">가입하기</v-btn>
+    <v-row justify="center">
+      <v-col cols="12" sm="10" md="8" lg="4">
+        <v-card ref="form">
+          <v-card-text>
+            <v-row>
+              <v-col cols="8">
+                <v-text-field
+                  label="E-mail"
+                  v-model.lazy="email"
+                  hide-details="auto"
+                >
+                </v-text-field>
+              </v-col>
+              <v-col cols="4">
+                <v-btn
+                  class="ma-2"
+                  outlined
+                  color="indigo"
+                  @click="checkEmail()"
+                  >중복확인</v-btn
+                >
+              </v-col>
+            </v-row>
+            <div>{{ emailnotice }}</div>
+            <v-row>
+              <v-col cols="8">
+                <v-text-field
+                  label="비밀번호"
+                  v-model.lazy="password"
+                  hide-details="auto"
+                  type="password"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="8">
+                <v-text-field
+                  label="비밀번호 확인"
+                  v-model.lazy="password_check"
+                  hide-details="auto"
+                  type="password"
+                  @keyup="checkPW()"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <div>{{ pwnotice }}</div>
+            <v-row>
+              <v-col cols="8">
+                <v-text-field
+                  label="닉네임"
+                  v-model.lazy="nickname"
+                  hide-details="auto"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="4">
+                <v-btn
+                  class="ma-2"
+                  outlined
+                  color="indigo"
+                  @click="checkNickName()"
+                  >중복확인</v-btn
+                >
+              </v-col>
+            </v-row>
+            <div>{{ nicknamenotice }}</div>
+            <v-row>
+              <v-col cols="8">
+                <v-text-field
+                  label="도로명 주소"
+                  v-model.lazy="address"
+                  hide-details="auto"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="4">
+                <v-btn
+                  class="ma-2"
+                  outlined
+                  color="indigo"
+                  @click="execDaumPostcode()"
+                  >주소 검색</v-btn
+                >
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="8">
+                <v-text-field
+                  label="나이"
+                  v-model.lazy="age"
+                  hide-details="auto"
+                  type="number"
+                  @keyup.enter="signup()"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </v-card-text>
+          <v-divider class="mt-12"></v-divider>
+          <v-card-actions>
+            <v-btn text> Cancel </v-btn>
+            <v-spacer></v-spacer>
+
+            <v-btn color="primary"
+            text @click="signup()"
+              >가입하기</v-btn
+            >
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
