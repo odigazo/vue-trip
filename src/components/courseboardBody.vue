@@ -2,7 +2,7 @@
   <div>
     <hr />
     <v-container>
-      <v-card class="mt-5" outlined>
+      <v-card>
         <v-card-title class="headline" style="font-weight: bold; font-size: 24px;">
           {{
             this.$store.getters.getCourseList[$store.getters.getCourseIndex].courseTitle
@@ -258,6 +258,6 @@ export default {
   },
 };
 </script>
-
+ 
 <style scoped>
 </style>
