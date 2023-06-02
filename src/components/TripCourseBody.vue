@@ -173,7 +173,7 @@ export default {
   data() {
     return {
       prompt:
-        " 오전 11시부터 밤 10시까지 여행하는데 12~2시, 6~8시는 식사시간으로 해서 여행코스를 짜줘 날짜 # 시간 : 장소의 형태로 장소에 대한 설명은 생략해서 알려줘요. ex) 2023.05.12 # 09:00~11:00 : 관광지",
+        " 오전 11시부터 밤 10시까지 여행하는데 12:00~14:00시, 18:00~20:00시는 식사시간으로 해서 여행코스를 짜줘 날짜 # 시간 : 장소의 형태로 장소에 대한 설명은 생략해서 알려줘요. ex) 2023.05.12 # 09:00~11:00 : 관광지",
       maxTokens: 2000,
       temperature: 0.2,
       error: "",
@@ -323,7 +323,6 @@ export default {
           " 의 관광지들 중에서 " +
           this.$store.getters.getTripDetail.placeName +
           " 을(를) 포함하는 " +
-          // this.$store.getters.getTripDetail.placeAddress.split(" ")[0] +
           this.prompt,
         max_tokens: this.maxTokens,
         temperature: this.temperature,
