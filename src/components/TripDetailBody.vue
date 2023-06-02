@@ -171,6 +171,7 @@ export default {
               this.$store.commit("setNames", result2.data.names);
               this.$store.commit("setLatitudes", result2.data.latitudes);
               this.$store.commit("setLongitudes", result2.data.longitudes);
+              this.$store.commit("setAdditionalInfo",'');
               if (this.$store.getters.getNames != null) {
                 this.$store.commit("setIsMapReady", true);
               }
