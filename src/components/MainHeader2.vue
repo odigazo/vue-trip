@@ -8,7 +8,7 @@
     </div>
     <div class="right">
       <div>
-        <v-btn @click="logout()" text color="primary" class="font-weight-bold" >마이페이지</v-btn>
+        <v-btn @click="myPage()" text color="primary" class="font-weight-bold" >마이페이지</v-btn>
         <v-btn @click="logout()" text color="primary" class="font-weight-bold" >로그아웃</v-btn>
       </div>
       <div class="font-weight-bold" style="font-size: 13px;">
