@@ -8,11 +8,11 @@
     </div>
     <div class="right">
       <div>
-        <v-btn class="font-weight-bold" text>{{ $store.getters.getUserInfo.userNickname }}</v-btn>
         <v-btn @click="logout()" text color="primary" class="font-weight-bold" >마이페이지</v-btn>
         <v-btn @click="logout()" text color="primary" class="font-weight-bold" >로그아웃</v-btn>
       </div>
-      <div class="font-weight-bold" style="font-size: 12px;">
+      <div class="font-weight-bold" style="font-size: 13px;">
+        <font class="font-weight-bold" text>{{ $store.getters.getUserInfo.userNickname + "님, "}}</font>
         미방문한 코스가 <a class="signup" @click="myPage()">{{$store.getters.getCount}}</a>개
         있습니다.
       </div>
