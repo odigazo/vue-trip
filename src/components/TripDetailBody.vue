@@ -6,23 +6,32 @@
         <img
           :src="$store.getters.getTripDetail.imageUrl"
           alt="Image"
-          style="height: 500px; width: 600px"
+          class="detailImage"
         />
       </div>
       <div class="description-container">
-        <h1 style="text-align: left">
+        <h2 style="text-align: left">
           {{ $store.getters.getTripDetail.placeName }}
-        </h1>
-        <font>{{ $store.getters.getTripDetail.placeAddress }}</font>
-        <font style="text-align: left">{{
+        </h2>
+        <br>
+        <div class="font-weight-medium">
+          <h3>상세정보</h3>
+          <hr style="border-top: 1px solid #ccc; font-size: larger;">
+        </div>
+        <br>
+        <font class="font-weight-bold">{{$store.getters.getTripDetail.placeAddress }}</font>
+        <br>
+        <font  style="text-align: left">{{
           $store.getters.getTripDetail.placeContents
         }}</font>
-        <a v-if="urlCheck" :href="$store.getters.getTripDetail.placeUrl"
-          >여행지 리뷰 확인하러 가기</a
-        >
-        <div id="map" style="width: 500px; height: 300px"></div>
+        <br>
+        <br>
+        <v-btn v-if="urlCheck" :href="$store.getters.getTripDetail.placeUrl" outlined color="primary" class="font-weight-bold">여행지 리뷰 확인하러 가기</v-btn>
+        <v-btn @click="courseRecommend" style="margin-left: 2%;" outlined color="primary" class="font-weight-bold">코스 추천받기</v-btn>
+        <br>
+        <br>
+        <div id="map" style="width: 550px; height: 330px; border-radius: 4px;"></div>
       </div>
-      <v-btn @click="courseRecommend">코스 추천받기</v-btn>
     </div>
   </div>
 </template>
@@ -176,10 +185,17 @@ export default {
 .container {
   display: flex;
   align-items: center;
+  margin-top: 5%;
 }
 
+.detailImage {
+  border-radius: 4px;
+  height: 600px; 
+  width: 600px;
+}
 .image-container {
   flex: 1;
+  margin-right: 2%;
 }
 
 .description-container {
