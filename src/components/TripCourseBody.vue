@@ -197,6 +197,7 @@ export default {
     newCourse() {
       this.dialog = false;
       document.getElementById('map').innerHTML = '';
+      this.$store.commit("setPurpose",this.selectedPurpose);
       this.generateText(
         this.startDate +
           "부터 " +
@@ -214,7 +215,7 @@ export default {
           courseTitle:
             this.$store.getters.getTripDetail.placeName +
             " " +
-            this.selectedPurpose,
+            this.$store.getters.getPurpose,
           courseContents: this.$store.getters.getSchedule,
         })
         .then((result) => {

@@ -12,7 +12,6 @@ export default new Vuex.Store({
     latitudes: [],
     longitudes: [],
     placeList: [],
-
     currentPage: 1,
     pageGroup: 0,
     createCount: 5,
@@ -27,7 +26,6 @@ export default new Vuex.Store({
     isEditing: [],
     isLoading: false,
     isMapReady: false,
-    // showMap:false,
     courseList: [], //전체코스목록
     myList: [], //개인코스목록 
     courses: {},
@@ -36,7 +34,8 @@ export default new Vuex.Store({
     courseIndex: null,
     count: '',
     answer: '',
-    additionalinfo:'',
+    additionalinfo: '',
+    purpose: '자연 속 여행',
   },
   getters: {
     getUserInfo: function (state) {
@@ -124,8 +123,11 @@ export default new Vuex.Store({
     getAnswer: function (state) {
       return state.answer;
     },
-    getAdditionalInfo : function(state){
+    getAdditionalInfo: function (state) {
       return state.additionalinfo;
+    },
+    getPurpose: function (state) {
+      return state.purpose;
     },
     getBestCourseList: (state) => state.bestCourseList,
   },
@@ -136,6 +138,31 @@ export default new Vuex.Store({
       state.names = null;
       state.latitudes = null;
       state.longitudes = null;
+      state.purpose = '자연 속 여행';
+      state.placeList = null;
+      state.currentPage = 1;
+      state.pageGroup = 0;
+      state.createCount = 5;
+      state.addrStr = '';
+      state.courseMap = null;
+      state.tripDetail = null;
+      state.recommendList = null;
+      state.recommendLikeList = null;
+      state.recentCourseList = null;
+      state.comments = null;
+      state.mycomments = null;
+      state.isEditing = null;
+      state.isLoading = false;
+      state.isMapReady = false;
+      state.courseList = null;
+      state.myList = null;
+      state.courses = null;
+      state.courseNum = null;
+      state.bestCourseList = null;
+      state.courseIndex = null;
+      state.count = '';
+      state.answer = '';
+      state.additionalinfo = '';
     },
     setUserInfo(state, list) {
       state.userinfo = list;
@@ -250,10 +277,12 @@ export default new Vuex.Store({
     setAnswer(state, answer) {
       state.answer = answer;
     },
-    setAdditionalInfo(state,info){
+    setAdditionalInfo(state, info) {
       state.additionalinfo = info;
+    },
+    setPurpose(state, purpose) {
+      state.purpose = purpose;
     }
-
   },
 
 
