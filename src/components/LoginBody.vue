@@ -17,7 +17,6 @@
             ref="email"
             v-model="email"
             :rules="[() => !!email || 'This field is required']"
-            :error-messages="errorMessages"
             label="E-mail"
             required
           ></v-text-field>
