@@ -7,11 +7,13 @@
       <div class="my-2"><v-btn text color="primary" style="font: inherit;" x-large @click="courseBoard()">모행객 추천코스</v-btn></div>
     </div>
     <div class="right">
-      <div>{{ $store.getters.getUserInfo.userNickname }}</div>
-      <div class="signup2"><a @click="logout()">로그아웃</a></div>
-      <div class="signup2"><a @click="myPage()">마이페이지</a></div>
       <div>
-        미방문한 코스가<a class="signup" @click="myPage()">{{$store.getters.getCount}}</a>개
+        <v-btn class="font-weight-bold" text>{{ $store.getters.getUserInfo.userNickname }}</v-btn>
+        <v-btn @click="logout()" text color="primary" class="font-weight-bold" >마이페이지</v-btn>
+        <v-btn @click="logout()" text color="primary" class="font-weight-bold" >로그아웃</v-btn>
+      </div>
+      <div class="font-weight-bold" style="font-size: 12px;">
+        미방문한 코스가 <a class="signup" @click="myPage()">{{$store.getters.getCount}}</a>개
         있습니다.
       </div>
     </div>
