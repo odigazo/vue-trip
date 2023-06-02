@@ -245,6 +245,12 @@ export default {
   methods: {
     recommend() {
       let userInfo = this.$store.getters.getUserInfo;
+      this.$store.commit("setAdditionalInfo",this.startDate +
+          "부터 " +
+          this.endDate +
+          "까지 " +
+          this.purpose +
+          "목적으로 여행을 가고싶어. ");
       console.log(userInfo);
       if (
         this.checkEmpty(this.startDate) &&

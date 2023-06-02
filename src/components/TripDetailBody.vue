@@ -47,7 +47,7 @@ export default {
     return {
       urlCheck: false,
       prompt:
-        " 자연풍경구경 목적의 2박 3일 여행 코스를 하루에 최소 3곳 최대 5곳 방문하도록 여행일차 # 시간 : 장소의 형태로 장소에 대한 설명은 생략해서 알려줘요. ex) 1일차 # 09:00~11:00 : 관광지",
+        "",
       maxTokens: 2000,
       temperature: 0.2,
       error: "",
@@ -110,6 +110,22 @@ export default {
     async generateText() {
       this.$store.commit("setIsLoading", true);
       this.$store.commit("setIsMapReady", false);
+      if(this.$store.getters.getAdditionalInfo.length>0){
+        this.prompt = "너는 여행 스케쥴러야 " +
+          this.$store.getters.getAdditionalInfo +
+          this.$store.getters.getAddrStr +
+          " 의 관광지들 중에서 " +
+          this.$store.getters.getTripDetail.placeName +
+          " 을(를) 포함하고, " +
+          "오전 11시부터 밤 10시까지 여행하는데 12:00~14:00시, 18:00~20:00시는 식사시간으로 해서 여행코스를 짜줘 날짜 # 시간 : 장소의 형태로 장소에 대한 설명은 생략해서 알려줘요. ex) 2023.05.12 # 09:00~11:00 : 관광지"
+      }else{
+        this.prompt = "너는 여행 스케쥴러야 " +
+          this.$store.getters.getAddrStr +
+          " 의 관광지들 중에서 " +
+          this.$store.getters.getTripDetail.placeName +
+          " 을(를) 포함하여 " +
+          "자연풍경구경 목적의 2박 3일 여행 코스를 하루에 최소 3곳 최대 5곳 방문하도록 여행일차 # 시간 : 장소의 형태로 장소에 대한 설명은 생략해서 알려줘요. ex) 1일차 # 09:00~11:00 : 관광지"
+      }
       const config = {
         headers: {
           "Content-Type": "application/json",
@@ -119,13 +135,7 @@ export default {
       };
 
       const body = {
-        prompt:
-          "너는 여행 스케쥴러야 " +
-          this.$store.getters.getAddrStr +
-          " 의 관광지들 중에서 " +
-          this.$store.getters.getTripDetail.placeName +
-          " 을(를) 포함하여 " +
-          this.prompt,
+        prompt: this.prompt,
         max_tokens: this.maxTokens,
         temperature: this.temperature,
       };

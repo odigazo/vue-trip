@@ -36,6 +36,7 @@ export default new Vuex.Store({
     courseIndex: null,
     count: '',
     answer: '',
+    additionalinfo:'',
   },
   getters: {
     getUserInfo: function (state) {
@@ -122,6 +123,9 @@ export default new Vuex.Store({
     },
     getAnswer: function (state) {
       return state.answer;
+    },
+    getAdditionalInfo : function(state){
+      return state.additionalinfo;
     },
     getBestCourseList: (state) => state.bestCourseList,
   },
@@ -245,6 +249,9 @@ export default new Vuex.Store({
     },
     setAnswer(state, answer) {
       state.answer = answer;
+    },
+    setAdditionalInfo(state,info){
+      state.additionalinfo = info;
     }
 
   },

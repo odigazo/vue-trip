@@ -2,7 +2,7 @@
   <div class="myPageComments">
     <v-data-table
       :headers="headers"
-      :items="$store.getters.getComments"
+      :items="$store.getters.getMyComments"
       class="elevation-1"
     >
       <!-- <template v-slot:[`item.glutenfree`]="{ item }">
