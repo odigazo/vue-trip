@@ -1,8 +1,10 @@
 <template>
   <div class="signupheader">
     <img class="logo" src="../assets/image/triplogo.png"/>
-    <div class="middle">회원가입 페이지</div>
-    <div class="signup"><a @click="login()">로그인</a></div>
+    <div class="middle"></div>
+    <v-btn text color="primary" style="font: inherit" x-large @click="login()"
+      >로그인</v-btn
+    >
   </div>
 </template>
 
