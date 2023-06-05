@@ -79,7 +79,7 @@
             <v-btn
               text
               v-if="!$store.state.isEditing[index]"
-              @click="startUpdate(index)"
+              @click="startUpdate(index, comment)"
               color="primary"
             >
               수정
@@ -87,7 +87,7 @@
             <v-btn
               text
               v-else
-              @click="updateComment(index, comment.commentNum)"
+              @click="updateComment(index, comment)"
               color="primary"
             >
               저장
@@ -181,24 +181,32 @@ export default {
           this.$store.commit("setIsEditing");
           // this.commentList();
           console.log(this.$store.state.comments[0].contents);
+          this.contents='';
         }.bind(this)
       );
     },
-    startUpdate(index) {
-      console.log(index, "댓글 인덱스");
-      this.$store.commit("setIsEditingTrue", index);
-      this.commentList();
+    startUpdate(index, comment) {
+      console.log(comment);
+      
+      if (comment.userNum != this.userNum) {
+        alert("수정 불가");
+      } else {
+        console.log(index, "댓글 인덱스");
+        this.$store.commit("setIsEditingTrue", index);
+        this.commentList();
+      }
     },
     //댓글 수정
-    updateComment(index, commentNum) {
+    updateComment(index, comment) {
       console.log(index, "index임");
+
       this.$axios({
         url: this._baseUrl + "comment/updateComment",
         method: "PUT",
         params: {
           userNum: this.userNum,
           contents: this.newContents[index],
-          commentNum: commentNum,
+          commentNum: comment.commentNum,
           courseNum: this.courseNum,
         },
         responseType: "json",
@@ -218,7 +226,10 @@ export default {
     },
     //댓글 삭제
     deleteComment(comment) {
-      this.$axios({
+      if (comment.userNum != this.$store.getters.getUserInfo.userNum) {
+        alert("삭제 불가");
+      }else{
+        this.$axios({
         url: this._baseUrl + "comment/deleteComment",
         method: "PUT",
         params: {
@@ -235,6 +246,7 @@ export default {
         .catch((error) => {
           console.error(error);
         });
+      }
     },
     // 좋아요
     addLike() {
