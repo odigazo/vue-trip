@@ -129,8 +129,10 @@ export default {
         },
     goBoard(index, courseNum) {
       console.log(this.$store.getters.getCourseList[index].courseContents);
-      
+      console.log("index",index);
+      console.log("courseNum",courseNum);
       this.schedule(this.$store.getters.getCourseList[index].courseContents);
+      this.$store.commit("setCourseNum", courseNum);
       this.$store.commit("setCourseNum", courseNum);
       this.$store.commit("setCourseIndex", index + (this.page - 1) * this.itemsPerPage);
 
