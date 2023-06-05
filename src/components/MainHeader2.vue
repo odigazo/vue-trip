@@ -44,7 +44,7 @@ export default {
             'content-type' : 'application/json'
           },
           params : {
-            query : userInfo.userAddr //사용자의 주소
+            'query' : userInfo.userAddr //사용자의 주소
           },
           withCredentials: false,
           responseType : 'json'
@@ -57,10 +57,11 @@ export default {
             method: 'POST',
             data: {
               'latitude' : latitude,
-              'longitude' : longitude
+              'longitude' : longitude,
             },
             responseType: 'json'
           }).then(function(result) {
+            console.log(result.data, '리스트요~');
             this.$store.commit('setRecommendList', result.data);
             this.$router.push('recommend');
           }.bind(this));

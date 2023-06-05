@@ -109,7 +109,7 @@
         <h1 class="slide-title">거리순</h1>
         <v-slide-group class="pa-4" active-class="success" show-arrows>
           <v-slide-item
-            v-for="(place, i) in $store.getters.getPlaceList"
+            v-for="(place, i) in $store.getters.getRecommendList"
             :key="i"
           >
             <v-card class="ma-4" height="160" width="190">
