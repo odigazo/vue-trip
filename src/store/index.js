@@ -53,6 +53,10 @@ export default new Vuex.Store({
     getLatitudes: function (state) {
       return state.latitudes;
     },
+    getComments:function(state){
+      console.log("getComments 호출!!!");
+      return state.comments;
+    },
     getLongitudes: function (state) {
       return state.longitudes;
     },
@@ -68,7 +72,9 @@ export default new Vuex.Store({
     getCreateCount: function (state) {
       return state.createCount;
     },
-
+    getIsEditing:function(state){
+      return state.isEditing;
+    },
     getAddrStr: function (state) {
       return state.addrStr;
     },
@@ -151,7 +157,7 @@ export default new Vuex.Store({
       state.recentCourseList = null;
       state.comments = null;
       state.mycomments = null;
-      state.isEditing = null;
+      // state.isEditing = null;
       state.isLoading = false;
       state.isMapReady = false;
       state.courseList = null;
@@ -189,15 +195,15 @@ export default new Vuex.Store({
       state.myList = courseList;
     },
     setIsEditing(state) {
-      for (var i = 0; i < state.comments.length; i++) {
-        state.isEditing[i] = false;
-      }
+      state.isEditing = new Array(state.comments.length).fill(false);
+      console.log(state.comments.length,"만큼 false로 초기화");
     },
     setIsEditingTrue(state, index) {
       for (var i = 0; i < state.comments.length; i++) {
         console.log("왜 안찍혀", state.isEditing[i]);
         if (i == index) {
           state.isEditing[i] = true;
+          console.log(index,"수정");
         }
       }
     },
