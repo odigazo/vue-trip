@@ -146,7 +146,7 @@ export default {
     },
     update() {
       if (
-        this.nicknamenotice === "사용가능한 닉네임 입니다." &&
+        (this.nickname==this.$store.getters.getUserInfo.userNickname||this.nicknamenotice === "사용가능한 닉네임 입니다.") &&
         this.address !== null &&
         this.age > 0
       ) {
