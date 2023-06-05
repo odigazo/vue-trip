@@ -245,6 +245,8 @@ export default {
   methods: {
     recommend() {
       let userInfo = this.$store.getters.getUserInfo;
+      console.log(this.purpose);
+      this.$store.commit("setPurpose",this.purpose);
       this.$store.commit("setAdditionalInfo",this.startDate +
           "부터 " +
           this.endDate +
