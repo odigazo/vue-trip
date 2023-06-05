@@ -104,7 +104,7 @@ export default {
     return {
       nickname: this.$store.getters.getUserInfo.userNickname,
       address: this.$store.getters.getUserInfo.userAddr,
-      age: this.$store.getters.getUserInfo.userAge,
+      age: String(this.$store.getters.getUserInfo.userAge),
       nicknamenotice: "",
     };
   },
@@ -145,6 +145,7 @@ export default {
       }).open();
     },
     update() {
+      console.log(typeof(this.age),"-------------");
       if (
         (this.nickname==this.$store.getters.getUserInfo.userNickname||this.nicknamenotice === "사용가능한 닉네임 입니다.") &&
         this.address !== null &&
