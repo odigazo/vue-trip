@@ -1,17 +1,17 @@
 <template>
   <div class="tripcourse">
-    <MainHeader2></MainHeader2>
+    <MainHeader></MainHeader>
     <TripCourseBody></TripCourseBody>
   </div>
 </template>
 
 <script>
-import MainHeader2 from '@/components/MainHeader2.vue' 
+import MainHeader from '@/components/MainHeader.vue' 
 import TripCourseBody from '@/components/TripCourseBody.vue'
 export default ({
   name:'TripCourseView',
   components:{
-    MainHeader2,
+    MainHeader,
     TripCourseBody
   }
 })

@@ -1,16 +1,16 @@
 <template>
     <div>
-<MainHeader2></MainHeader2>
+<MainHeader></MainHeader>
 <TripMainBody></TripMainBody>
     </div>
 </template>
 <script>
-import MainHeader2 from '../components/MainHeader2.vue' 
+import MainHeader from '../components/MainHeader.vue' 
 import TripMainBody from '../components/TripMainBody.vue' 
 // import MyPageCourseBody from '../components/MyPageCourseBody.vue' 
 export default {
     components : {
-        MainHeader2 : MainHeader2,
+        MainHeader : MainHeader,
         TripMainBody : TripMainBody,
         // MyPageCourseBody : MyPageCourseBody
     },

@@ -13,7 +13,6 @@
         >
         </v-img>
 
-        <!-- <v-card-subtitle class="pb-0"> Number 10 </v-card-subtitle> -->
 
         <v-card-text class="text--primary">
           <h3>국내 여행을 가고 싶으신가요?</h3>
@@ -26,7 +25,6 @@
             <v-btn class="ma-2" x-large color="primary" dark @click="login()"
               >로그인</v-btn
             >
-            <!-- <v-btn class="mx-10" x-large color="primary" dark @click="signup()">회원가입</v-btn> -->
           </v-row>
         </v-card-actions>
       </v-card>
@@ -36,7 +34,7 @@
 </template>
 
 <script>
-// import axios from "axios";
+
 
 export default {
   name: "MainView",
@@ -48,29 +46,7 @@ export default {
     signup() {
       this.$router.push({ name: "signup" });
     },
-    // tripMain() {
-    //   this.$router.push({ name: "tripMain" });
-    // },
-    // gotoBoard() {
-    //   this.$store.commit("setIsEditing");
-    //   this.$router.push({ name: "courseboard" });
-    // },
-    // gotocsBoard() {
-    //   console.log("....");
-    //   axios
-    //     .get(this._baseUrl + "courseBoard/courseList", {
-    //       params: {},
-    //     })
-    //     .then((result) => {
-    //       console.log(result.data);
-    //       this.$store.commit("setCourseList", result.data);
-    //       // this.$store.commit("setCourseList", result.data);
-    //       this.$router.push({ name: "courseboardList" });
-    //     })
-    //     .catch(function (error) {
-    //       console.error("에러 ", error);
-    //     });
-    // },
+    
   },
 };
 </script>

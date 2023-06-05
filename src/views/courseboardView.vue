@@ -1,18 +1,18 @@
 <template>
   <div class="courseboard">
-    <MainHeader2></MainHeader2>
+    <MainHeader></MainHeader>
     <courseboardBody></courseboardBody>
   </div>
 </template>
 
 <script>
-import MainHeader2 from '../components/MainHeader2.vue'; 
+import MainHeader from '../components/MainHeader.vue'; 
 import courseboardBody from '@/components/courseboardBody.vue'
 
 export default {
   name:'courseboardView',
   components:{
-    MainHeader2,
+    MainHeader,
     courseboardBody
   }
 }

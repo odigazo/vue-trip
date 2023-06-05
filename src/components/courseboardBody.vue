@@ -92,11 +92,7 @@
             >
               저장
             </v-btn>
-            <v-btn
-              text
-              color="red"
-              @click="deleteComment(comment)"
-            >
+            <v-btn text color="red" @click="deleteComment(comment)">
               삭제
             </v-btn>
           </v-list-item-action>
@@ -163,13 +159,12 @@ export default {
           console.log(result.data);
           console.log("-----------------------");
           this.$store.commit("setComments", result.data);
-          
+
           console.log("댓글리스트 성공성공");
         });
     },
     //댓 쓰기
     insertComment() {
-      
       this.$axios({
         url: this._baseUrl + "comment/insertComment",
         method: "POST",
@@ -190,9 +185,8 @@ export default {
       );
     },
     startUpdate(index) {
-      console.log(index,"댓글 인덱스");
+      console.log(index, "댓글 인덱스");
       this.$store.commit("setIsEditingTrue", index);
-      // this.$router.go(this.$router.currentRoute);
       this.commentList();
     },
     //댓글 수정
