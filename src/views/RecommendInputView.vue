@@ -1,15 +1,15 @@
 <template>
     <div>
-        <MainHeader2></MainHeader2>
+        <MainHeader></MainHeader>
         <TripRecommendInputBody></TripRecommendInputBody>
     </div>
 </template>
 <script>
-import MainHeader2 from '../components/MainHeader2.vue';
+import MainHeader from '../components/MainHeader.vue';
 import TripRecommendInputBody from '../components/TripRecommendInputBody.vue';
 export default {
     components: {
-        MainHeader2 : MainHeader2,
+        MainHeader : MainHeader,
         TripRecommendInputBody : TripRecommendInputBody
     }
 }

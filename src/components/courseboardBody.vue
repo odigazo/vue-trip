@@ -3,9 +3,13 @@
     <hr />
     <v-container>
       <v-card>
-        <v-card-title class="headline" style="font-weight: bold; font-size: 24px;">
+        <v-card-title
+          class="headline"
+          style="font-weight: bold; font-size: 24px"
+        >
           {{
-            this.$store.getters.getCourseList[$store.getters.getCourseIndex].courseTitle
+            this.$store.getters.getCourseList[$store.getters.getCourseIndex]
+              .courseTitle
           }}
         </v-card-title>
         <v-card-text v-bind:style="{ 'word-wrap': 'break-word' }">
@@ -18,7 +22,10 @@
             >
               <v-card elevation="2">
                 <v-card-title class="blue lighten-2">
-                  <h2 class="text-h6 white--text font-weight-bold" v-text="key"></h2>
+                  <h2
+                    class="text-h6 white--text font-weight-bold"
+                    v-text="key"
+                  ></h2>
                 </v-card-title>
                 <v-card-text>
                   <ul class="items">
@@ -37,9 +44,10 @@
           <v-btn icon @click="addLike">
             <v-icon color="red">mdi-heart</v-icon>
           </v-btn>
-          <span class="mr-4" style="font-weight: bold;">
+          <span class="mr-4" style="font-weight: bold">
             {{
-              this.$store.getters.getCourseList[$store.getters.getCourseIndex].courseLike
+              this.$store.getters.getCourseList[$store.getters.getCourseIndex]
+                .courseLike
             }}
           </span>
         </v-card-actions>
@@ -50,7 +58,7 @@
       <h2 class="subtitle-1">댓글 목록</h2>
       <v-list two-line>
         <v-list-item
-          v-for="(comment, index) in this.$store.state.comments"
+          v-for="(comment, index) in $store.getters.getComments"
           :key="index"
         >
           <v-list-item-content>
@@ -84,11 +92,7 @@
             >
               저장
             </v-btn>
-            <v-btn
-              text
-              color="red"
-              @click="deleteComment(comment)"
-            >
+            <v-btn text color="red" @click="deleteComment(comment)">
               삭제
             </v-btn>
           </v-list-item-action>
@@ -132,7 +136,9 @@ export default {
   },
   created() {
     this.commentList();
+    this.$store.commit("setIsEditing");
     console.log(this.$store.getters.getSchedule);
+    console.log(this.$store.getters.getIsEditing);
   },
   methods: {
     next(input) {
@@ -151,14 +157,10 @@ export default {
         })
         .then((result) => {
           console.log(result.data);
-          if (result.data == null) {
-            // alert("댓글을 입력하세요");
-            this.$store.commit("setComments", result.data);
-          } else {
-            this.$store.commit("setComments", result.data);
-            // this.$router.push({name:'main'}); 페이지 이동
-            console.log("댓글리스트 성공성공");
-          }
+          console.log("-----------------------");
+          this.$store.commit("setComments", result.data);
+
+          console.log("댓글리스트 성공성공");
         });
     },
     //댓 쓰기
@@ -183,10 +185,8 @@ export default {
       );
     },
     startUpdate(index) {
-      console.log(index);
+      console.log(index, "댓글 인덱스");
       this.$store.commit("setIsEditingTrue", index);
-      console.log(this.isEditing);
-      // this.$router.go(this.$router.currentRoute);
       this.commentList();
     },
     //댓글 수정

@@ -1,6 +1,6 @@
 <template>
   <div class="tripcourse">
-    <MainHeader2></MainHeader2>
+    <MainHeader></MainHeader>
     <h3>마이페이지</h3>
     <hr />
     <v-container>
@@ -26,22 +26,16 @@
 </template>
 
 <script>
-import MainHeader2 from "@/components/MainHeader2.vue";
+import MainHeader from "@/components/MainHeader.vue";
 import MyPageUpdateInfoBody from "@/components/MyPageUpdateInfoBody.vue";
-// import MyPageCommentsBody from "@/components/MyPageCommentsBody.vue";
-// import MyPageCourseBody from "@/components/MyPageCourseBody.vue";
 export default {
   name: "TripCourseView",
   components: {
-    MainHeader2,
-    // MyPageUpdateInfoBody,
-    // MyPageCommentsBody,
-    // MyPageCourseBody,
+    MainHeader,
   },
   data() {
     return {
-      // currentComponent: this.$route.params.component,
-      // activeLink: null
+      
       activeLink: 1,
       links: [
         {
@@ -68,14 +62,9 @@ export default {
         this.currentComponent = component.default || component;
       });
     },
-    // loadComponent(componentName, linkIndex) {
-    //   this.activeLink = linkIndex;
-    //   this.currentComponent = componentName;
-    // }
+    
   },
-  // created(){
-  //   this.loadComponent(this.$route.params.component,this.$route.params.index);
-  // }
+ 
 };
 </script>
 <style>

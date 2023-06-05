@@ -1,25 +1,19 @@
 <template>
   <div class="mainHeader">
-    <img class="logo" src="../assets/image/triplogo.png" />
+    <a @click="searchPlaces()"><img class="logo" src="../assets/image/triplogo.png" /></a>
     <div class="center">
-      <div class="signup"><a @click="searchPlaces()">사계절여행</a></div>
-      <div class="signup"><a @click="recommendPlaces()">맞춤 여행추천</a></div>
-      <div class="signup"><a @click="courseBoard()">모행객 추천코스</a></div>
-      <div class="search-container">
-      <input
-        id="search"
-        type="text"
-        placeholder="주소를 입력해주세요"
-        v-model="keyword"
-      />
-      </div>
+      <div class="my-2"><v-btn text color="primary" style="font: inherit;" x-large @click="searchPlaces()">사계절여행</v-btn></div>
+      <div class="my-2"><v-btn text color="primary" style="font: inherit;" x-large @click="recommendPlaces()">AI 여행추천</v-btn></div>
+      <div class="my-2"><v-btn text color="primary" style="font: inherit;" x-large @click="courseBoard()">모행객 추천코스</v-btn></div>
     </div>
     <div class="right">
-      <div>{{ $store.getters.getUserInfo.userNickname }}</div>
-      <div class="signup2"><a @click="logout()">로그아웃</a></div>
-      <div class="signup2"><a @click="myPage()">마이페이지</a></div>
       <div>
-        미방문한 코스가<a class="signup" @click="myPage()">{{$store.getters.getCount}}</a>개
+        <v-btn @click="myPage()" text color="primary" class="font-weight-bold" >마이페이지</v-btn>
+        <v-btn @click="logout()" text color="primary" class="font-weight-bold" >로그아웃</v-btn>
+      </div>
+      <div class="font-weight-bold" style="font-size: 13px;">
+        <font class="font-weight-bold" text>{{ $store.getters.getUserInfo.userNickname + "님, "}}</font>
+        미방문한 코스가 <a class="signup" @click="myPage()">{{$store.getters.getCount}}</a>개
         있습니다.
       </div>
     </div>
@@ -28,13 +22,76 @@
 <script>
 import axios from 'axios';
 export default {
-  data() {
-    return {
-      keyword: "",
-    };
-  },
   methods: {
-    courseBoard(){
+    searchPlaces() {
+      if (this.$router.currentRoute.name == "tripMain") {
+        return;
+      } else {
+        this.$router.push({ name: "tripMain" });
+      }
+    },
+ recommendPlaces() {
+      let userInfo = this.$store.getters.getUserInfo;
+      if (this.$router.currentRoute.name == "recommend") {
+        return;
+      } else {
+        this.$axios({
+          url : 'http://dapi.kakao.com/v2/local/search/address.json',
+          method : 'GET',
+          headers : {
+            'Authorization' : 'KakaoAK 28129ad995eebba2852f3ad70480cfaa',
+            'content-type' : 'application/json'
+          },
+          params : {
+            'query' : userInfo.userAddr //사용자의 주소
+          },
+          withCredentials: false,
+          responseType : 'json'
+        }).then(function(result) {
+          let longitude = result.data.documents[0].road_address.x;
+          let latitude = result.data.documents[0].road_address.y;
+
+          this.$axios({
+            url: 'http://localhost:8080/trip/mainPage/recommendDistance',
+            method: 'POST',
+            data: {
+              'latitude' : latitude,
+              'longitude' : longitude,
+            },
+            responseType: 'json'
+          }).then(function(result) {
+            console.log(result.data, '리스트요~');
+            this.$store.commit('setRecommendList', result.data);
+            this.$router.push('recommend');
+          }.bind(this));
+        }.bind(this));
+
+        this.$axios({
+          url: 'http://localhost:8080/trip/mainPage/recommendLike',
+          method: 'GET',
+          params: {
+            userInfo : userInfo.userNum
+          },
+          responseType: 'json'
+        }).then(function(result) {
+          this.$store.commit('setRecommendLikeList', result.data);
+        }.bind(this));
+
+        this.$axios({
+          url: 'http://localhost:8080/trip/mainPage/mostPlace',
+          method: 'GET',
+          responseType: 'json'
+        }).then(function(result) {
+          this.$store.commit('setRecentCourseList', result.data);
+        }.bind(this));
+      }
+
+    },
+    logout() {
+      this.$store.commit("RESET_STATE");
+      this.$router.push({ name: "main" });
+    },
+    courseBoard() {
       axios
         .get(this._baseUrl + "courseBoard/courseList", {
           params: {
@@ -73,97 +130,6 @@ export default {
         console.log('페이지 동일');
       }
     },
-    logout() {
-      this.$store.commit("RESET_STATE");
-      this.$router.push({ name: "main" });
-    },
-    searchPlaces() {
-      if (this.$router.currentRoute.name == "tripMain") {
-        return;
-      } else {
-        this.$router.push({ name: "tripMain" });
-      }
-    },
-    autoComplete() {
-      if (this.keyword.charCodeAt(0) >= 44032) {
-        //아스키 코드가 '가'보다 큰 경우
-        this.$axios({
-          url: "http://localhost:8080/trip/mainPage/keyword",
-          method: "GET",
-          params: {
-            keyword: this.keyword,
-          },
-          responseType: "json",
-        }).then(
-          function (result) {
-            if (result.data.length != 0) {
-              let placeList = result.data;
-              this.$store.commit("setPlaceList", placeList);
-            }
-          }.bind(this)
-        );
-      } else {
-        return;
-      }
-    },
-    //옮김
-    recommendPlaces() {
-      let userInfo = this.$store.getters.getUserInfo;
-      console.log(userInfo);
-      if (this.$router.currentRoute.name == "recommend") {
-        return;
-      } else {
-        this.$axios({
-          url : 'http://dapi.kakao.com/v2/local/search/address.json',
-          method : 'GET',
-          headers : {
-            'Authorization' : 'KakaoAK 28129ad995eebba2852f3ad70480cfaa',
-            'content-type' : 'application/json'
-          },
-          params : {
-            query : userInfo.userAddr //사용자의 주소
-          },
-          withCredentials: false,
-          responseType : 'json'
-        }).then(function(result) {
-          let longitude = result.data.documents[0].road_address.x;
-          let latitude = result.data.documents[0].road_address.y;
-
-          this.$axios({
-            url: 'http://localhost:8080/trip/mainPage/recommendDistance',
-            method: 'POST',
-            data: {
-              'latitude' : latitude,
-              'longitude' : longitude
-            },
-            responseType: 'json'
-          }).then(function(result) {
-            this.$store.commit('setRecommendList', result.data);
-            this.$router.push('recommend');
-          }.bind(this));
-        }.bind(this));
-
-        this.$axios({
-          url: 'http://localhost:8080/trip/mainPage/recommendLike',
-          method: 'GET',
-          params: {
-            userInfo : userInfo.userNum
-          },
-          responseType: 'json'
-        }).then(function(result) {
-          this.$store.commit('setRecommendLikeList', result.data);
-        }.bind(this));
-
-        this.$axios({
-          url: 'http://localhost:8080/trip/mainPage/recentCourse',
-          method: 'GET',
-          responseType: 'json'
-        }).then(function(result) {
-          this.$store.commit('setRecentCourseList', result.data);
-        }.bind(this));
-      }
-
-    }
   },
   watch: {
     keyword: function () {
@@ -192,7 +158,8 @@ export default {
         );
       }
     },
-  },
+  }
+
 };
 </script>
 <style scoped>
@@ -200,8 +167,7 @@ div.mainHeader {
   display: flex;
   align-items: center;
   height: 80px;
-  background-color: rgb(0, 166, 255);
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: rgb(255, 255, 255);
 }
 .center {
   flex: 4;
@@ -214,49 +180,38 @@ div.mainHeader {
 div.right {
   flex: 1;
   text-align: right;
-  font-size: 14px;
+  font-size: 10px; /* 글자 크기 */
 }
 div.middle {
   flex: 1;
   text-align: center;
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 24px; /* 글자 크기 */
+  font-weight: bold; /* 글자 굵기 */
 }
 
-div.signup, div.signup2, a.signup {
+div.signup {
   text-align: right;
-  color: rgb(255, 255, 255);
-  text-decoration: none;
+  color: blue;
+  text-decoration: underline;
   cursor: pointer;
   margin-right: 20px;
-  transition: color 0.3s;
 }
-div.signup:hover, div.signup2:hover, a.signup:hover {
-  color: rgb(200, 200, 200);
+div.signup2 {
+  text-align: right;
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
 }
-
+a.signup {
+  text-align: right;
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+}
 .logo {
-  width: 80px;
-  height: 80px;
+  width: 150px;
+  height: 120px;
   border-radius: 50%;
   margin-left: 20px;
-}
-
-.search-container {
-  position: relative;
-  margin-left: 20px;
-}
-
-input#search {
-  font-size: 16px;
-  padding: 5px 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  outline: none;
-  transition: border-color 0.3s;
-}
-
-input#search:focus {
-  border-color: rgb(0, 166, 255);
 }
 </style>
